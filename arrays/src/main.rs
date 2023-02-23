@@ -13,7 +13,7 @@ fn main() {
     println!("{:?}", b);
 }
 
-// arrays need a constant length known at compile time
+// arrays need a constant length known at compile time, therefore type needs to be known too
 /*
 fn append_to_array(u: &mut [char], v: char) {
     let mut b: [char; u.len() + 1] = u + v;
