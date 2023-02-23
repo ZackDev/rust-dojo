@@ -24,7 +24,7 @@ fn main() {
     let c: char = '-';
     let mut b8: [u8; 2] = [0, 2];
     let mut b16: [u16; 2] = [0, 2];
-    let s= "just a rusty hack";
+    let s = "just a rusty";
 
     println!("unsigned integers:");
     println!("[{}...{}] bits:{}", u8::MIN, u8::MAX, u8::BITS);
@@ -58,5 +58,14 @@ fn main() {
     println!("b8 buffer: {}", b8_result);
     println!("b16 buffer: {:#?}", b16_result);
     println!();
-    println!("str: {:?}", s.is_ascii());
+    let s_ptr = s.as_ptr();
+    unsafe {
+        println!("{:?} {:?}", s_ptr, *s_ptr);
+        let s_ptr_i = s_ptr.cast_mut();
+        println!("{:?} {:?}", s_ptr, s_ptr_i);
+        let s_ptr_i2 = s_ptr_i.add(1);
+
+        let value_of_s_ptr_i2 = *s_ptr_i2;
+        println!("{:#?}", value_of_s_ptr_i2);
+    }
 }
