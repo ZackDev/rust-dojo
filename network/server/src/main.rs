@@ -9,12 +9,13 @@ fn main() {
         let mut data_received: Vec<String> = Vec::new();
         loop {
             println!("server entering listening loop");
-            for stream in tcp_listener.incoming() {
-                match stream {
-                    Ok(s) => {
+            for connection in tcp_listener.incoming() {
+                match connection {
+                    Ok(stream) => {
+                        println!("{:?}", stream);
                         let mut str = String::new();
-                        let mut buffered_reader = BufReader::new(s);
-                        buffered_reader.read_line(&mut str);
+                        let mut buffered_reader = BufReader::new(stream);
+                        buffered_reader.read_line(&mut str).unwrap();
                         data_received.push(str);
                         println!("{:?}", data_received);
                     },
