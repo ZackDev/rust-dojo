@@ -27,29 +27,34 @@ fn main() {
         }
     });
     
-    // intuitively, the next line isn't required. but see:
+    // intuitively, the next line isn't required, because a loop loops, right? but see:
     // - diagram without join
-    //      main        listen
     //
-    //      spawn
-    //      |           spawn
+    //      [main]      [listen]
+    //      :  
+    //      spawn()
+    //      |           spawn()
     //      |           |
     //      exit        exit
-    //                  |
-    //                  loop
+    //                  :
+    //                  loop {}
     
     listen_thread_handle.join().unwrap();
     
-    //      main        listen
+    // the same diagram
+    // - diagram with join
     //
-    //      spawn
-    //      |           spawn
+    //      [main]      [listen]
+    //      :           
+    //      spawn()
+    //      |           spawn()
     //      |           |
-    //      <---join----|
+    //      <---join()--|
     //      |           |
-    //      |           loop
+    //      |           loop {}
     //      |           |
-    //      |           |
+    //      :           :
+    //      <---break---|
 
     println!("server exiting");
 }
