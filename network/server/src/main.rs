@@ -6,14 +6,13 @@ fn main() {
 
     let listen_thread_handle = thread::spawn(|| {
         let tcp_listener = TcpListener::bind("127.0.0.1:9876").unwrap();
-        let mut data_received: Vec<String> = Vec::new(); //the same as vec! = []
+        let mut data_received: Vec<String> = Vec::new(); //macro: vec![]
         
         loop {
             println!("server entering listening loop");
             for connection in tcp_listener.incoming() {
                 match connection {
                     Ok(stream) => {
-                        println!("{:?}", stream);
                         let mut str = String::new();
                         let mut buffered_reader = BufReader::new(stream);
                         buffered_reader.read_line(&mut str).unwrap();
