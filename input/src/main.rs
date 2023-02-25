@@ -18,30 +18,34 @@ fn main() {
                 let file_read = read_and_print(path);
                 match file_read {
                     Ok(_) => {
-                        println!("file successfully read and printed.");
+                        println!("\nfile successfully read and printed.");
                         break;
-                    },
+                    }
                     Err(_) => {
                         println!("file not found.");
-                    },
+                    }
                 };
-            },
-            Err(e) => {
-            },
+            }
+            Err(_) => {}
         }
     }
-
 }
 
 fn read_and_print(file_path: String) -> Result<(), std::io::Error> {
     let mut file = File::open(file_path)?;
     let mut content = String::new();
     file.read_to_string(&mut content)?;
-    println!("{}", content);
+    let lines: Vec<&str> = content.split("\n").collect();
+    let mut lineno = 0;
+    println!();
+    for line in lines {
+        lineno += 1;
+        println!("{}:\t{}", lineno, line);
+    }
     Ok(())
 }
 
-fn read_stdin() -> Result<String, std::io::Error>  {
+fn read_stdin() -> Result<String, std::io::Error> {
     println!("enter path to file:");
     let mut buffer = String::new();
     let stdin = std::io::stdin();
