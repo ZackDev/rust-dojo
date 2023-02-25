@@ -16,7 +16,7 @@ fn main() {
         println!("thread 1 - end: {:?}", b);
     });
 
-    let handle_two = thread::spawn(move || {
+    let _handle_two = thread::spawn(move || {
         println!("thread 2 - begin: {:?}", c);
         *c.lock().unwrap() = 12;
         println!("thread 2 - end: {:?}", c);

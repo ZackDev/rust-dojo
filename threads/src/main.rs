@@ -1,5 +1,5 @@
-use std::alloc::System;
-use std::thread::{self, JoinHandle};
+use std::thread;
+use std::thread::JoinHandle;
 use std::time::Duration;
 use std::time::SystemTime;
 
@@ -9,9 +9,6 @@ fn main() {
     _ex_4();
 }
 
-/**
- * 
- */
 fn _ex_1() {
     let handle = thread::spawn(|| {
         for i in 1..10 {
@@ -50,7 +47,7 @@ fn _ex_3() {
     let mut handles: Vec<JoinHandle<()>> = vec![];
     for i in 1..1000 {
         let h = thread::spawn(move || {
-            let x = (i as f32).sqrt();
+            let _x = (i as f32).sqrt();
         });
         handles.push(h);
     }
@@ -63,7 +60,33 @@ fn _ex_3() {
 fn _ex_4() {
     let st = SystemTime::now();
     for i in 1..1000 {
-        let y = (i as f32).sqrt();
+        let _x = (i as f32).sqrt();
+    }
+    println!("{:?}", SystemTime::now().duration_since(st));
+}
+
+// let's assume a more static calculation: thread::sleep
+// a = 36ms, b = 5s
+// here the costs of managing threads is relatively low, compared to thread::sleep
+fn _ex_5() {
+    let st = SystemTime::now();
+    let mut handles: Vec<JoinHandle<()>> = vec![];
+    for _i in 1..1000 {
+        let h = thread::spawn(move || {
+            thread::sleep(Duration::from_millis(5));
+        });
+        handles.push(h);
+    }
+    for h in handles {
+        h.join().unwrap();
+    }
+    println!("{:?}", SystemTime::now().duration_since(st));
+}
+
+fn _ex_6() {
+    let st = SystemTime::now();
+    for _i in 1..1000 {
+        thread::sleep(Duration::from_millis(5));
     }
     println!("{:?}", SystemTime::now().duration_since(st));
 }

@@ -1,5 +1,5 @@
 fn main() {
-    let a: [char; 0] = [];
+    let _a: [char; 0] = [];
 
     // declare array as mutable, to be able to change it's content
     let mut b: [char; 3] = ['x', 'y', 'a'];
@@ -55,6 +55,3 @@ fn print_some_or_none(opt: Option<u8>) {
     }
 }
 
-fn arrow() -> u8 {
-    return 8u8;
-}

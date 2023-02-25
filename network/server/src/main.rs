@@ -1,5 +1,5 @@
-use std::io::{Read, BufReader, BufRead};
-use std::net::{TcpListener};
+use std::io::{BufReader, BufRead};
+use std::net::TcpListener;
 use std::thread;
 
 fn main() {
@@ -19,7 +19,7 @@ fn main() {
                         data_received.push(str);
                         println!("{:?}", data_received);
                     },
-                    Err(e) => {
+                    Err(_e) => {
 
                     }
                 }

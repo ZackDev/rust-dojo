@@ -15,9 +15,6 @@ use f64;
 
 use bool;
 use char;
-use str;
-use isize;
-use usize;
 
 fn main() {
     let boolean: bool = true;
