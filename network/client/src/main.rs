@@ -8,6 +8,7 @@ fn main() {
     let msg = String::from("Hello, World!");
     let msg_arc: Arc<String> = Arc::new(msg);
     let msg_arc2 = msg_arc.clone();
+    
     let h1 = thread::spawn(move || {
         let mut tcp_stream = TcpStream::connect("127.0.0.1:9876").unwrap();
         tcp_stream.write(msg_arc.as_bytes()).unwrap();
