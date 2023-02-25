@@ -6,7 +6,7 @@ fn main() {
 
     let listen_thread_handle = thread::spawn(|| {
         let tcp_listener = TcpListener::bind("127.0.0.1:9876").unwrap();
-        let mut data_received: Vec<String> = Vec::new();
+        let mut data_received: Vec<String> = Vec::new(); //the same as vec! = []
         
         loop {
             println!("server entering listening loop");
