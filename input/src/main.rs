@@ -12,11 +12,9 @@ fn main() {
     dbg!(args_os);
 
     loop {
-        let path = read_stdin();
-        match path {
+        match read_stdin() {
             Ok(path) => {
-                let file_read = read_and_print(path);
-                match file_read {
+                match read_and_print(path) {
                     Ok(_) => {
                         println!("\nfile successfully read and printed.");
                         break;
