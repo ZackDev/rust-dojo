@@ -12,8 +12,10 @@ fn main() {
     dbg!(args_os);
 
     loop {
+        // input from stdin
         match read_stdin() {
             Ok(path) => {
+                // input from file
                 match read_and_print(path) {
                     Ok(_) => {
                         println!("\nfile successfully read and printed.");
