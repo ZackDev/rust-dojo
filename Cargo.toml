@@ -1,0 +1,2 @@
+[workspace]
+members = ["arrays", "input", "mpsc", "mutex", "networkclient", "networkserver", "primitives", "referencing", "threads"]
