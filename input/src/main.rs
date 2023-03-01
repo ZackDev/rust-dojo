@@ -1,6 +1,7 @@
+use std::collections::HashMap;
 use std::ffi::OsString;
 use std::fs::File;
-use std::io::{Read, IoSliceMut};
+use std::io::Read;
 
 fn main() {
     // input as parameters
@@ -31,7 +32,7 @@ fn main() {
                 */
                 
                 match read_by_char_into_buckets(path) {
-                    Ok(_) => todo!(),
+                    Ok(bucket) => println!("{:?}", bucket),
                     Err(_) => todo!(),
                 }
                 
@@ -63,17 +64,25 @@ fn read_stdin() -> Result<String, std::io::Error> {
     Ok(buffer.trim().to_string())
 }
 
-fn read_by_char_into_buckets(file_path: String) -> Result<(), std::io::Error> {
-    let mut bucket: Vec<Vec<char>> = vec![vec![]];
+fn read_by_char_into_buckets(file_path: String) -> Result<HashMap<char, Vec<i32>>, std::io::Error> {
+    let mut bucket: HashMap<char, Vec<i32>> = HashMap::new();
     let mut file = File::open(file_path)?;
     let mut content = String::new();
     file.read_to_string(&mut content)?;
     let chars: Vec<char> = content.chars().collect();
-    let mut charno = 0;
-    for c in chars {
-        charno += 1;
-        println!("{}:\t{}", charno, c);
+    let mut u_chars = chars.clone();
+    u_chars.sort();
+    u_chars.dedup();
+    for u in u_chars {
+        let mut indizes: Vec<i32> = vec![];
+        let mut index = 0;
+        for c in chars.clone() {
+            if c == u {
+                indizes.push(index);
+            }
+            index += 1;
+        }
+        bucket.insert(u, indizes);
     }
-    println!("{:?}", content);
-    Ok(())
+    Ok(bucket)
 }
