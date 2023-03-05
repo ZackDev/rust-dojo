@@ -32,7 +32,10 @@ fn main() {
                 */
                 
                 match read_by_char_into_buckets(path) {
-                    Ok(bucket) => println!("{:?}", bucket),
+                    Ok((u_chars, bucket)) => {
+                        println!("{:?}", u_chars);
+                        println!("{:?}", bucket);
+                    },
                     Err(_) => todo!(),
                 }
                 
@@ -64,7 +67,7 @@ fn read_stdin() -> Result<String, std::io::Error> {
     Ok(buffer.trim().to_string())
 }
 
-fn read_by_char_into_buckets(file_path: String) -> Result<HashMap<char, Vec<i32>>, std::io::Error> {
+fn read_by_char_into_buckets(file_path: String) -> Result<(Vec<char>, HashMap<char, Vec<i32>>), std::io::Error> {
     let mut bucket: HashMap<char, Vec<i32>> = HashMap::new();
     let mut file = File::open(file_path)?;
     let mut content = String::new();
@@ -73,7 +76,7 @@ fn read_by_char_into_buckets(file_path: String) -> Result<HashMap<char, Vec<i32>
     let mut u_chars = chars.clone();
     u_chars.sort();
     u_chars.dedup();
-    for u in u_chars {
+    for u in u_chars.clone() {
         let mut indizes: Vec<i32> = vec![];
         let mut index = 0;
         for c in chars.clone() {
@@ -84,5 +87,5 @@ fn read_by_char_into_buckets(file_path: String) -> Result<HashMap<char, Vec<i32>
         }
         bucket.insert(u, indizes);
     }
-    Ok(bucket)
+    Ok((u_chars, bucket))
 }
