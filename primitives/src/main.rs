@@ -52,7 +52,7 @@ fn main() {
     println!("isalphanumeric: {}", c.is_alphanumeric());
     let b8_result = c.encode_utf8(&mut b8);
     let b16_result = c.encode_utf16(&mut b16);
-    println!("b8 buffer: {}", b8_result);
+    println!("b8 buffer: {:#}", b8_result);
     println!("b16 buffer: {:#?}", b16_result);
     println!();
     let s_ptr = s.as_ptr();
