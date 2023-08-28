@@ -16,7 +16,29 @@ fn main() {
     
     match get_info(args.filename) {
         Ok(info) => {
-            println!("{:?}", info);
+            println!("created");
+            println!("{:?}", info.created());
+
+            println!("accessed");
+            println!("{:?}", info.accessed());
+
+            println!("modified");
+            println!("{:?}", info.modified());
+
+            println!("type");
+            println!("{:?}", info.file_type());
+
+            println!("directory");
+            println!("{:?}", info.is_dir());
+
+            println!("file");
+            println!("{:?}", info.is_file());
+
+            println!("symlink");
+            println!("{:?}", info.is_symlink());
+
+            println!("permissions");
+            println!("{:?}", info.permissions());
         }
         Err(err) => {
             println!("{:?}", err);
