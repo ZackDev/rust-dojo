@@ -1,5 +1,7 @@
 use clap::Parser;
 use std::fs;
+use std::fs::Metadata;
+use std::io;
 
 #[derive(Parser, Debug)]
 
@@ -11,7 +13,17 @@ struct Args {
 fn main() {
     let args = Args::parse();
     println!("{:?}", args);
-    let meta = fs::metadata(args.filename);
-    println!("{:?}", meta);
+    
+    match get_info(args.filename) {
+        Ok(info) => {
+            println!("{:?}", info);
+        }
+        Err(err) => {
+            println!("{:?}", err);
+        }
+    }
 }
 
+fn get_info(filename: String) -> io::Result<Metadata> {
+    fs::metadata(filename)
+}
