@@ -1,2 +1,2 @@
 [workspace]
-members = ["arrays", "input", "mpsc", "mutex", "networkclient", "networkserver", "primitives", "referencing", "threads"]
+members = ["arrays", "fileinfo", "input", "mpsc", "mutex", "networkclient", "networkserver", "primitives", "referencing", "threads"]
