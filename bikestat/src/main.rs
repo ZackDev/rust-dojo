@@ -7,8 +7,8 @@ const DFILE: &str = "/home/zack/biketime.csv";
 
 fn main() {
     let mut times: Vec<u32> = Vec::new();
-    let mut min_dist: u32 = u32::MAX;
-    let mut max_dist: u32 = u32::MIN;
+    let mut min_time: u32 = u32::MAX;
+    let mut max_time: u32 = u32::MIN;
 
     for line in read_to_string(DFILE).unwrap().lines() {
         let data: Vec<&str> = line.split(",").collect();
@@ -17,19 +17,19 @@ fn main() {
     }
     
     for i in 0..times.len() {
-        max_dist = max(max_dist, times[i]);
-        min_dist = min(min_dist, times[i]);
+        max_time = max(max_time, times[i]);
+        min_time = min(min_time, times[i]);
     }
 
-    let sum_dist: u32 = times.iter().sum();
+    let sum_time: u32 = times.iter().sum();
     let num_rides: u32 = times.len() as u32;
 
-    let average: u32 = sum_dist / num_rides;
+    let average: f64 = (sum_time / num_rides).into();
 
-    println!("total dist:{sum_dist}");
-    println!("average dist:{average}");
-    println!("min dist:{min_dist}");
-    println!("max dist:{max_dist}");
+    println!("total time:{sum_time}");
+    println!("average time:{average}");
+    println!("min time:{min_time}");
+    println!("max time:{max_time}");
     println!("num rides:{num_rides}");
 
 }
