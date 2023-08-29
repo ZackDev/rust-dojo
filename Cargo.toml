@@ -1,2 +1,3 @@
 [workspace]
 members = ["arrays", "bikestat", "biketime", "fileinfo", "input", "mpsc", "mutex", "networkclient", "networkserver", "primitives", "referencing", "threads"]
+resolver = "2"
