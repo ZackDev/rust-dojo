@@ -22,9 +22,9 @@ fn main() {
     line.push_str(&current_time.month().to_string());
     line.push_str("-");
     line.push_str(&current_time.day().to_string());
-    line.push_str(", ");
+    line.push_str(",");
     line.push_str(args.time.to_string().as_ref());
-    line.push_str("m\n");
+    line.push_str("\n");
     match OpenOptions::new().write(true).create(true).append(true).open(DFILE) {
         Ok(mut file) => {
             file.write_all(line.as_ref()).unwrap();
