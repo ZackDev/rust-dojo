@@ -45,6 +45,7 @@ fn main() {
     }
 }
 
+#[allow(dead_code)]
 fn read_and_print(file_path: String) -> Result<(), std::io::Error> {
     let mut file = File::open(file_path)?;
     let mut content = String::new();
