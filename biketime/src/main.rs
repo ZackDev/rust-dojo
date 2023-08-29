@@ -29,7 +29,7 @@ fn main() {
         Ok(mut file) => {
             file.write_all(line.as_ref()).unwrap();
         }
-        Err(e) => {
+        Err(_e) => {
 
         }
     }
