@@ -1,16 +1,15 @@
 use std::fs::read_to_string;
 use std::cmp::max;
 use std::cmp::min;
-
-const DFILE: &str = "/home/zack/biketime.csv";
-
+use std::path::Path;
 
 fn main() {
+    let dfile: &Path = Path::new("/home/zack/biketime.csv");
     let mut times: Vec<u32> = Vec::new();
     let mut min_time: u32 = u32::MAX;
     let mut max_time: u32 = u32::MIN;
 
-    for line in read_to_string(DFILE).unwrap().lines() {
+    for line in read_to_string(dfile).unwrap().lines() {
         let data: Vec<&str> = line.split(",").collect();
         let time: u32 = data[1].trim().parse().unwrap();
         times.push(time);
