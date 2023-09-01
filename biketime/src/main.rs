@@ -23,7 +23,7 @@ fn main() {
     line.push_str("-");
     line.push_str(&current_time.day().to_string());
     line.push_str(",");
-    line.push_str(args.time.to_string().as_ref());
+    line.push_str(&args.time.to_string());
     line.push_str("\n");
     match OpenOptions::new().write(true).create(true).append(true).open(dfile) {
         Ok(mut file) => {
