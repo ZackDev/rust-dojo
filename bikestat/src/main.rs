@@ -23,10 +23,10 @@ fn main() {
     let sum_time: u32 = times.iter().sum();
     let num_rides: u32 = times.len() as u32;
 
-    let average: f64 = (sum_time / num_rides).into();
+    let average: f64 = sum_time as f64 / num_rides as f64;
 
     println!("total time:{sum_time}");
-    println!("average time:{average}");
+    println!("average time:{:.1}", average);
     println!("min time:{min_time}");
     println!("max time:{max_time}");
     println!("num rides:{num_rides}");
