@@ -5,13 +5,16 @@ use std::path::Path;
 
 fn main() {
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
+    let mut dates: Vec<String> = Vec::new();
     let mut times: Vec<u32> = Vec::new();
     let mut min_time: u32 = u32::MAX;
     let mut max_time: u32 = u32::MIN;
 
     for line in read_to_string(dfile).unwrap().lines() {
         let data: Vec<&str> = line.split(",").collect();
+        let date: String = data[0].trim().parse().unwrap();
         let time: u32 = data[1].trim().parse().unwrap();
+        dates.push(date);
         times.push(time);
     }
     
@@ -25,11 +28,13 @@ fn main() {
 
     let average: f64 = sum_time as f64 / num_rides as f64;
 
-    println!("total time:{sum_time}");
-    println!("average time:{:.1}", average);
-    println!("min time:{min_time}");
-    println!("max time:{max_time}");
-    println!("num rides:{num_rides}");
+    println!("first run:\t{}", dates[0]);
+    println!("last run:\t{}", dates[dates.len()-1]);
+    println!("total time:\t{sum_time}");
+    println!("average time:\t{:.1}", average);
+    println!("min time:\t{min_time}");
+    println!("max time:\t{max_time}");
+    println!("num rides:\t{num_rides}");
 
 }
 
