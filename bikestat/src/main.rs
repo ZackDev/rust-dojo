@@ -1,7 +1,6 @@
 use std::fs::read_to_string;
 use std::cmp::max;
 use std::cmp::min;
-use std::ops::Add;
 use std::path::Path;
 use std::str::FromStr;
 use chrono::DateTime;
@@ -41,24 +40,38 @@ fn main() {
 
     let mut frequency: Vec<usize> = Vec::new();
 
-    let mut date_iter = dates[0];
+    let mut date_iter: DateTime<Utc> = dates[0];
 
-    while date_iter <= dates[dates.len()-1] {
+    while date_iter <= dates[dates.len() -1] {
         frequency.push(dates.iter().filter(|&x| *x == date_iter).count());
         date_iter = date_iter + Duration::days(1);
     }
     
+    let mut freq_str: String = String::new();
+
+    for f in frequency {
+        if f == 0 {
+            freq_str.push(' ');
+        }
+        else if f == 1 {
+            freq_str.push('.');
+        }
+        else if f == 2 {
+            freq_str.push(':');
+        }
+        else if f > 2 {
+            freq_str.push('|');
+        }
+    }
     
-
-    println!("{:#?}", frequency);
-
-    println!("first run:\t{}", dates[0]);
-    println!("last run:\t{}", dates[dates.len()-1]);
+    println!("first run:\t{}-{}-{}", dates[0].year(), dates[0].month(), dates[0].day());
+    println!("last run:\t{}-{}-{}", dates[dates.len()-1].year(), dates[dates.len()-1].month(), dates[dates.len()-1].day());
     println!("total time:\t{sum_time}");
     println!("average time:\t{:.1}", average);
     println!("min time:\t{min_time}");
     println!("max time:\t{max_time}");
     println!("num rides:\t{num_rides}");
+    println!("frequency\t{}", freq_str);
 
 }
 
