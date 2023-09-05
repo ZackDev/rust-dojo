@@ -1,6 +1,6 @@
 # How to use cargo
 
-build the debug and release target:
+clean, then build the debug and release targets:
 ```
 cargo build && cargo build --release
 ```
