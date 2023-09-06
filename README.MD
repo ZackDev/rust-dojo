@@ -2,8 +2,9 @@
 
 clean, then build the debug and release targets:
 ```
-cargo build && cargo build --release
+cargo clean && cargo build && cargo build --release
 ```
+or call the `compile.sh` script which includes the commands from above. 
 
 get version info about a crate from crates.io:
 ```
