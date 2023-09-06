@@ -35,34 +35,8 @@ fn main() {
 
     let sum_time: u32 = times.iter().sum();
     let num_rides: u32 = times.len() as u32;
-
-    let average: f64 = sum_time as f64 / num_rides as f64;
-
-    let mut frequency: Vec<usize> = Vec::new();
-
-    let mut date_iter: DateTime<Utc> = dates[0];
-
-    while date_iter <= dates[dates.len() -1] {
-        frequency.push(dates.iter().filter(|&x| *x == date_iter).count());
-        date_iter = date_iter + Duration::days(1);
-    }
-    
-    let mut freq_str: String = String::new();
-
-    for f in frequency {
-        if f == 0 {
-            freq_str.push(' ');
-        }
-        else if f == 1 {
-            freq_str.push('.');
-        }
-        else if f == 2 {
-            freq_str.push(':');
-        }
-        else if f > 2 {
-            freq_str.push('|');
-        }
-    }
+    let average: f64 = sum_time as f64 / num_rides as f64;   
+    let freq_str: String = frequency_to_string(dates.clone());
     
     println!("first run:\t{}-{}-{}", dates[0].year(), dates[0].month(), dates[0].day());
     println!("last run:\t{}-{}-{}", dates[dates.len()-1].year(), dates[dates.len()-1].month(), dates[dates.len()-1].day());
@@ -71,7 +45,30 @@ fn main() {
     println!("min time:\t{min_time}");
     println!("max time:\t{max_time}");
     println!("num rides:\t{num_rides}");
-    println!("frequency\t{}", freq_str);
+    println!("frequency:\t{}", freq_str);
 
 }
 
+fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
+    let mut frequency_str = String::new();
+    let mut date_iter = dates[0];
+    let current_date = Utc::now();
+    let current_ymd_date = Utc.with_ymd_and_hms(current_date.year(), current_date.month(), current_date.day(), 0, 0, 0).unwrap();
+    while date_iter <= current_ymd_date {
+        let frequency = dates.iter().filter(|&x| *x == date_iter).count();
+        if frequency == 0 {
+            frequency_str.push('_');
+        }
+        else if frequency == 1 {
+            frequency_str.push('.');
+        }
+        else if frequency == 2 {
+            frequency_str.push(':');
+        }
+        else if frequency > 2 {
+            frequency_str.push('|');
+        }
+        date_iter = date_iter + Duration::days(1);
+    }
+    return frequency_str;
+}
