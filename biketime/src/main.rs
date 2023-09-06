@@ -2,6 +2,7 @@ use clap::Parser;
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::path::Path;
+use std::process::exit;
 use chrono::Datelike;
 use chrono::DateTime;
 use chrono::Utc;
@@ -29,8 +30,9 @@ fn main() {
         Ok(mut file) => {
             file.write_all(line.as_ref()).unwrap();
         }
-        Err(_e) => {
-
+        Err(e) => {
+            println!("{e}");
+            exit(0);
         }
     }
 }
