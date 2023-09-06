@@ -2,6 +2,7 @@ use std::fs::read_to_string;
 use std::cmp::max;
 use std::cmp::min;
 use std::path::Path;
+use std::process::exit;
 use std::str::FromStr;
 use chrono::DateTime;
 use chrono::Duration;
@@ -17,13 +18,59 @@ fn main() {
 
     for line in read_to_string(dfile).unwrap().lines() {
         let data: Vec<&str> = line.split(",").collect();
-        let time: u32 = data[1].trim().parse().unwrap();
-        let date_str: String = data[0].trim().parse().unwrap();
+        let time: u32;
+        let date_str: String;
+        let year: i32;
+        let month: u32;
+        let day: u32;
+        let date: DateTime<Utc>;
+        match data[1].trim().parse() {
+            Ok(v) => {
+                time = v;
+            }
+            Err(e) => {
+                println!("{e}");
+                exit(0);
+            }
+        }
+        match data[0].trim().parse() {
+            Ok(v) => {
+                date_str = v;
+            }
+            Err(e) => {
+                println!("{e}");
+                exit(0);
+            }
+        }
         let date_split: Vec<&str> = date_str.split("-").collect();
-        let year: i32 = FromStr::from_str(date_split[0]).unwrap();
-        let month: u32 = FromStr::from_str(date_split[1]).unwrap();
-        let day: u32 = FromStr::from_str(date_split[2]).unwrap();
-        let date = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
+        match FromStr::from_str(date_split[0]) {
+            Ok(v) => {
+                year = v;
+            }
+            Err(e) => {
+                println!("{e}");
+                exit(0);
+            }
+        }
+        match FromStr::from_str(date_split[1]) {
+            Ok(v) => {
+                month = v;
+            }
+            Err(e) => {
+                println!("{e}");
+                exit(0);
+            }
+        }
+        match FromStr::from_str(date_split[2]) {
+            Ok(v) => {
+                day = v;
+            }
+            Err(e) => {
+                println!("{e}");
+                exit(0);
+            }
+        }
+        date = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
         dates.push(date);
         times.push(time);
     }
