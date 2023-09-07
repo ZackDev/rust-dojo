@@ -9,6 +9,7 @@ use std::process::exit;
 
 #[derive(Parser, Debug)]
 struct Args {
+    /// the duration of the ride in minutes
     #[arg(short, long)]
     time: u32,
 }
