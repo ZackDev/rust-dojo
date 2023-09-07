@@ -17,6 +17,12 @@ fn main() {
     let mut max_time: u32 = u32::MIN;
 
     for line in read_to_string(dfile).unwrap().lines() {
+        /*
+        parse the individual fields of the line
+        <year>-<month>-<day>,<time> into
+        DateTime<Utc> and u32 and
+        push them to the corresponding Vecs dates and times
+         */
         let data: Vec<&str> = line.split(",").collect();
         let time: u32;
         let date_str: String;
@@ -76,6 +82,10 @@ fn main() {
     }
     
     for i in 0..times.len() {
+        /*
+        iterate over Vec times and determine max and min cycling times
+        initial compare vs u32::MIN and u32::MAX
+         */
         max_time = max(max_time, times[i]);
         min_time = min(min_time, times[i]);
     }
@@ -85,6 +95,9 @@ fn main() {
     let average: f64 = sum_time as f64 / num_rides as f64;   
     let freq_str: String = frequency_to_string(dates.clone());
     
+    /*
+    print stats to stdout
+     */
     println!("first run:\t{}-{}-{}", dates[0].year(), dates[0].month(), dates[0].day());
     println!("last run:\t{}-{}-{}", dates[dates.len()-1].year(), dates[dates.len()-1].month(), dates[dates.len()-1].day());
     println!("total time:\t{sum_time}");
@@ -97,6 +110,10 @@ fn main() {
 }
 
 fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
+    /*
+    determine cycling trips per day
+    |first entry|--->|last entry|--->|current date|
+     */
     let mut frequency_str = String::new();
     let mut date_iter = dates[0];
     let current_date = Utc::now();
