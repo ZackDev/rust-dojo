@@ -33,16 +33,14 @@ fn main() {
         .append(true)
         .open(dfile)
     {
-        Ok(mut file) => {
-            match file.write_all(line.as_ref()) {
-                Ok(()) => {
-                    println!("'{}' written.", line.trim());
-                }
-                Err(err) => {
-                    println!("{err}");
-                }
+        Ok(mut file) => match file.write_all(line.as_ref()) {
+            Ok(()) => {
+                println!("'{}' written.", line.trim());
             }
-        }
+            Err(err) => {
+                println!("{err}");
+            }
+        },
         Err(e) => {
             println!("{e}");
             exit(0);
