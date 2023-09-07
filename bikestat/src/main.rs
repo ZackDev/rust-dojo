@@ -106,13 +106,17 @@ fn main() {
     println!("max time:\t{max_time}");
     println!("num rides:\t{num_rides}");
     println!("frequency:\t{}", freq_str);
-
 }
 
 fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
     /*
-    determine cycling trips per day
+    determine cycling trips per day over
     |first entry|--->|last entry|--->|current date|
+    one character per day
+    _   no trip
+    .   one trip
+    :   two trips
+    |   three+ trips
      */
     let mut frequency_str = String::new();
     let mut date_iter = dates[0];
