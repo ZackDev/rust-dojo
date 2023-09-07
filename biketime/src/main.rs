@@ -1,16 +1,16 @@
+use chrono::DateTime;
+use chrono::Datelike;
+use chrono::Utc;
 use clap::Parser;
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::path::Path;
 use std::process::exit;
-use chrono::Datelike;
-use chrono::DateTime;
-use chrono::Utc;
 
 #[derive(Parser, Debug)]
 struct Args {
     #[arg(short, long)]
-    time: u32
+    time: u32,
 }
 
 fn main() {
@@ -26,7 +26,12 @@ fn main() {
     line.push_str(",");
     line.push_str(&args.time.to_string());
     line.push_str("\n");
-    match OpenOptions::new().write(true).create(true).append(true).open(dfile) {
+    match OpenOptions::new()
+        .write(true)
+        .create(true)
+        .append(true)
+        .open(dfile)
+    {
         Ok(mut file) => {
             file.write_all(line.as_ref()).unwrap();
         }
