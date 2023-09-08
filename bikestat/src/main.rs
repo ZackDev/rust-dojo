@@ -49,6 +49,10 @@ fn main() {
             }
         }
         let date_split: Vec<&str> = date_str.split("-").collect();
+        if date_split.len() != 3 {
+            println!("incorrect date format.");
+            exit(0);
+        }
         match FromStr::from_str(date_split[0]) {
             Ok(v) => {
                 year = v;
