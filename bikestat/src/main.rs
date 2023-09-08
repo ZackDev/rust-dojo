@@ -125,8 +125,7 @@ fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
     one character per day
     _   no trip
     .   one trip
-    :   two trips
-    |   three+ trips
+    :   two+ trips
      */
     let mut frequency_str = String::new();
     let mut date_iter = dates[0];
@@ -147,10 +146,8 @@ fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
             frequency_str.push('_');
         } else if frequency == 1 {
             frequency_str.push('.');
-        } else if frequency == 2 {
+        } else if frequency >= 2 {
             frequency_str.push(':');
-        } else if frequency > 2 {
-            frequency_str.push('|');
         }
         date_iter = date_iter + Duration::days(1);
     }
