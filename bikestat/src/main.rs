@@ -56,6 +56,10 @@ fn main() {
         match FromStr::from_str(date_split[0]) {
             Ok(v) => {
                 year = v;
+                if year < 1817 {
+                    println!("incorrect year. the first bike was invented in 1817");
+                    exit(0);
+                }
             }
             Err(e) => {
                 println!("{e}");
@@ -65,6 +69,10 @@ fn main() {
         match FromStr::from_str(date_split[1]) {
             Ok(v) => {
                 month = v;
+                if month < 1 || month > 12 {
+                    println!("incorrect value for month.");
+                    exit(0);
+                }
             }
             Err(e) => {
                 println!("{e}");
@@ -74,6 +82,10 @@ fn main() {
         match FromStr::from_str(date_split[2]) {
             Ok(v) => {
                 day = v;
+                if day < 1 || day > 31 {
+                    println!("incorrect value for day.");
+                    exit(0);
+                }
             }
             Err(e) => {
                 println!("{e}");
