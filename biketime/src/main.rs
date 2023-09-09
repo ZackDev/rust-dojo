@@ -15,8 +15,8 @@ struct Args {
 }
 
 fn main() {
-    let args = Args::parse();
-    if args.time < 1 {
+    let time = Args::parse().time;
+    if time < 1 {
         println!("parameter time must be > 0");
         exit(0);
     }
@@ -31,7 +31,7 @@ fn main() {
     line.push_str("-");
     line.push_str(&current_time.day().to_string());
     line.push_str(",");
-    line.push_str(&args.time.to_string());
+    line.push_str(&time.to_string());
     line.push_str("\n");
 
     match OpenOptions::new()
