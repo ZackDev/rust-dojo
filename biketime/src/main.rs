@@ -46,6 +46,7 @@ fn main() {
             }
             Err(err) => {
                 println!("{err}");
+                exit(0);
             }
         },
         Err(e) => {
