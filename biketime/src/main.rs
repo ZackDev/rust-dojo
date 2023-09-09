@@ -16,13 +16,15 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    let dfile: &Path = Path::new("/home/zack/biketime.csv");
-    let current_time: DateTime<Utc> = Utc::now();
-    let mut line = String::new();
     if args.time < 1 {
         println!("parameter time must be > 0");
         exit(0);
     }
+
+    let dfile: &Path = Path::new("/home/zack/biketime.csv");
+    let current_time: DateTime<Utc> = Utc::now();
+
+    let mut line = String::new();
     line.push_str(&current_time.year().to_string());
     line.push_str("-");
     line.push_str(&current_time.month().to_string());
@@ -31,6 +33,7 @@ fn main() {
     line.push_str(",");
     line.push_str(&args.time.to_string());
     line.push_str("\n");
+
     match OpenOptions::new()
         .write(true)
         .create(true)
