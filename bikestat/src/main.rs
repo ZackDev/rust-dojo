@@ -13,15 +13,15 @@ fn main() {
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
     let current_date = Utc::now();
     let current_ymd_date = Utc
-    .with_ymd_and_hms(
-        current_date.year(),
-        current_date.month(),
-        current_date.day(),
-        0,
-        0,
-        0,
-    )
-    .unwrap();
+        .with_ymd_and_hms(
+            current_date.year(),
+            current_date.month(),
+            current_date.day(),
+            0,
+            0,
+            0,
+        )
+        .unwrap();
     let mut dates: Vec<DateTime<Utc>> = Vec::new();
     let mut times: Vec<u32> = Vec::new();
     let mut min_time: u32 = u32::MAX;
@@ -35,12 +35,8 @@ fn main() {
         push them to the corresponding Vecs dates and times
          */
         let data: Vec<&str> = line.split(",").collect();
+
         let time: u32;
-        let date_str: String;
-        let year: i32;
-        let month: u32;
-        let day: u32;
-        let date: DateTime<Utc>;
         match data[1].trim().parse() {
             Ok(v) => {
                 time = v;
@@ -50,6 +46,8 @@ fn main() {
                 exit(0);
             }
         }
+
+        let date_str: String;
         match data[0].trim().parse() {
             Ok(v) => {
                 date_str = v;
@@ -59,11 +57,14 @@ fn main() {
                 exit(0);
             }
         }
+
         let date_split: Vec<&str> = date_str.split("-").collect();
         if date_split.len() != 3 {
             println!("incorrect date format.");
             exit(0);
         }
+
+        let year: i32;
         match FromStr::from_str(date_split[0]) {
             Ok(v) => {
                 year = v;
@@ -77,6 +78,8 @@ fn main() {
                 exit(0);
             }
         }
+
+        let month: u32;
         match FromStr::from_str(date_split[1]) {
             Ok(v) => {
                 month = v;
@@ -90,6 +93,8 @@ fn main() {
                 exit(0);
             }
         }
+
+        let day: u32;
         match FromStr::from_str(date_split[2]) {
             Ok(v) => {
                 day = v;
@@ -103,7 +108,9 @@ fn main() {
                 exit(0);
             }
         }
-        date = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
+
+        let date: DateTime<Utc> = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
+
         dates.push(date);
         times.push(time);
     }
