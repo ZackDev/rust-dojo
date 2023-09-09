@@ -143,10 +143,10 @@ fn main() {
         dates[dates.len() - 1].month(),
         dates[dates.len() - 1].day()
     );
-    println!("total time:\t{sum_time}");
-    println!("average time:\t{:.1}", average);
-    println!("min time:\t{min_time}");
-    println!("max time:\t{max_time}");
+    println!("total time:\t{sum_time}m");
+    println!("average time:\t{:.1}m", average);
+    println!("min time:\t{min_time}m");
+    println!("max time:\t{max_time}m");
     println!("num rides:\t{num_rides}");
     println!("frequency:\t{}", freq_str);
 }
