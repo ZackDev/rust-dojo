@@ -11,6 +11,17 @@ use std::str::FromStr;
 
 fn main() {
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
+    let current_date = Utc::now();
+    let current_ymd_date = Utc
+    .with_ymd_and_hms(
+        current_date.year(),
+        current_date.month(),
+        current_date.day(),
+        0,
+        0,
+        0,
+    )
+    .unwrap();
     let mut dates: Vec<DateTime<Utc>> = Vec::new();
     let mut times: Vec<u32> = Vec::new();
     let mut min_time: u32 = u32::MAX;
@@ -109,11 +120,17 @@ fn main() {
     let sum_time: u32 = times.iter().sum();
     let num_rides: u32 = times.len() as u32;
     let average: f64 = sum_time as f64 / num_rides as f64;
-    let freq_str: String = frequency_to_string(dates.clone());
+    let freq_str: String = frequency_to_string(dates.clone(), current_ymd_date);
 
     /*
     print stats to stdout
      */
+    println!(
+        "current date:\t{}-{}-{}",
+        current_ymd_date.year(),
+        current_ymd_date.month(),
+        current_ymd_date.day()
+    );
     println!(
         "first run:\t{}-{}-{}",
         dates[0].year(),
@@ -134,7 +151,7 @@ fn main() {
     println!("frequency:\t{}", freq_str);
 }
 
-fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
+fn frequency_to_string(dates: Vec<DateTime<Utc>>, current_date: DateTime<Utc>) -> String {
     /*
     determine cycling trips per day over
     |first entry|--->|last entry|--->|current date|
@@ -145,18 +162,7 @@ fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
      */
     let mut frequency_str = String::new();
     let mut date_iter = dates[0];
-    let current_date = Utc::now();
-    let current_ymd_date = Utc
-        .with_ymd_and_hms(
-            current_date.year(),
-            current_date.month(),
-            current_date.day(),
-            0,
-            0,
-            0,
-        )
-        .unwrap();
-    while date_iter <= current_ymd_date {
+    while date_iter <= current_date {
         let frequency = dates.iter().filter(|&x| *x == date_iter).count();
         if frequency == 0 {
             frequency_str.push('_');
