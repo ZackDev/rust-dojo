@@ -32,6 +32,9 @@ fn main() {
         let is_matched = Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
 
         if is_matched == false {
+            /*
+            go directly to the next line if regex doesn't match
+            */
             continue
         }
 
