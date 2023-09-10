@@ -31,16 +31,11 @@ fn main() {
         regex and parsing errors result in starting the next loop
          */
 
-        //Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
-        /*
-        matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer
-         */
+        // matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer
+
         let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
         if is_match == false {
-            /*
-            go directly to the next line if regex doesn't match
-            */
             continue
         }
 
