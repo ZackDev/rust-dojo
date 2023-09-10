@@ -23,15 +23,17 @@ fn main() {
     }
     for line in file_content.lines() {
         /*
-        parse the individual fields of the line
-        <year>-<month>-<day>,<time> into
-        DateTime<Utc> and u32 and
+        regex the line
+
+        parse the individual fields of the line <year>-<month>-<day>,<time> into DateTime<Utc> and u32 and
         push them to the corresponding Vecs dates and times
+        
+        regex and parsing errors result in starting the next loop
          */
 
         //Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
         /*
-        matches lines like [0-9999]-[1-12]-[1-31],[1-x]
+        matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer
          */
         let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
