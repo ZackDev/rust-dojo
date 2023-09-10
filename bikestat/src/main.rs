@@ -2,6 +2,7 @@ use chrono::prelude::*;
 use chrono::DateTime;
 use chrono::Duration;
 use chrono::Utc;
+use regex::Regex;
 use std::cmp::max;
 use std::cmp::min;
 use std::fs::read_to_string;
@@ -27,11 +28,14 @@ fn main() {
         DateTime<Utc> and u32 and
         push them to the corresponding Vecs dates and times
          */
-        let data: Vec<&str> = line.split(",").collect();
 
-        if data.len() != 2 {
+        let is_matched = Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
+
+        if is_matched == false {
             continue
         }
+
+        let data: Vec<&str> = line.split(",").collect();
 
         let time: u32;
         match data[1].trim().parse() {
@@ -56,9 +60,6 @@ fn main() {
         }
 
         let date_split: Vec<&str> = date_str.split("-").collect();
-        if date_split.len() != 3 {
-            continue
-        }
 
         let year: i32;
         match FromStr::from_str(date_split[0]) {
