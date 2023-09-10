@@ -10,23 +10,10 @@ use std::process::exit;
 use std::str::FromStr;
 
 fn main() {
-    let dfile: &Path = Path::new("/home/zack/biketime.csv");
-    let current_date = Utc::now();
-    let current_ymd_date = Utc
-        .with_ymd_and_hms(
-            current_date.year(),
-            current_date.month(),
-            current_date.day(),
-            0,
-            0,
-            0,
-        )
-        .unwrap();
     let mut dates: Vec<DateTime<Utc>> = Vec::new();
     let mut times: Vec<u32> = Vec::new();
-    let mut min_time: u32 = u32::MAX;
-    let mut max_time: u32 = u32::MIN;
 
+    let dfile: &Path = Path::new("/home/zack/biketime.csv");
     for line in read_to_string(dfile).unwrap().lines() {
         /*
         parse the individual fields of the line
@@ -115,6 +102,8 @@ fn main() {
         times.push(time);
     }
 
+    let mut min_time: u32 = u32::MAX;
+    let mut max_time: u32 = u32::MIN;
     for i in 0..times.len() {
         /*
         iterate over Vec times and determine max and min cycling times
@@ -127,6 +116,18 @@ fn main() {
     let sum_time: u32 = times.iter().sum();
     let num_rides: u32 = times.len() as u32;
     let average: f64 = sum_time as f64 / num_rides as f64;
+
+    let current_date = Utc::now();
+    let current_ymd_date = Utc
+        .with_ymd_and_hms(
+            current_date.year(),
+            current_date.month(),
+            current_date.day(),
+            0,
+            0,
+            0,
+        )
+        .unwrap();
     let freq_str: String = frequency_to_string(dates.clone(), current_ymd_date);
 
     /*
