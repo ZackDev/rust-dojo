@@ -29,9 +29,10 @@ fn main() {
         push them to the corresponding Vecs dates and times
          */
 
-        let is_matched = Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
+        //Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
+        let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),\d+$").unwrap().is_match(line);
 
-        if is_matched == false {
+        if is_match == false {
             /*
             go directly to the next line if regex doesn't match
             */
