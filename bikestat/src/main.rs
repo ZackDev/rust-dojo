@@ -30,7 +30,10 @@ fn main() {
          */
 
         //Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
-        let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),\d+$").unwrap().is_match(line);
+        /*
+        matches lines like [0-9999]-[1-12]-[1-31],<t>
+         */
+        let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
         if is_match == false {
             /*
