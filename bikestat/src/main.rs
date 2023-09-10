@@ -14,7 +14,13 @@ fn main() {
     let mut times: Vec<u32> = Vec::new();
 
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
-    for line in read_to_string(dfile).unwrap().lines() {
+    
+    let file_content = read_to_string(dfile).unwrap();
+    if file_content.len() < 1 {
+        println!("no data found in biketime.csv");
+        exit(0);
+    }
+    for line in file_content.lines() {
         /*
         parse the individual fields of the line
         <year>-<month>-<day>,<time> into
@@ -22,6 +28,10 @@ fn main() {
         push them to the corresponding Vecs dates and times
          */
         let data: Vec<&str> = line.split(",").collect();
+
+        if data.len() != 2 {
+            continue
+        }
 
         let time: u32;
         match data[1].trim().parse() {
@@ -47,8 +57,7 @@ fn main() {
 
         let date_split: Vec<&str> = date_str.split("-").collect();
         if date_split.len() != 3 {
-            println!("incorrect date format.");
-            exit(0);
+            continue
         }
 
         let year: i32;
