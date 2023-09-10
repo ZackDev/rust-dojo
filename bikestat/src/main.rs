@@ -31,7 +31,7 @@ fn main() {
 
         //Regex::new(r"^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2},\d+$").unwrap().is_match(line);
         /*
-        matches lines like [0-9999]-[1-12]-[1-31],<t>
+        matches lines like [0-9999]-[1-12]-[1-31],[1-x]
          */
         let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
@@ -49,9 +49,8 @@ fn main() {
             Ok(v) => {
                 time = v;
             }
-            Err(e) => {
-                println!("{e}");
-                exit(0);
+            Err(_) => {
+                continue
             }
         }
 
@@ -60,9 +59,8 @@ fn main() {
             Ok(v) => {
                 date_str = v;
             }
-            Err(e) => {
-                println!("{e}");
-                exit(0);
+            Err(_) => {
+                continue
             }
         }
 
@@ -73,9 +71,8 @@ fn main() {
             Ok(v) => {
                 year = v;
             }
-            Err(e) => {
-                println!("{e}");
-                exit(0);
+            Err(_) => {
+                continue
             }
         }
 
@@ -84,9 +81,8 @@ fn main() {
             Ok(v) => {
                 month = v;
             }
-            Err(e) => {
-                println!("{e}");
-                exit(0);
+            Err(_) => {
+                continue
             }
         }
 
@@ -95,9 +91,8 @@ fn main() {
             Ok(v) => {
                 day = v;
             }
-            Err(e) => {
-                println!("{e}");
-                exit(0);
+            Err(_) => {
+                continue
             }
         }
 
