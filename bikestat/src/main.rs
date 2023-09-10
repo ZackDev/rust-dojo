@@ -32,7 +32,6 @@ fn main() {
          */
 
         // matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer
-
         let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
         if is_match == false {
