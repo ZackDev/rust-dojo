@@ -65,7 +65,7 @@ fn main() {
 
         let date_split: Vec<&str> = date_str.split("-").collect();
 
-        let year: i32;
+        let year: u16;
         match FromStr::from_str(date_split[0]) {
             Ok(v) => {
                 year = v;
@@ -80,7 +80,7 @@ fn main() {
             }
         }
 
-        let month: u32;
+        let month: u8;
         match FromStr::from_str(date_split[1]) {
             Ok(v) => {
                 month = v;
@@ -95,7 +95,7 @@ fn main() {
             }
         }
 
-        let day: u32;
+        let day: u8;
         match FromStr::from_str(date_split[2]) {
             Ok(v) => {
                 day = v;
@@ -110,7 +110,7 @@ fn main() {
             }
         }
 
-        let date: DateTime<Utc> = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
+        let date: DateTime<Utc> = Utc.with_ymd_and_hms(year as i32, month as u32, day as u32, 0, 0, 0).unwrap();
 
         dates.push(date);
         times.push(time);
@@ -129,7 +129,7 @@ fn main() {
 
     let sum_time: u32 = times.iter().sum();
     let num_rides: u32 = times.len() as u32;
-    let average: f64 = sum_time as f64 / num_rides as f64;
+    let average: f32 = sum_time as f32 / num_rides as f32;
 
     let current_date = Utc::now();
     let current_ymd_date = Utc
@@ -182,8 +182,8 @@ fn frequency_to_string(dates: Vec<DateTime<Utc>>, current_date: DateTime<Utc>) -
     .   one trip
     :   two+ trips
      */
-    let mut frequency_str = String::new();
-    let mut date_iter = dates[0];
+    let mut frequency_str: String = String::new();
+    let mut date_iter: DateTime<Utc> = dates[0];
     while date_iter <= current_date {
         let frequency = dates.iter().filter(|&x| *x == date_iter).count();
         if frequency == 0 {
