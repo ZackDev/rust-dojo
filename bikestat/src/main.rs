@@ -124,7 +124,7 @@ fn main() {
             0,
         )
         .unwrap();
-    let freq_str: String = frequency_to_string(dates.clone());
+    let freq_str: String = dates_to_frequency_str(dates.clone());
 
     /*
     print stats to stdout
@@ -155,7 +155,7 @@ fn main() {
     println!("frequency:\t{}", freq_str);
 }
 
-fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
+fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
     /*
     determine cycling trips per day over
     |first entry|--->|last entry|--->|current date|
