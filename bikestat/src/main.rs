@@ -124,7 +124,7 @@ fn main() {
             0,
         )
         .unwrap();
-    let freq_str: String = frequency_to_string(dates.clone(), current_ymd_date);
+    let freq_str: String = frequency_to_string(dates.clone());
 
     /*
     print stats to stdout
@@ -155,7 +155,7 @@ fn main() {
     println!("frequency:\t{}", freq_str);
 }
 
-fn frequency_to_string(dates: Vec<DateTime<Utc>>, current_date: DateTime<Utc>) -> String {
+fn frequency_to_string(dates: Vec<DateTime<Utc>>) -> String {
     /*
     determine cycling trips per day over
     |first entry|--->|last entry|--->|current date|
@@ -166,7 +166,9 @@ fn frequency_to_string(dates: Vec<DateTime<Utc>>, current_date: DateTime<Utc>) -
      */
     let mut f_str: String = String::new();
     let mut d: DateTime<Utc> = dates[0];
-    while d <= current_date {
+    let c: DateTime<Utc> = Utc::now();
+    let n: Duration = Duration::days(1);
+    while d <= c {
         let f = dates.iter().filter(|&x| *x == d).count();
         if f == 0 {
             f_str.push('_');
@@ -175,7 +177,7 @@ fn frequency_to_string(dates: Vec<DateTime<Utc>>, current_date: DateTime<Utc>) -
         } else if f >= 2 {
             f_str.push(':');
         }
-        d = d + Duration::days(1);
+        d += n;
     }
     return f_str;
 }
