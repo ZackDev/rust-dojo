@@ -164,18 +164,18 @@ fn frequency_to_string(dates: Vec<DateTime<Utc>>, current_date: DateTime<Utc>) -
     .   one trip
     :   two+ trips
      */
-    let mut frequency_str: String = String::new();
-    let mut date_iter: DateTime<Utc> = dates[0];
-    while date_iter <= current_date {
-        let frequency = dates.iter().filter(|&x| *x == date_iter).count();
-        if frequency == 0 {
-            frequency_str.push('_');
-        } else if frequency == 1 {
-            frequency_str.push('.');
-        } else if frequency >= 2 {
-            frequency_str.push(':');
+    let mut f_str: String = String::new();
+    let mut d: DateTime<Utc> = dates[0];
+    while d <= current_date {
+        let f = dates.iter().filter(|&x| *x == d).count();
+        if f == 0 {
+            f_str.push('_');
+        } else if f == 1 {
+            f_str.push('.');
+        } else if f >= 2 {
+            f_str.push(':');
         }
-        date_iter = date_iter + Duration::days(1);
+        d = d + Duration::days(1);
     }
-    return frequency_str;
+    return f_str;
 }
