@@ -13,8 +13,9 @@ use std::str::FromStr;
 
 #[derive(Parser, Debug)]
 struct Args {
+    /// defines which stats to print (c1noa=rf)
     #[arg(short, long)]
-    options: Option<String>
+    options: Option<String>,
 }
 
 fn main() {
@@ -41,7 +42,7 @@ fn main() {
     let mut times: Vec<u32> = Vec::new();
 
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
-    
+
     let file_content = read_to_string(dfile).unwrap();
     if file_content.len() < 1 {
         println!("no data found in biketime.csv");
@@ -53,7 +54,7 @@ fn main() {
 
         parse the individual fields of the line <year>-<month>-<day>,<time> into DateTime<Utc> and u32 and
         push them to the corresponding Vecs dates and times
-        
+
         regex and parsing errors result in starting the next loop
          */
 
@@ -61,83 +62,108 @@ fn main() {
         let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
         if is_match == false {
-            continue
+            continue;
         }
 
         let data: Vec<&str> = line.split(",").collect();
 
-        let time: u32;
-        match data[1].trim().parse() {
-            Ok(v) => {
-                time = v;
+        if options.contains('o')
+            || options.contains('a')
+            || options.contains('=')
+            || options.contains('r')
+        {
+            let time: u32;
+            match data[1].trim().parse() {
+                Ok(v) => {
+                    time = v;
+                }
+                Err(_) => continue,
             }
-            Err(_) => {
-                continue
-            }
+            times.push(time);
         }
 
-        let date_str: String;
-        match data[0].trim().parse() {
-            Ok(v) => {
-                date_str = v;
+        if options.contains('1') || options.contains('n') || options.contains('f') {
+            let date_str: String;
+            match data[0].trim().parse() {
+                Ok(v) => {
+                    date_str = v;
+                }
+                Err(_) => continue,
             }
-            Err(_) => {
-                continue
+
+            let date_split: Vec<&str> = date_str.split("-").collect();
+
+            let year: u16;
+            match FromStr::from_str(date_split[0]) {
+                Ok(v) => {
+                    year = v;
+                }
+                Err(_) => continue,
             }
+
+            let month: u8;
+            match FromStr::from_str(date_split[1]) {
+                Ok(v) => {
+                    month = v;
+                }
+                Err(_) => continue,
+            }
+
+            let day: u8;
+            match FromStr::from_str(date_split[2]) {
+                Ok(v) => {
+                    day = v;
+                }
+                Err(_) => continue,
+            }
+
+            let date: DateTime<Utc> = Utc
+                .with_ymd_and_hms(year as i32, month as u32, day as u32, 0, 0, 0)
+                .unwrap();
+
+            dates.push(date);
         }
-
-        let date_split: Vec<&str> = date_str.split("-").collect();
-
-        let year: u16;
-        match FromStr::from_str(date_split[0]) {
-            Ok(v) => {
-                year = v;
-            }
-            Err(_) => {
-                continue
-            }
-        }
-
-        let month: u8;
-        match FromStr::from_str(date_split[1]) {
-            Ok(v) => {
-                month = v;
-            }
-            Err(_) => {
-                continue
-            }
-        }
-
-        let day: u8;
-        match FromStr::from_str(date_split[2]) {
-            Ok(v) => {
-                day = v;
-            }
-            Err(_) => {
-                continue
-            }
-        }
-
-        let date: DateTime<Utc> = Utc.with_ymd_and_hms(year as i32, month as u32, day as u32, 0, 0, 0).unwrap();
-
-        dates.push(date);
-        times.push(time);
     }
 
     let mut min_time: u32 = u32::MAX;
     let mut max_time: u32 = u32::MIN;
-    for i in 0..times.len() {
-        /*
-        iterate over Vec times and determine max and min cycling times
-        initial compare vs u32::MIN and u32::MAX
-         */
-        max_time = max(max_time, times[i]);
-        min_time = min(min_time, times[i]);
+    if options.contains('=') {
+        for i in 0..times.len() {
+            /*
+            iterate over Vec times and determine max and min cycling times
+            initial compare vs u32::MIN and u32::MAX
+             */
+            max_time = max(max_time, times[i]);
+            min_time = min(min_time, times[i]);
+        }
     }
 
-    let sum_time: u32 = times.iter().sum();
-    let num_rides: u32 = times.len() as u32;
-    let average: f32 = sum_time as f32 / num_rides as f32;
+
+
+    let sum_time: u32;
+    if options.contains('o') || options.contains('a') {
+        sum_time = times.iter().sum();
+    }
+    else {
+        sum_time = 0;
+    }
+
+    let num_rides: u32;
+    if options.contains('r') || options.contains('a') {
+        num_rides = times.len() as u32;
+    }
+    else {
+        num_rides = 0;
+    }
+
+    let average: f32;
+    if options.contains('a') {
+        average = sum_time as f32 / num_rides as f32;
+    }
+    else {
+        average = 0.0;
+    }
+
 
     let current_date = Utc::now();
     let current_ymd_date = Utc
@@ -150,12 +176,19 @@ fn main() {
             0,
         )
         .unwrap();
-    let freq_str: String = dates_to_frequency_str(dates.clone());
+
+    let freq_str: String;
+    if options.contains('f') {
+        freq_str = dates_to_frequency_str(dates.clone());
+    }
+    else {
+        freq_str = "".to_string();
+    }
 
     /*
     print stats to stdout
      */
-    
+
     for c in options.chars() {
         if c == 'c' {
             println!(
@@ -164,50 +197,33 @@ fn main() {
                 current_ymd_date.month(),
                 current_ymd_date.day()
             );
-        }
-    
-        if c == '1' {
+        } else if c == '1' {
             println!(
                 "first run:\t{}-{}-{}",
                 dates[0].year(),
                 dates[0].month(),
                 dates[0].day()
             );
-        }
-    
-        if c == 'n' {
+        } else if c == 'n' {
             println!(
                 "last run:\t{}-{}-{}",
                 dates[dates.len() - 1].year(),
                 dates[dates.len() - 1].month(),
                 dates[dates.len() - 1].day()
             );
-        }
-    
-        if c == 'o' {
+        } else if c == 'o' {
             println!("total time:\t{sum_time}");
-        }
-    
-        if c == 'a' {
+        } else if c == 'a' {
             println!("average time:\t{:.1}", average);
-        }
-    
-        if c == '=' {
+        } else if c == '=' {
             println!("min time:\t{min_time}");
             println!("max time:\t{max_time}");
-        }
-    
-        if c == 'r' {
+        } else if c == 'r' {
             println!("num rides:\t{num_rides}");
-        }
-    
-        if c == 'f' {
+        } else if c == 'f' {
             println!("frequency:\t{}", freq_str);
         }
     }
-
-
-
 }
 
 fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
