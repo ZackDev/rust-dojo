@@ -21,6 +21,15 @@ fn main() {
     let options: String;
     match Args::parse().options {
         None => {
+            /* if no option given, set the options string to contain all the switches */
+            /* c = current_date         */
+            /* 1 = first_run            */
+            /* n = last_run             */
+            /* o = total_time           */
+            /* a = average_time         */
+            /* = = min_time & max_time  */
+            /* r = num_rides            */
+            /* f = frequency            */
             options = "c1noa=rf".to_string();
         }
         Some(o) => {
