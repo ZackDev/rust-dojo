@@ -22,14 +22,14 @@ fn main() {
     }
 
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
-    let current_time: DateTime<Utc> = Utc::now();
+    let current_date: DateTime<Utc> = Utc::now();
 
     let mut line = String::new();
-    line.push_str(&current_time.year().to_string());
+    line.push_str(&current_date.year().to_string());
     line.push_str("-");
-    line.push_str(&current_time.month().to_string());
+    line.push_str(&current_date.month().to_string());
     line.push_str("-");
-    line.push_str(&current_time.day().to_string());
+    line.push_str(&current_date.day().to_string());
     line.push_str(",");
     line.push_str(&time.to_string());
     line.push_str("\n");
