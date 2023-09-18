@@ -138,25 +138,19 @@ fn main() {
         }
     }
 
-    let sum_time: u32;
+    let mut sum_time: u32 = 0;
     if options.contains('o') || options.contains('a') {
         sum_time = times.iter().sum();
-    } else {
-        sum_time = 0;
     }
 
-    let num_rides: u32;
+    let mut num_rides: u32 = 0;
     if options.contains('r') || options.contains('a') {
         num_rides = times.len() as u32;
-    } else {
-        num_rides = 0;
     }
 
-    let average: f32;
+    let mut average: f32 = 0.0;
     if options.contains('a') {
         average = sum_time as f32 / num_rides as f32;
-    } else {
-        average = 0.0;
     }
 
     let current_date = Utc::now();
@@ -171,11 +165,9 @@ fn main() {
         )
         .unwrap();
 
-    let freq_str: String;
+    let mut freq_str: String = String::new();
     if options.contains('f') {
         freq_str = dates_to_frequency_str(dates.clone());
-    } else {
-        freq_str = "".to_string();
     }
 
     /*
