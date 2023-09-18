@@ -21,7 +21,7 @@ fn main() {
     let options: String;
     match Args::parse().options {
         None => {
-            options = "c1noa=fr".to_string();
+            options = "c1noa=rf".to_string();
         }
         Some(o) => {
             options = o;
