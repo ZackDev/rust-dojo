@@ -138,32 +138,26 @@ fn main() {
         }
     }
 
-
-
     let sum_time: u32;
     if options.contains('o') || options.contains('a') {
         sum_time = times.iter().sum();
-    }
-    else {
+    } else {
         sum_time = 0;
     }
 
     let num_rides: u32;
     if options.contains('r') || options.contains('a') {
         num_rides = times.len() as u32;
-    }
-    else {
+    } else {
         num_rides = 0;
     }
 
     let average: f32;
     if options.contains('a') {
         average = sum_time as f32 / num_rides as f32;
-    }
-    else {
+    } else {
         average = 0.0;
     }
-
 
     let current_date = Utc::now();
     let current_ymd_date = Utc
@@ -180,8 +174,7 @@ fn main() {
     let freq_str: String;
     if options.contains('f') {
         freq_str = dates_to_frequency_str(dates.clone());
-    }
-    else {
+    } else {
         freq_str = "".to_string();
     }
 
