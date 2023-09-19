@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.4.4", features = ["derive"] }
-chrono = "0.4.30"
+chrono = "0.4.31"
 regex = "1.9.5"
