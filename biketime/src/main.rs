@@ -7,6 +7,7 @@ use std::io::Write;
 use std::path::Path;
 use std::process::exit;
 
+/// biketime - keep track of your rides
 #[derive(Parser, Debug)]
 struct Args {
     /// the duration of the ride in minutes

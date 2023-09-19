@@ -11,10 +11,19 @@ use std::path::Path;
 use std::process::exit;
 use std::str::FromStr;
 
+/// bikestat - various stats from rides collected with biketime
 #[derive(Parser, Debug)]
 struct Args {
     /// defines which stats to print (c1noa=rf)
-    #[arg(short, long)]
+    /// c - current date
+    /// 1 - first run
+    /// n - last run
+    /// o - total time
+    /// a - average time
+    /// = - min time & max time
+    /// r - number of rides
+    /// f - frequency
+    #[arg(short, long, verbatim_doc_comment)]
     options: Option<String>,
 }
 
@@ -22,15 +31,6 @@ fn main() {
     let options: String;
     match Args::parse().options {
         None => {
-            /* if no option given, set the options string to contain all the switches */
-            /* c = current_date         */
-            /* 1 = first_run            */
-            /* n = last_run             */
-            /* o = total_time           */
-            /* a = average_time         */
-            /* = = min_time & max_time  */
-            /* r = num_rides            */
-            /* f = frequency            */
             options = "c1noa=rf".to_string();
         }
         Some(o) => {
