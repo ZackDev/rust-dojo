@@ -14,7 +14,7 @@ use std::str::FromStr;
 /// bikestat - various stats from rides collected with biketime
 #[derive(Parser, Debug)]
 struct Args {
-    /// defines which stats to print (c1noa=rf)
+    /// defines which stats to print (c1noaxrf)
     /// c - current date
     /// 1 - first run
     /// n - last run
@@ -31,7 +31,7 @@ fn main() {
     let options: String;
     match Args::parse().options {
         None => {
-            options = "c1noa=rf".to_string();
+            options = "c1noaxrf".to_string();
         }
         Some(o) => {
             options = o;
