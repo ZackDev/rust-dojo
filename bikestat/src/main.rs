@@ -154,16 +154,6 @@ fn main() {
     }
 
     let current_date = Utc::now();
-    let current_ymd_date = Utc
-        .with_ymd_and_hms(
-            current_date.year(),
-            current_date.month(),
-            current_date.day(),
-            0,
-            0,
-            0,
-        )
-        .unwrap();
 
     let mut freq_str: String = String::new();
     if options.contains('f') {
@@ -178,9 +168,9 @@ fn main() {
         if c == 'c' {
             println!(
                 "current date:\t{}-{}-{}",
-                current_ymd_date.year(),
-                current_ymd_date.month(),
-                current_ymd_date.day()
+                current_date.year(),
+                current_date.month(),
+                current_date.day()
             );
         } else if c == '1' {
             println!(
