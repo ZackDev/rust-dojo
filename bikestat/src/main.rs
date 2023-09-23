@@ -20,7 +20,7 @@ struct Args {
     /// n - last run
     /// o - total time
     /// a - average time
-    /// = - min time & max time
+    /// x - min time & max time
     /// r - number of rides
     /// f - frequency
     #[arg(short, long, verbatim_doc_comment)]
@@ -69,7 +69,7 @@ fn main() {
 
         if options.contains('o')
             || options.contains('a')
-            || options.contains('=')
+            || options.contains('x')
             || options.contains('r')
         {
             let time: u32;
@@ -127,7 +127,7 @@ fn main() {
 
     let mut min_time: u32 = u32::MAX;
     let mut max_time: u32 = u32::MIN;
-    if options.contains('=') {
+    if options.contains('x') {
         for i in 0..times.len() {
             /*
             iterate over Vec times and determine max and min cycling times
@@ -200,7 +200,7 @@ fn main() {
             println!("total time:\t{sum_time}");
         } else if c == 'a' {
             println!("average time:\t{:.1}", average);
-        } else if c == '=' {
+        } else if c == 'x' {
             println!("min time:\t{min_time}");
             println!("max time:\t{max_time}");
         } else if c == 'r' {
