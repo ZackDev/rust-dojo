@@ -72,6 +72,7 @@ fn main() {
             || options.contains('a')
             || options.contains('x')
             || options.contains('r')
+            || options.contains('d')
         {
             let time: u32;
             match data[1].trim().parse() {
@@ -83,7 +84,7 @@ fn main() {
             times.push(time);
         }
 
-        if options.contains('1') || options.contains('n') || options.contains('f') {
+        if options.contains('1') || options.contains('n') || options.contains('f') || options.contains('d') {
             let date_str: String;
             match data[0].trim().parse() {
                 Ok(v) => {
