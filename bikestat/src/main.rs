@@ -236,17 +236,21 @@ fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
     return f_str;
 }
 
-fn dates_and_times_to_daily_duration(dates: Vec<DateTime<Utc>>, times: Vec<u32>, max_time: u32) -> String {
+fn dates_and_times_to_daily_duration(
+    dates: Vec<DateTime<Utc>>,
+    times: Vec<u32>,
+    max_time: u32,
+) -> String {
     let len = dates.len();
     let mut c_date = dates[0];
     let mut d_time = times[0];
     let mut a_times: Vec<u32> = Vec::new();
     let n: Duration = Duration::days(1);
+
     for i in 1..len {
         if c_date == dates[i] {
             d_time += times[i];
-        }
-        else {
+        } else {
             a_times.push(d_time);
             c_date += n;
             while c_date < dates[i] {
@@ -258,15 +262,11 @@ fn dates_and_times_to_daily_duration(dates: Vec<DateTime<Utc>>, times: Vec<u32>,
                 a_times.push(d_time);
             }
         }
-
     }
+
     let mut d_str: String = String::new();
     let upper: u32 = max_time * 2 / 3;
     let lower: u32 = max_time * 1 / 3;
-
-    println!("{a_times:?}");
-    println!("{upper}");
-    println!("{lower}");
 
     for a in a_times {
         if a < max_time && a >= upper {
