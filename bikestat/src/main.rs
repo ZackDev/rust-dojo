@@ -271,7 +271,7 @@ fn dates_and_times_to_duration_str(
 
     let mut d_str: String = String::new();
     let upper: u32 = max_time * 2 / 3;
-    let lower: u32 = max_time * 1 / 3;
+    let lower: u32 = max_time / 3;
 
     for a in a_times {
         if a < max_time && a >= upper {
