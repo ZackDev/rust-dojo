@@ -84,7 +84,11 @@ fn main() {
             times.push(time);
         }
 
-        if options.contains('1') || options.contains('n') || options.contains('f') || options.contains('d') {
+        if options.contains('1')
+            || options.contains('n')
+            || options.contains('f')
+            || options.contains('d')
+        {
             let date_str: String;
             match data[0].trim().parse() {
                 Ok(v) => {
