@@ -23,6 +23,7 @@ struct Args {
     /// x - min time & max time
     /// r - number of rides
     /// f - frequency
+    /// d - duration
     #[arg(short, long, verbatim_doc_comment)]
     options: Option<String>,
 }
@@ -31,7 +32,7 @@ fn main() {
     let options: String;
     match Args::parse().options {
         None => {
-            options = "c1noaxrf".to_string();
+            options = "c1noaxrfd".to_string();
         }
         Some(o) => {
             options = o;
@@ -127,7 +128,7 @@ fn main() {
 
     let mut min_time: u32 = u32::MAX;
     let mut max_time: u32 = u32::MIN;
-    if options.contains('x') {
+    if options.contains('x') || options.contains('d') {
         for i in 0..times.len() {
             /*
             iterate over Vec times and determine max and min cycling times
@@ -158,6 +159,11 @@ fn main() {
     let mut freq_str: String = String::new();
     if options.contains('f') {
         freq_str = dates_to_frequency_str(dates.clone());
+    }
+
+    let mut dur_str: String = String::new();
+    if options.contains('d') {
+        dur_str = dates_and_times_to_daily_duration(dates.clone(), times.clone(), max_time);
     }
 
     /*
@@ -197,6 +203,8 @@ fn main() {
             println!("num rides:\t{num_rides}");
         } else if c == 'f' {
             println!("frequency:\t{}", freq_str);
+        } else if c == 'd' {
+            println!("duration:\t{}", dur_str);
         }
     }
 }
@@ -226,4 +234,52 @@ fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
         d += n;
     }
     return f_str;
+}
+
+fn dates_and_times_to_daily_duration(dates: Vec<DateTime<Utc>>, times: Vec<u32>, max_time: u32) -> String {
+    let len = dates.len();
+    let mut c_date = dates[0];
+    let mut d_time = times[0];
+    let mut a_times: Vec<u32> = Vec::new();
+    let n: Duration = Duration::days(1);
+    for i in 1..len {
+        if c_date == dates[i] {
+            d_time += times[i];
+        }
+        else {
+            a_times.push(d_time);
+            c_date += n;
+            while c_date < dates[i] {
+                c_date += n;
+                a_times.push(0);
+            }
+            d_time = times[i];
+            if i == len - 1 {
+                a_times.push(d_time);
+            }
+        }
+
+    }
+    let mut d_str: String = String::new();
+    let upper: u32 = max_time * 2 / 3;
+    let lower: u32 = max_time * 1 / 3;
+
+    println!("{a_times:?}");
+    println!("{upper}");
+    println!("{lower}");
+
+    for a in a_times {
+        if a < max_time && a >= upper {
+            d_str.push('|');
+        } else if a < upper && a >= lower {
+            d_str.push(':');
+        } else if a < lower && a > 0 {
+            d_str.push('.');
+        } else if a == 0 {
+            d_str.push('_');
+        } else if a >= max_time {
+            d_str.push('!');
+        }
+    }
+    return d_str;
 }
