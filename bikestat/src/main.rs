@@ -251,6 +251,8 @@ fn dates_and_times_to_duration_str(
     let mut a_times: Vec<u32> = Vec::new();
     let n: Duration = Duration::days(1);
 
+    // TODO: find a more elegant/readable solution.
+    // i won't understand the following when looking at it again
     for i in 1..len {
         if c_date == dates[i] {
             // same date accumulates ride times
