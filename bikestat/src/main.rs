@@ -253,20 +253,25 @@ fn dates_and_times_to_duration_str(
 
     for i in 1..len {
         if c_date == dates[i] {
+            // same date accumulates ride times
             d_time += times[i];
         } else {
+            // date switches here
             a_times.push(d_time);
             c_date += n;
             while c_date < dates[i] {
+                // fill the gaps of dates in the timeline with zeros
                 c_date += n;
                 a_times.push(0);
             }
             d_time = times[i];
             if i == len - 1 {
+                // last entry is special case
                 a_times.push(d_time);
                 let current_date = Utc::now();
                 c_date += n;
                 while c_date < current_date {
+                    // fill the gaps of dates[n] -> current_date with zeros
                     c_date += n;
                     a_times.push(0);
                 }
