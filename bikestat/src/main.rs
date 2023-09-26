@@ -168,7 +168,7 @@ fn main() {
 
     let mut dur_str: String = String::new();
     if options.contains('d') {
-        dur_str = dates_and_times_to_duration_str(dates.clone(), times.clone(), max_time);
+        dur_str = dates_and_times_to_duration_str(dates.clone(), times.clone());
     }
 
     /*
@@ -243,8 +243,7 @@ fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
 
 fn dates_and_times_to_duration_str(
     dates: Vec<DateTime<Utc>>,
-    times: Vec<u32>,
-    max_time: u32,
+    times: Vec<u32>
 ) -> String {
     let len = dates.len();
     let mut c_date = dates[0];
@@ -265,11 +264,20 @@ fn dates_and_times_to_duration_str(
             d_time = times[i];
             if i == len - 1 {
                 a_times.push(d_time);
+                let current_date = Utc::now();
+                c_date += n;
+                while c_date < current_date {
+                    c_date += n;
+                    a_times.push(0);
+                }
             }
         }
     }
 
     let mut d_str: String = String::new();
+    let mut a_times_clone = a_times.clone();
+    a_times_clone.sort();
+    let max_time = a_times_clone[a_times_clone.len() - 1];
     let upper: u32 = max_time * 2 / 3;
     let lower: u32 = max_time / 3;
 
