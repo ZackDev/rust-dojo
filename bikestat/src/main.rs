@@ -290,7 +290,7 @@ fn dates_and_times_to_duration_str(
             d_str.push('.');
         } else if a == 0 {
             d_str.push('_');
-        } else if a >= max_time {
+        } else if a == max_time {
             d_str.push('!');
         }
     }
