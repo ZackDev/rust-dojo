@@ -133,7 +133,7 @@ fn main() {
 
     let mut min_time: u32 = u32::MAX;
     let mut max_time: u32 = u32::MIN;
-    if options.contains('x') || options.contains('d') {
+    if options.contains('x') {
         for i in 0..times.len() {
             /*
             iterate over Vec times and determine max and min cycling times
