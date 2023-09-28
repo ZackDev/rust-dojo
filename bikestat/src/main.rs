@@ -248,6 +248,7 @@ fn dates_and_times_to_duration_str(
     let n: Duration = Duration::days(1);
 
     // normalize times and dates vectors, fill the gaps, expand to current date
+    // NOTE: consumes dates and times
     let mut norm_dates: Vec<DateTime<Utc>> = Vec::new();
     let mut norm_times: Vec<u32> = Vec::new();
     let mut selected_date = dates[0];
@@ -273,7 +274,7 @@ fn dates_and_times_to_duration_str(
         }
     }
 
-    // accumulate times by given day
+    // accumulate times by given day in vector acc_times
     // NOTE: consumes norm_dates and norm_times
     let mut acc_times: Vec<u32> = Vec::new();
     selected_date = norm_dates[0];
