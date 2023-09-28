@@ -7,7 +7,6 @@ use regex::Regex;
 use std::cmp::max;
 use std::cmp::min;
 use std::fs::read_to_string;
-use std::ops::Index;
 use std::path::Path;
 use std::process::exit;
 use std::str::FromStr;
@@ -248,14 +247,14 @@ fn dates_and_times_to_duration_str(
 ) -> String {
     let n: Duration = Duration::days(1);
 
-    // normalize times and dates vectors, fill the gaps
+    // normalize times and dates vectors, fill the gaps, expand to current date
     let mut norm_dates: Vec<DateTime<Utc>> = Vec::new();
     let mut norm_times: Vec<u32> = Vec::new();
     let mut selected_date = dates[0];
     let current_date = Utc::now();
 
     loop {
-        while selected_date < current_date {
+        while selected_date <= current_date {
             if !dates.contains(&selected_date) {
                 norm_dates.push(selected_date);
                 norm_times.push(0);
