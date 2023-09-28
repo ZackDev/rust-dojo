@@ -7,6 +7,7 @@ use regex::Regex;
 use std::cmp::max;
 use std::cmp::min;
 use std::fs::read_to_string;
+use std::ops::Index;
 use std::path::Path;
 use std::process::exit;
 use std::str::FromStr;
@@ -242,72 +243,74 @@ fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
 }
 
 fn dates_and_times_to_duration_str(
-    dates: Vec<DateTime<Utc>>,
-    times: Vec<u32>
+    mut dates: Vec<DateTime<Utc>>,
+    mut times: Vec<u32>
 ) -> String {
-    let len = dates.len();
-    let mut c_date = dates[0];
-    let mut d_time = times[0];
-    let mut a_times: Vec<u32> = Vec::new();
     let n: Duration = Duration::days(1);
 
-    // TODO: find a more elegant/readable solution.
-    // i won't understand the following when looking at it again
-    for i in 1..len {
-        if c_date == dates[i] {
-            // same date accumulates ride times
-            d_time += times[i];
-        } else {
-            // date switches here
-            a_times.push(d_time);
-            c_date += n;
-            while c_date < dates[i] {
-                // fill the gaps of dates in the timeline with zeros
-                c_date += n;
-                a_times.push(0);
+    // normalize times and dates vectors, fill the gaps
+    let mut norm_dates: Vec<DateTime<Utc>> = Vec::new();
+    let mut norm_times: Vec<u32> = Vec::new();
+    let mut selected_date = dates[0];
+    let current_date = Utc::now();
+
+    loop {
+        while selected_date < current_date {
+            if !dates.contains(&selected_date) {
+                norm_dates.push(selected_date);
+                norm_times.push(0);
             }
-            d_time = times[i];
-            if c_date == dates[len -1] {
-                // last entry is special case
-                for j in i+1..len {
-                    d_time += times[j];
-                    println!("{d_time}");
-                }
-                a_times.push(d_time);
-                let current_date = Utc::now();
-                c_date += n;
-                while c_date < current_date {
-                    // fill the gaps of dates[n] -> current_date with zeros
-                    c_date += n;
-                    a_times.push(0);
-                }
-                // exit the loop
-                break;
+            while dates.contains(&selected_date) {
+                let i = dates.iter().position(|&date| date == selected_date).unwrap();
+                norm_dates.push(dates[i]);
+                norm_times.push(times[i]);
+                dates.remove(i);
+                times.remove(i);
             }
+            selected_date += n;
+        }
+        if dates.len() == 0 {
+            break;
         }
     }
 
-    println!("{dates:?}");
-    println!("{times:?}");
-    println!("{a_times:?}");
+    // accumulate times by given day
+    // NOTE: consumes norm_dates and norm_times
+    let mut acc_times: Vec<u32> = Vec::new();
+    selected_date = norm_dates[0];
+
+    loop {
+        while selected_date <= current_date {
+            let mut acc_time: u32 = 0;
+            while norm_dates.contains(&selected_date) {
+                let i = norm_dates.iter().position(|&date| date == selected_date).unwrap();
+                acc_time += norm_times[i];
+                norm_dates.remove(i);
+                norm_times.remove(i);
+            }
+            selected_date += n;
+            acc_times.push(acc_time);
+        }
+        break;
+    }
 
     let mut d_str: String = String::new();
-    let mut a_times_clone = a_times.clone();
+    let mut a_times_clone = acc_times.clone();
     a_times_clone.sort();
     let max_time = a_times_clone[a_times_clone.len() - 1];
     let upper: u32 = max_time * 2 / 3;
     let lower: u32 = max_time / 3;
 
-    for a in a_times {
-        if a < max_time && a >= upper {
+    for t in acc_times {
+        if t < max_time && t >= upper {
             d_str.push('|');
-        } else if a < upper && a >= lower {
+        } else if t < upper && t >= lower {
             d_str.push(':');
-        } else if a < lower && a > 0 {
+        } else if t < lower && t > 0 {
             d_str.push('.');
-        } else if a == 0 {
+        } else if t == 0 {
             d_str.push('_');
-        } else if a == max_time {
+        } else if t == max_time {
             d_str.push('!');
         }
     }
