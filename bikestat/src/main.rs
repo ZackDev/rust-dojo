@@ -99,7 +99,7 @@ fn main() {
 
             let date_split: Vec<&str> = date_str.split("-").collect();
 
-            let year: u16;
+            let year: i32;
             match FromStr::from_str(date_split[0]) {
                 Ok(v) => {
                     year = v;
@@ -107,7 +107,7 @@ fn main() {
                 Err(_) => continue,
             }
 
-            let month: u8;
+            let month: u32;
             match FromStr::from_str(date_split[1]) {
                 Ok(v) => {
                     month = v;
@@ -115,7 +115,7 @@ fn main() {
                 Err(_) => continue,
             }
 
-            let day: u8;
+            let day: u32;
             match FromStr::from_str(date_split[2]) {
                 Ok(v) => {
                     day = v;
@@ -124,7 +124,7 @@ fn main() {
             }
 
             let date: DateTime<Utc> = Utc
-                .with_ymd_and_hms(year as i32, month as u32, day as u32, 0, 0, 0)
+                .with_ymd_and_hms(year, month, day, 0, 0, 0)
                 .unwrap();
 
             dates.push(date);
