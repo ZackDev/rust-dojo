@@ -123,9 +123,7 @@ fn main() {
                 Err(_) => continue,
             }
 
-            let date: DateTime<Utc> = Utc
-                .with_ymd_and_hms(year, month, day, 0, 0, 0)
-                .unwrap();
+            let date: DateTime<Utc> = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
 
             dates.push(date);
         }
@@ -233,18 +231,17 @@ fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
             f_str.push('_');
         } else if f == 1 {
             f_str.push('.');
-        } else if f >= 2 {
+        } else if f == 2 {
             f_str.push(':');
+        } else if f > 2 {
+            f_str.push('|');
         }
         d += n;
     }
     return f_str;
 }
 
-fn dates_and_times_to_duration_str(
-    mut dates: Vec<DateTime<Utc>>,
-    mut times: Vec<u32>
-) -> String {
+fn dates_and_times_to_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> String {
     let n: Duration = Duration::days(1);
 
     // normalize times and dates vectors, fill the gaps, expand to current date
@@ -261,7 +258,10 @@ fn dates_and_times_to_duration_str(
                 norm_times.push(0);
             }
             while dates.contains(&selected_date) {
-                let i = dates.iter().position(|&date| date == selected_date).unwrap();
+                let i = dates
+                    .iter()
+                    .position(|&date| date == selected_date)
+                    .unwrap();
                 norm_dates.push(dates[i]);
                 norm_times.push(times[i]);
                 dates.remove(i);
@@ -283,7 +283,10 @@ fn dates_and_times_to_duration_str(
         while selected_date <= current_date {
             let mut acc_time: u32 = 0;
             while norm_dates.contains(&selected_date) {
-                let i = norm_dates.iter().position(|&date| date == selected_date).unwrap();
+                let i = norm_dates
+                    .iter()
+                    .position(|&date| date == selected_date)
+                    .unwrap();
                 acc_time += norm_times[i];
                 norm_dates.remove(i);
                 norm_times.remove(i);
@@ -302,14 +305,14 @@ fn dates_and_times_to_duration_str(
     let lower: u32 = max_time / 3;
 
     for t in acc_times {
-        if t < max_time && t >= upper {
-            d_str.push('|');
-        } else if t < upper && t >= lower {
-            d_str.push(':');
+        if t == 0 {
+            d_str.push('_');
         } else if t < lower && t > 0 {
             d_str.push('.');
-        } else if t == 0 {
-            d_str.push('_');
+        } else if t < upper && t >= lower {
+            d_str.push(':');
+        } else if t < max_time && t >= upper {
+            d_str.push('|');
         } else if t == max_time {
             d_str.push('!');
         }
