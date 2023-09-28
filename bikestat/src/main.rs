@@ -267,8 +267,12 @@ fn dates_and_times_to_duration_str(
                 a_times.push(0);
             }
             d_time = times[i];
-            if i == len - 1 {
+            if c_date == dates[len -1] {
                 // last entry is special case
+                for j in i+1..len {
+                    d_time += times[j];
+                    println!("{d_time}");
+                }
                 a_times.push(d_time);
                 let current_date = Utc::now();
                 c_date += n;
@@ -277,9 +281,15 @@ fn dates_and_times_to_duration_str(
                     c_date += n;
                     a_times.push(0);
                 }
+                // exit the loop
+                break;
             }
         }
     }
+
+    println!("{dates:?}");
+    println!("{times:?}");
+    println!("{a_times:?}");
 
     let mut d_str: String = String::new();
     let mut a_times_clone = a_times.clone();
