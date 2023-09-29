@@ -91,8 +91,8 @@ fn main() {
         {
             let date_str: String;
             match data[0].trim().parse() {
-                Ok(v) => {
-                    date_str = v;
+                Ok(d_str) => {
+                    date_str = d_str;
                 }
                 Err(_) => continue,
             }
@@ -101,24 +101,24 @@ fn main() {
 
             let year: i32;
             match i32::from_str(date_split[0]) {
-                Ok(v) => {
-                    year = v;
+                Ok(y) => {
+                    year = y;
                 }
                 Err(_) => continue,
             }
 
             let month: u32;
             match u32::from_str(date_split[1]) {
-                Ok(v) => {
-                    month = v;
+                Ok(m) => {
+                    month = m;
                 }
                 Err(_) => continue,
             }
 
             let day: u32;
             match u32::from_str(date_split[2]) {
-                Ok(v) => {
-                    day = v;
+                Ok(d) => {
+                    day = d;
                 }
                 Err(_) => continue,
             }
