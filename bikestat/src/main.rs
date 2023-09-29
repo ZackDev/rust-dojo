@@ -53,16 +53,16 @@ fn main() {
         /*
         regex the line
 
-        parse the individual fields of the line <year>-<month>-<day>,<time> into DateTime<Utc> and u32 and
-        push them to the corresponding Vecs dates and times
+        parse the individual fields of the line <year>-<month>-<day>,<time> into DateTime<Utc> and u32,
+        and push them to the corresponding Vecs dates and times
 
-        regex and parsing errors result in starting the next loop
+        regex and parsing errors lead to processing the next line
          */
 
         // matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer
-        let is_match = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
+        let is_valid = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
-        if is_match == false {
+        if is_valid == false {
             continue;
         }
 
