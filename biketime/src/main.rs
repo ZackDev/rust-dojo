@@ -45,8 +45,8 @@ fn main() {
             Ok(()) => {
                 println!("'{}' written.", line.trim());
             }
-            Err(err) => {
-                println!("{err}");
+            Err(e) => {
+                println!("{e}");
                 exit(0);
             }
         },
