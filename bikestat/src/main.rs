@@ -100,7 +100,7 @@ fn main() {
             let date_split: Vec<&str> = date_str.split("-").collect();
 
             let year: i32;
-            match FromStr::from_str(date_split[0]) {
+            match i32::from_str(date_split[0]) {
                 Ok(v) => {
                     year = v;
                 }
@@ -108,7 +108,7 @@ fn main() {
             }
 
             let month: u32;
-            match FromStr::from_str(date_split[1]) {
+            match u32::from_str(date_split[1]) {
                 Ok(v) => {
                     month = v;
                 }
@@ -116,7 +116,7 @@ fn main() {
             }
 
             let day: u32;
-            match FromStr::from_str(date_split[2]) {
+            match u32::from_str(date_split[2]) {
                 Ok(v) => {
                     day = v;
                 }
@@ -226,7 +226,7 @@ fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
     let c: DateTime<Utc> = Utc::now();
     let n: Duration = Duration::days(1);
     while d <= c {
-        let f = dates.iter().filter(|&x| *x == d).count();
+        let f = dates.iter().filter(|&date| *date == d).count();
         if f == 0 {
             f_str.push('_');
         } else if f == 1 {
