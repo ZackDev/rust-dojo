@@ -251,27 +251,23 @@ fn dates_and_times_to_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec
     let mut selected_date = dates[0];
     let current_date = Utc::now();
 
-    loop {
-        while selected_date <= current_date {
-            if !dates.contains(&selected_date) {
-                norm_dates.push(selected_date);
-                norm_times.push(0);
-            }
-            while dates.contains(&selected_date) {
-                let i = dates
-                    .iter()
-                    .position(|&date| date == selected_date)
-                    .unwrap();
-                norm_dates.push(dates[i]);
-                norm_times.push(times[i]);
-                dates.remove(i);
-                times.remove(i);
-            }
-            selected_date += n;
+
+    while selected_date <= current_date {
+        if !dates.contains(&selected_date) {
+            norm_dates.push(selected_date);
+            norm_times.push(0);
         }
-        if dates.len() == 0 {
-            break;
+        while dates.contains(&selected_date) {
+            let i = dates
+                .iter()
+                .position(|&date| date == selected_date)
+                .unwrap();
+            norm_dates.push(dates[i]);
+            norm_times.push(times[i]);
+            dates.remove(i);
+            times.remove(i);
         }
+        selected_date += n;
     }
 
     // accumulate times by given day in vector acc_times
@@ -279,22 +275,19 @@ fn dates_and_times_to_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec
     let mut acc_times: Vec<u32> = Vec::new();
     selected_date = norm_dates[0];
 
-    loop {
-        while selected_date <= current_date {
-            let mut acc_time: u32 = 0;
-            while norm_dates.contains(&selected_date) {
-                let i = norm_dates
-                    .iter()
-                    .position(|&date| date == selected_date)
-                    .unwrap();
-                acc_time += norm_times[i];
-                norm_dates.remove(i);
-                norm_times.remove(i);
-            }
-            selected_date += n;
-            acc_times.push(acc_time);
+    while selected_date <= current_date {
+        let mut acc_time: u32 = 0;
+        while norm_dates.contains(&selected_date) {
+            let i = norm_dates
+                .iter()
+                .position(|&date| date == selected_date)
+                .unwrap();
+            acc_time += norm_times[i];
+            norm_dates.remove(i);
+            norm_times.remove(i);
         }
-        break;
+        selected_date += n;
+        acc_times.push(acc_time);
     }
 
     let mut d_str: String = String::new();
