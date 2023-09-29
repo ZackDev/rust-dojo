@@ -243,14 +243,13 @@ fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
 
 fn dates_and_times_to_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> String {
     let n: Duration = Duration::days(1);
+    let current_date = Utc::now();
+    let mut selected_date = dates[0];
 
     // normalize times and dates vectors, fill the gaps, expand to current date
     // NOTE: consumes dates and times
     let mut norm_dates: Vec<DateTime<Utc>> = Vec::new();
     let mut norm_times: Vec<u32> = Vec::new();
-    let mut selected_date = dates[0];
-    let current_date = Utc::now();
-
 
     while selected_date <= current_date {
         if !dates.contains(&selected_date) {
@@ -273,10 +272,11 @@ fn dates_and_times_to_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec
     // accumulate times by given day in vector acc_times
     // NOTE: consumes norm_dates and norm_times
     let mut acc_times: Vec<u32> = Vec::new();
+    let mut acc_time: u32;
     selected_date = norm_dates[0];
 
     while selected_date <= current_date {
-        let mut acc_time: u32 = 0;
+        acc_time = 0;
         while norm_dates.contains(&selected_date) {
             let i = norm_dates
                 .iter()
@@ -290,12 +290,12 @@ fn dates_and_times_to_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec
         acc_times.push(acc_time);
     }
 
-    let mut d_str: String = String::new();
     let mut a_times_clone = acc_times.clone();
     a_times_clone.sort();
     let max_time = a_times_clone[a_times_clone.len() - 1];
     let upper: u32 = max_time * 2 / 3;
     let lower: u32 = max_time / 3;
+    let mut d_str: String = String::new();
 
     for t in acc_times {
         if t == 0 {
