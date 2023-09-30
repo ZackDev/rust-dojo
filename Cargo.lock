@@ -317,6 +317,10 @@ name = "referencing_2"
 version = "0.1.0"
 
 [[package]]
+name = "referencing_3"
+version = "0.1.0"
+
+[[package]]
 name = "regex"
 version = "1.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
