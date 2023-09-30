@@ -161,7 +161,7 @@ fn main() {
 
     let mut freq_str: String = String::new();
     if options.contains('f') {
-        freq_str = dates_to_frequency_str(dates.clone());
+        freq_str = dates_to_frequency_str(&mut dates);
     }
 
     let mut dur_str: String = String::new();
@@ -212,7 +212,7 @@ fn main() {
     }
 }
 
-fn dates_to_frequency_str(dates: Vec<DateTime<Utc>>) -> String {
+fn dates_to_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     /*
     determine cycling trips per day over
     |first entry|--->|last entry|--->|current date|
