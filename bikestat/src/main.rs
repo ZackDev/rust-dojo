@@ -79,7 +79,7 @@ fn main() {
                 Ok(v) => {
                     time = v;
                 }
-                Err(_) => continue,
+                Err(_) => continue
             }
             times.push(time);
         }
@@ -94,7 +94,7 @@ fn main() {
                 Ok(d_str) => {
                     date_str = d_str;
                 }
-                Err(_) => continue,
+                Err(_) => continue
             }
 
             let date_split: Vec<&str> = date_str.split("-").collect();
@@ -104,7 +104,7 @@ fn main() {
                 Ok(y) => {
                     year = y;
                 }
-                Err(_) => continue,
+                Err(_) => continue
             }
 
             let month: u32;
@@ -112,7 +112,7 @@ fn main() {
                 Ok(m) => {
                     month = m;
                 }
-                Err(_) => continue,
+                Err(_) => continue
             }
 
             let day: u32;
@@ -120,7 +120,7 @@ fn main() {
                 Ok(d) => {
                     day = d;
                 }
-                Err(_) => continue,
+                Err(_) => continue
             }
 
             let date: DateTime<Utc> = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
