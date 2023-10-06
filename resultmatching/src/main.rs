@@ -1,19 +1,32 @@
 use std::{str::FromStr, process::exit};
 
 fn main() {
-    let s: String = "12".to_string();
-    /* define i uninitialized */
-    let i: i32;
+    let s: String = "256".to_string();
+    /* define i & u uninitialized */
+    let i: i32;     // 2^32
+    let u: u8;      // 2^8  [0-255]
 
-    /* assign a value to i inside the Ok arm */
     match FromStr::from_str(&s) {
         Ok(v) => {
+            // expected to run into this
             i = v;
+            println!("{i}");
         }
         Err(e) => {
             println!("{e}");
             exit(0);
         }
     }
-    println!("{i}");
+
+    match FromStr::from_str(&s) {
+        Ok(v) => {
+            u = v;
+            println!("{u}");
+        }
+        Err(e) => {
+            // expected to run into this
+            println!("{e}");
+            exit(0);
+        }
+    }
 }
