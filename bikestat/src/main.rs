@@ -161,12 +161,12 @@ fn main() {
 
     let mut freq_str: String = String::new();
     if options.contains('f') {
-        freq_str = dates_to_frequency_str(&mut dates);
+        freq_str = craft_frequency_str(&mut dates);
     }
 
     let mut dur_str: String = String::new();
     if options.contains('d') {
-        dur_str = dates_and_times_to_duration_str(dates.clone(), times.clone());
+        dur_str = craft_duration_str(dates.clone(), times.clone());
     }
 
     /*
@@ -212,14 +212,9 @@ fn main() {
     }
 }
 
-fn dates_to_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
+fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     /*
-    determine cycling trips per day over
-    |first entry|--->|last entry|--->|current date|
-    one character per day
-    _   no trip
-    .   one trip
-    :   two+ trips
+    determine cycling trips per day from first run to current date
      */
     let mut f_str: String = String::new();
     let mut d: DateTime<Utc> = dates[0];
@@ -241,7 +236,7 @@ fn dates_to_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     return f_str;
 }
 
-fn dates_and_times_to_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> String {
+fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> String {
     let n: Duration = Duration::days(1);
     let current_date = Utc::now();
     let mut selected_date = dates[0];
