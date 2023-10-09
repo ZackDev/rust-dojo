@@ -76,8 +76,8 @@ fn main() {
         {
             match data[1].trim().parse::<u32>() {
                 // yay, turbofish
-                Ok(t) => {
-                    times.push(t);
+                Ok(time) => {
+                    times.push(time);
                 }
                 Err(_) => continue
             }
@@ -123,9 +123,17 @@ fn main() {
                 Err(_) => continue
             }
 
-            let date: DateTime<Utc> = Utc.with_ymd_and_hms(year, month, day, 0, 0, 0).unwrap();
-
-            dates.push(date);
+            match Utc.with_ymd_and_hms(year, month, day, 0, 0, 0) {
+                chrono::LocalResult::Single(date) => {
+                    dates.push(date);
+                },
+                chrono::LocalResult::None => {
+                    continue
+                },
+                chrono::LocalResult::Ambiguous(_, _) => {
+                    continue
+                },
+            };
         }
     }
 
