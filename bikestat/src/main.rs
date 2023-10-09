@@ -172,43 +172,48 @@ fn main() {
     /*
     print stats to stdout
      */
-
-    for c in options.chars() {
-        if c == 'c' {
-            println!(
-                "current date:\t{}-{}-{}",
-                current_date.year(),
-                current_date.month(),
-                current_date.day()
-            );
-        } else if c == '1' {
-            println!(
-                "first run:\t{}-{}-{}",
-                dates[0].year(),
-                dates[0].month(),
-                dates[0].day()
-            );
-        } else if c == 'n' {
-            println!(
-                "last run:\t{}-{}-{}",
-                dates[dates.len() - 1].year(),
-                dates[dates.len() - 1].month(),
-                dates[dates.len() - 1].day()
-            );
-        } else if c == 'o' {
-            println!("total time:\t{sum_time}");
-        } else if c == 'a' {
-            println!("average time:\t{:.1}", average);
-        } else if c == 'x' {
-            println!("min time:\t{min_time}");
-            println!("max time:\t{max_time}");
-        } else if c == 'r' {
-            println!("num rides:\t{num_rides}");
-        } else if c == 'f' {
-            println!("frequency:\t{}", freq_str);
-        } else if c == 'd' {
-            println!("duration:\t{}", dur_str);
-        }
+    if options.contains('c') {
+        println!(
+            "current date:\t{}-{}-{}",
+            current_date.year(),
+            current_date.month(),
+            current_date.day()
+        );
+    }
+    if options.contains('1') {
+        println!(
+            "first run:\t{}-{}-{}",
+            dates[0].year(),
+            dates[0].month(),
+            dates[0].day()
+        );
+    }
+    if options.contains('n') {
+        println!(
+            "last run:\t{}-{}-{}",
+            dates[dates.len() - 1].year(),
+            dates[dates.len() - 1].month(),
+            dates[dates.len() - 1].day()
+        );
+    }
+    if options.contains('o') {
+        println!("total time:\t{sum_time}");
+    }
+    if options.contains('a') {
+        println!("average time:\t{:.1}", average);
+    }
+    if options.contains( 'x') {
+        println!("min time:\t{min_time}");
+        println!("max time:\t{max_time}");
+    }
+    if options.contains('r') {
+        println!("num rides:\t{num_rides}");
+    }
+    if options.contains('f') {
+        println!("frequency:\t{}", freq_str);
+    }
+    if options.contains('d') {
+        println!("duration:\t{}", dur_str);
     }
 }
 
