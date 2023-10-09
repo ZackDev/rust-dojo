@@ -16,9 +16,9 @@ struct Args {
 }
 
 fn main() {
-    let time = Args::parse().time;
+    let time: u32 = Args::parse().time;
     if time < 1 {
-        println!("parameter time must be > 0");
+        println!("parameter time must be > 0.");
         exit(0);
     }
 

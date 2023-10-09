@@ -74,14 +74,14 @@ fn main() {
             || options.contains('r')
             || options.contains('d')
         {
-            let time: u32;
-            match data[1].trim().parse() {
-                Ok(v) => {
-                    time = v;
+            match data[1].trim().parse::<u32>() {
+                // yay, turbofish
+                Ok(t) => {
+                    times.push(t);
                 }
                 Err(_) => continue
             }
-            times.push(time);
+            
         }
 
         if options.contains('1')
@@ -90,7 +90,7 @@ fn main() {
             || options.contains('d')
         {
             let date_str: String;
-            match data[0].trim().parse() {
+            match data[0].trim().parse::<String>() {
                 Ok(d_str) => {
                     date_str = d_str;
                 }
