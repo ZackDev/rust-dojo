@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cargo build && cargo build --release
+cargo update && cargo build && cargo build --release
 
