@@ -218,10 +218,10 @@ fn main() {
         println!("num rides:\t{num_rides}");
     }
     if options.contains('f') {
-        println!("frequency:\t{}", freq_str);
+        println!("frequency:\n{}", freq_str);
     }
     if options.contains('d') {
-        println!("duration:\t{}", dur_str);
+        println!("duration:\n{}", dur_str);
     }
 }
 
