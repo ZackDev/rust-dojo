@@ -68,14 +68,15 @@ fn main() {
 
         let data: Vec<&str> = line.split(",").collect();
 
+        // the value time is needed for these options
         if options.contains('o')
             || options.contains('a')
             || options.contains('x')
             || options.contains('r')
             || options.contains('d')
         {
+            // yay, turbofish
             match data[1].trim().parse::<u32>() {
-                // yay, turbofish
                 Ok(time) => {
                     times.push(time);
                 }
@@ -84,6 +85,7 @@ fn main() {
             
         }
 
+        // these options require the date value
         if options.contains('1')
             || options.contains('n')
             || options.contains('f')
@@ -164,7 +166,7 @@ fn main() {
     if options.contains('a') {
         average = sum_time as f32 / num_rides as f32;
     }
-
+    
     let current_date = Utc::now();
 
     let mut freq_str: String = String::new();
