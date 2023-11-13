@@ -207,7 +207,7 @@ fn main() {
         );
     }
     if options.contains('o') {
-        println!("total time:\t{sum_time}");
+        println!("total time:\t{sum_time}(m) | {:.1}(h) | {:.1}(d)", sum_time as f32 / 60.0, sum_time as f32 / 1440.0);
     }
     if options.contains('a') {
         println!("average time:\t{:.1}", average);
