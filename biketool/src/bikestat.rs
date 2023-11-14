@@ -66,7 +66,7 @@ fn main() {
         parse the individual fields of the line <year>-<month>-<day>,<time> into DateTime<Utc> and u32,
         and push them to the corresponding Vecs dates and times
 
-        regex and parsing errors lead to processing the next line
+        regex and parsing errors skip the current line
          */
 
         // matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer
