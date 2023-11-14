@@ -44,7 +44,17 @@ fn main() {
 
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
 
-    let file_content = read_to_string(dfile).unwrap();
+    let mut file_content = String::new();
+    match read_to_string(dfile) {
+        Ok(cstring) => {
+            file_content.push_str(&cstring);
+        }
+        Err(_) => {
+            println!("couldn't find or open biketime.csv");
+            exit(0);
+        }
+    }
+
     if file_content.len() < 1 {
         println!("no data found in biketime.csv");
         exit(0);
