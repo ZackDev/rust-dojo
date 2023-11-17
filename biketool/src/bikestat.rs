@@ -239,9 +239,9 @@ fn main() {
         println!("duration:\n{}", dur_str);
     }
     if options.contains('l') {
-        println!("list");
+        println!("list:");
         for i in 0..dates.len() {
-            println!("{},{}", dates[i], times[i]);
+            println!("({:3}) {}-{}-{},{}", i+1, dates[i].year(), dates[i].month(), dates[i].day(), times[i]);
         }
     }
 }
