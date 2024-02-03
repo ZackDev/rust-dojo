@@ -158,7 +158,9 @@ fn main() {
         for i in 0..times.len() {
             /*
             iterate over Vec times and determine max and min cycling times
-            initial compare vs u32::MIN and u32::MAX
+            initial compare:
+                max_time <-> u32::MIN
+                min_time <-> u32::MAX
              */
             max_time = max(max_time, times[i]);
             min_time = min(min_time, times[i]);
