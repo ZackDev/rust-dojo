@@ -43,7 +43,7 @@ fn main() {
     {
         Ok(mut file) => match file.write_all(line.as_ref()) {
             Ok(()) => {
-                println!("'{}' written.", line.trim());
+                println!("'{}' written to '{:?}'.", line.trim(), dfile);
             }
             Err(e) => {
                 println!("{e}");
