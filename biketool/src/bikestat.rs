@@ -256,17 +256,13 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     let mut d: DateTime<Utc> = dates[0];
     let c: DateTime<Utc> = Utc::now();
     let n: Duration = Duration::days(1);
+    let s: Vec<char> = ['_', '.', ':', '|'].to_vec();
     while d <= c {
-        let f = dates.iter().filter(|&date| *date == d).count();
-        if f == 0 {
-            f_str.push('_');
-        } else if f == 1 {
-            f_str.push('.');
-        } else if f == 2 {
-            f_str.push(':');
-        } else if f > 2 {
-            f_str.push('|');
+        let mut f = dates.iter().filter(|&date| *date == d).count();
+        if f > 2 {
+            f = 3; 
         }
+        f_str.push(s[f]);
         d += n;
     }
     return f_str;
