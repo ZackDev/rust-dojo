@@ -1,3 +1,3 @@
 [workspace]
-members = ["arrays", "biketool", "fileinfo", "input", "mpsc", "mutex", "networkclient", "networkserver", "primitives", "referencing", "referencing_2", "referencing_3", "resultmatching", "threads"]
+members = ["arrays", "biketool", "fileinfo", "input", "mpsc", "mutex", "networkclient", "networkserver", "primitives", "referencing", "referencing_2", "referencing_3", "resultmatching", "threads", "multiinput"]
 resolver = "2"

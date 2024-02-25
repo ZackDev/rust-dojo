@@ -249,6 +249,13 @@ name = "mpsc"
 version = "0.1.0"
 
 [[package]]
+name = "multiinput"
+version = "0.1.0"
+dependencies = [
+ "clap",
+]
+
+[[package]]
 name = "mutex"
 version = "0.1.0"
 
