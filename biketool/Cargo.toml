@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-clap = { version = "4.5.0", features = ["derive"] }
-chrono = "0.4.34"
-regex = "1.10.3"
+clap = { version = "4.5.3", features = ["derive"] }
+chrono = "0.4.35"
+regex = "1.10.4"
 
 [[bin]]
 name = "bikestat"
