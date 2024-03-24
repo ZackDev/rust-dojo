@@ -4,10 +4,10 @@ use clap::{self, arg, Parser};
 
 struct Args {
     /// the duration of the ride in minutes
-    #[arg(short, long, exclusive=true)]
+    #[arg(short, long, exclusive=true, required=false)]
     time: u32,
 
-    #[arg(short, long, exclusive=true)]
+    #[arg(short, long, exclusive=true, required=false)]
     value: u32,
 }
 fn main() {
