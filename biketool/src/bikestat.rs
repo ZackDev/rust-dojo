@@ -1,6 +1,7 @@
 use chrono::prelude::*;
 use chrono::DateTime;
 use chrono::Duration;
+use chrono::TimeDelta;
 use chrono::Utc;
 use clap::Parser;
 use regex::Regex;
@@ -255,7 +256,7 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     let mut f_str: String = String::new();
     let mut d: DateTime<Utc> = dates[0];
     let c: DateTime<Utc> = Utc::now();
-    let n: Duration = Duration::days(1);
+    let n: Duration = TimeDelta::try_days(1).unwrap();
     let s: Vec<char> = ['_', '.', ':', '|'].to_vec();
     while d <= c {
         let mut f = dates.iter().filter(|&date| *date == d).count();
@@ -269,7 +270,7 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
 }
 
 fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> String {
-    let n: Duration = Duration::days(1);
+    let n: Duration = TimeDelta::try_days(1).unwrap();
     let current_date = Utc::now();
     let mut selected_date = dates[0];
 
