@@ -244,7 +244,7 @@ fn main() {
     if options.contains('l') {
         println!("list:");
         for i in 0..dates.len() {
-            println!("( {:3} ) {}-{}-{},{}", i+1, dates[i].year(), dates[i].month(), dates[i].day(), times[i]);
+            println!("{:5}. \t{}-{}-{} \t{}m", i+1, dates[i].year(), dates[i].month(), dates[i].day(), times[i]);
         }
     }
 }
