@@ -223,7 +223,18 @@ fn main() {
         );
     }
     if options.contains('o') {
-        println!("total time:\t{sum_time}(m) | {:.1}(h) | {:.1}(d)", sum_time as f32 / 60.0, sum_time as f32 / 1440.0);
+        let mut m_multiple_str:String = "minute".to_string();
+        let h_str:String = "hours".to_string();
+        let d_str:String = "days".to_string();
+        
+        let minutes = sum_time;
+        let hours = sum_time as f32 / 60.0;
+        let days = sum_time as f32 / 1440.0;
+        
+        if minutes > 1 {
+            m_multiple_str += "s";
+        }
+        println!("total time:\t{minutes} {m_multiple_str} or {hours:.2} {h_str} or {days:.2} {d_str}");
     }
     if options.contains('a') {
         println!("average time:\t{:.1}", average);
