@@ -5,15 +5,15 @@ use chrono::prelude::*;
 use chrono::TimeDelta;
 use chrono::Utc;
 use clap::Parser;
-use std::fs::read_to_string;
-use std::fs::OpenOptions;
-use std::io::Write;
-use std::path::Path;
-use std::process::exit;
 use regex::Regex;
+use std::process::exit;
+use std::str::FromStr;
 use std::cmp::max;
 use std::cmp::min;
-use std::str::FromStr;
+use std::fs::OpenOptions;
+use std::path::Path;
+use std::fs::read_to_string;
+use std::io::Write;
 
 /// biketime - keep track of your rides
 #[derive(Parser, Debug)]
