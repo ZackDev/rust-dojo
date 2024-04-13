@@ -1,5 +1,7 @@
 use chrono::DateTime;
 use chrono::Datelike;
+use chrono::Duration;
+use chrono::prelude::*;
 use chrono::TimeDelta;
 use chrono::Utc;
 use clap::Parser;
@@ -8,8 +10,6 @@ use std::fs::OpenOptions;
 use std::io::Write;
 use std::path::Path;
 use std::process::exit;
-use chrono::prelude::*;
-use chrono::Duration;
 use regex::Regex;
 use std::cmp::max;
 use std::cmp::min;
