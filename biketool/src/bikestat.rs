@@ -25,7 +25,6 @@ struct Args {
     /// r - number of rides
     /// f - frequency
     /// d - duration
-    /// l - list
     #[arg(short, long, verbatim_doc_comment)]
     options: Option<String>,
 }
@@ -86,7 +85,6 @@ fn main() {
             || options.contains('x')
             || options.contains('r')
             || options.contains('d')
-            || options.contains('l')
         {
             // yay, turbofish
             match data[1].trim().parse::<u32>() {
@@ -103,7 +101,6 @@ fn main() {
             || options.contains('n')
             || options.contains('f')
             || options.contains('d')
-            || options.contains('l')
         {
             let date_str: String;
             match data[0].trim().parse::<String>() {
@@ -251,12 +248,6 @@ fn main() {
     }
     if options.contains('d') {
         println!("duration:\n{}", dur_str);
-    }
-    if options.contains('l') {
-        println!("list:");
-        for i in 0..dates.len() {
-            println!("{:5}. \t{}-{}-{} \t{}m", i+1, dates[i].year(), dates[i].month(), dates[i].day(), times[i]);
-        }
     }
 }
 
