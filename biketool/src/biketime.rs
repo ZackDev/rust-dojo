@@ -47,6 +47,9 @@ struct Args {
 static DPATH_STR: &str = "/home/zack/biketime.csv";
 
 fn main() {
+    /*
+    look for passed arguments
+     */
     match Args::parse().addentry {
         Some(t) => {
             if t < 1 {
@@ -65,7 +68,7 @@ fn main() {
         false => {
             
         },
-    };
+    }
 
     match Args::parse().removeentry {
         Some(r) => {
@@ -76,21 +79,22 @@ fn main() {
             removeentry(r);
         }
         None => {}
-    };
+    }
 
     match Args::parse().stats {
-        None => {
-
-        }
         Some(o) => {
             let options = o;
             printstats(options);
         }
+        None => {}
     }
 }
 
 fn addentry(current_date: DateTime<Utc>, time: u32) {
 
+    /*
+    craft the entry string
+     */
     let mut line = String::new();
     line.push_str(&current_date.year().to_string());
     line.push_str("-");
@@ -101,6 +105,9 @@ fn addentry(current_date: DateTime<Utc>, time: u32) {
     line.push_str(&time.to_string());
     line.push_str("\n");
 
+    /*
+    write entry string to file
+     */
     match OpenOptions::new()
         .write(true)
         .create(true)
@@ -140,6 +147,12 @@ fn showentries() {
 }
 
 fn removeentry(linenumber: u32) {
+
+    /*
+    - craft the new contents of the file
+
+    - any line gets passed to the new content except the line to remove
+     */
     let mut strbuf: String = "".to_string();
     match read_to_string(Path::new(&DPATH_STR)) {
         Ok(str) => {
@@ -215,7 +228,7 @@ fn printstats(options: String) {
         regex and parsing errors skip the current line
          */
 
-        // matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer
+        /* matches lines like [0-9999]-[1-12]-[1-31],[1-x] where x is any integer */
         let is_valid = Regex::new(r"^(\d|[1-9]\d|[1-9]\d\d|[1-9]\d\d\d)-([1-9]|1[0-2])-([1-9]|[1-2]\d|3[0-1]),([1-9]|[1-9]\d+)$").unwrap().is_match(line);
 
         if is_valid == !true {
@@ -224,14 +237,16 @@ fn printstats(options: String) {
 
         let data: Vec<&str> = line.split(",").collect();
 
-        // the value time is needed for these options
+        /*
+        the value time is needed for these options
+         */
         if options.contains('o')
             || options.contains('a')
             || options.contains('x')
             || options.contains('r')
             || options.contains('d')
         {
-            // yay, turbofish
+            /* yay, turbofish */
             match data[1].trim().parse::<u32>() {
                 Ok(time) => {
                     times.push(time);
@@ -241,7 +256,7 @@ fn printstats(options: String) {
             
         }
 
-        // these options require the date value
+        /* these options require the date value */
         if options.contains('1')
             || options.contains('n')
             || options.contains('f')
@@ -421,8 +436,11 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
     let current_date = Utc::now();
     let mut selected_date = dates[0];
 
-    // normalize times and dates vectors, fill the gaps, expand to current date
-    // NOTE: consumes dates and times
+    /*
+    normalize times and dates vectors, fill the gaps, expand to current date
+    
+    NOTE: consumes dates and times
+    */
     let mut norm_dates: Vec<DateTime<Utc>> = Vec::new();
     let mut norm_times: Vec<u32> = Vec::new();
 
@@ -444,8 +462,11 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
         selected_date += n;
     }
 
-    // accumulate times by given day in vector acc_times
-    // NOTE: consumes norm_dates and norm_times
+    /* 
+    - accumulate times by given day in vector acc_times
+    
+    - NOTE: consumes norm_dates and norm_times
+    */
     let mut acc_times: Vec<u32> = Vec::new();
     let mut acc_time: u32;
     selected_date = norm_dates[0];
