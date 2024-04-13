@@ -44,6 +44,8 @@ struct Args {
     stats: Option<String>,
 }
 
+static DPATH_STR: &str = "/home/zack/biketime.csv";
+
 fn main() {
     match Args::parse().addentry {
         Some(t) => {
@@ -88,7 +90,6 @@ fn main() {
 }
 
 fn addentry(current_date: DateTime<Utc>, time: u32) {
-    let dfile: &Path = Path::new("/home/zack/biketime.csv");
 
     let mut line = String::new();
     line.push_str(&current_date.year().to_string());
@@ -104,11 +105,11 @@ fn addentry(current_date: DateTime<Utc>, time: u32) {
         .write(true)
         .create(true)
         .append(true)
-        .open(dfile)
+        .open(Path::new(&DPATH_STR))
     {
         Ok(mut file) => match file.write_all(line.as_ref()) {
             Ok(()) => {
-                println!("'{}' written to '{:?}'.", line.trim(), dfile);
+                println!("'{}' written to '{:?}'.", line.trim(), &DPATH_STR);
             }
             Err(e) => {
                 println!("{e}");
@@ -123,8 +124,7 @@ fn addentry(current_date: DateTime<Utc>, time: u32) {
 }
 
 fn showentries() {
-    let dfile: &Path = Path::new("/home/zack/biketime.csv");
-    match read_to_string(dfile) {
+    match read_to_string(Path::new(&DPATH_STR)) {
         Ok(str) => {
             let mut index = 1;
             for l in str.lines() {
@@ -140,9 +140,8 @@ fn showentries() {
 }
 
 fn removeentry(linenumber: u32) {
-    let dfile: &Path = Path::new("/home/zack/biketime.csv");
     let mut strbuf: String = "".to_string();
-    match read_to_string(dfile) {
+    match read_to_string(Path::new(&DPATH_STR)) {
         Ok(str) => {
             let fi = str.lines();
             if fi.count() < linenumber as usize {
@@ -155,6 +154,9 @@ fn removeentry(linenumber: u32) {
                     let li = l.to_owned() + "\n";
                     strbuf.push_str(&li);
                 }
+                else {
+                    println!("removing '{l}' from '{DPATH_STR}'.");
+                }
                 index += 1;
             }
         }
@@ -164,14 +166,14 @@ fn removeentry(linenumber: u32) {
         }
     }
 
-    match OpenOptions::new().write(true).open(dfile) {
+    match OpenOptions::new().write(true).open(Path::new(&DPATH_STR)) {
         Ok(mut file) => {
             /*
             rewrite file
              */
             let _ = file.set_len(0);
             match file.write(strbuf.as_bytes()) {
-                Ok(_) => println!("file rewritten."),
+                Ok(_) => println!("biketime.csv file rewritten."),
                 Err(e) => {
                     println!("{e}");
                     exit(0);
@@ -186,21 +188,19 @@ fn printstats(options: String) {
     let mut dates: Vec<DateTime<Utc>> = Vec::new();
     let mut times: Vec<u32> = Vec::new();
 
-    let dfile: &Path = Path::new("/home/zack/biketime.csv");
-
     let mut file_content = String::new();
-    match read_to_string(dfile) {
+    match read_to_string(Path::new(&DPATH_STR)) {
         Ok(cstring) => {
             file_content.push_str(&cstring);
         }
         Err(_) => {
-            println!("couldn't find or open biketime.csv");
+            println!("couldn't open biketime.csv.");
             exit(0);
         }
     }
 
     if file_content.len() < 1 {
-        println!("no data found in biketime.csv");
+        println!("no data found in biketime.csv.");
         exit(0);
     }
     for line in file_content.lines() {
