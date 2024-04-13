@@ -15,7 +15,11 @@ struct Args {
     #[arg(short, long)]
     time: Option<u32>,
 
-    /// the line to remove
+    /// displays the content with lines included
+    #[arg(short, long)]
+    showlines: bool,
+
+    /// removes the specified line
     #[arg(short, long)]
     removeline: Option<u32>,
 }
@@ -35,6 +39,15 @@ fn main() {
         None => {}
     }
 
+    match Args::parse().showlines {
+        true => {
+            showlines();
+        },
+        false => {
+            
+        },
+    };
+
     match Args::parse().removeline {
         Some(r) => {
             if r < 1 {
@@ -46,6 +59,7 @@ fn main() {
         None => {}
     };
 }
+
 fn write(current_date: DateTime<Utc>, time: u32) {
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
 
@@ -78,6 +92,20 @@ fn write(current_date: DateTime<Utc>, time: u32) {
             println!("{e}");
             exit(0);
         }
+    }
+}
+
+fn showlines() {
+    let dfile: &Path = Path::new("/home/zack/biketime.csv");
+    match read_to_string(dfile) {
+        Ok(str) => {
+            let mut index = 1;
+            for l in str.lines() {
+                println!("{index:.3} {l}");
+                index += 1;
+            }
+        }
+        Err(_) => todo!(),
     }
 }
 
