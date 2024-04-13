@@ -13,19 +13,19 @@ use std::process::exit;
 struct Args {
     /// the duration of the ride in minutes
     #[arg(short, long)]
-    time: Option<u32>,
+    addentry: Option<u32>,
 
-    /// displays the content with lines included
+    /// displays the numbered entries
     #[arg(short, long)]
-    showlines: bool,
+    showentries: bool,
 
-    /// removes the specified line
+    /// removes the specified entry
     #[arg(short, long)]
-    removeline: Option<u32>,
+    removeentry: Option<u32>,
 }
 
 fn main() {
-    match Args::parse().time {
+    match Args::parse().addentry {
         Some(t) => {
             if t < 1 {
                 println!("parameter time must be > 0.");
@@ -36,7 +36,7 @@ fn main() {
         None => {}
     }
 
-    match Args::parse().showlines {
+    match Args::parse().showentries {
         true => {
             showentries();
         },
@@ -45,7 +45,7 @@ fn main() {
         },
     };
 
-    match Args::parse().removeline {
+    match Args::parse().removeentry {
         Some(r) => {
             if r < 1 {
                 println!("parameter removeline must be > 0.");
