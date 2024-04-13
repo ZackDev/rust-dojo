@@ -15,18 +15,18 @@ use std::path::Path;
 use std::fs::read_to_string;
 use std::io::Write;
 
-/// biketime - keep track of your rides
+/// biketime - keep track of your rides. has stats too.
 #[derive(Parser, Debug)]
 struct Args {
-    /// the duration of the ride in minutes
+    /// add a new entry for today. pass the duration in minutes to it.
     #[arg(short, long)]
     addentry: Option<u32>,
 
-    /// displays the numbered entries
+    /// displays existing entries
     #[arg(short, long)]
     listentries: bool,
 
-    /// removes the specified entry
+    /// removes an entry defined by a linenumber
     #[arg(short, long)]
     removeentry: Option<u32>,
 
@@ -174,7 +174,7 @@ fn removeentry(linenumber: u32) {
             let _ = file.set_len(0);
             match file.write(strbuf.as_bytes()) {
                 Ok(_) => {
-                    
+
                 },
                 Err(e) => {
                     println!("{e}");
@@ -196,13 +196,13 @@ fn printstats(options: String) {
             file_content.push_str(&cstring);
         }
         Err(_) => {
-            println!("couldn't open biketime.csv.");
+            println!("couldn't open {DPATH_STR}.");
             exit(0);
         }
     }
 
     if file_content.len() < 1 {
-        println!("no data found in biketime.csv.");
+        println!("no data found in {DPATH_STR}.");
         exit(0);
     }
     for line in file_content.lines() {
