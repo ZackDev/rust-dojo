@@ -173,7 +173,9 @@ fn removeentry(linenumber: u32) {
              */
             let _ = file.set_len(0);
             match file.write(strbuf.as_bytes()) {
-                Ok(_) => println!("biketime.csv file rewritten."),
+                Ok(_) => {
+                    
+                },
                 Err(e) => {
                     println!("{e}");
                     exit(0);
