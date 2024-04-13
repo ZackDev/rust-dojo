@@ -114,6 +114,11 @@ fn removeentry(linenumber: u32) {
     let mut strbuf: String = "".to_string();
     match read_to_string(dfile) {
         Ok(str) => {
+            let fi = str.lines();
+            if fi.count() < linenumber as usize {
+                println!("linenumber is too high.");
+                exit(0);
+            }
             let mut index = 1;
             for l in str.lines() {
                 if index != linenumber {
@@ -134,6 +139,7 @@ fn removeentry(linenumber: u32) {
             /*
             rewrite file
              */
+            let _ = file.set_len(0);
             match file.write(strbuf.as_bytes()) {
                 Ok(_) => println!("file rewritten."),
                 Err(e) => {
