@@ -7,6 +7,7 @@ edition = "2021"
 clap = { version = "4.5.4", features = ["derive"] }
 chrono = "0.4.37"
 regex = "1.10.4"
+homedir = "0.2.1"
 
 [[bin]]
 name = "biketime"

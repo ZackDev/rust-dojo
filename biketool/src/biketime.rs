@@ -6,6 +6,7 @@ use chrono::TimeDelta;
 use chrono::Utc;
 use clap::Parser;
 use regex::Regex;
+use homedir::get_my_home;
 use std::process::exit;
 use std::str::FromStr;
 use std::cmp::max;
@@ -44,7 +45,7 @@ struct Args {
     stats: Option<String>,
 }
 
-static DPATH_STR: &str = "/home/zack/biketime.csv";
+static FILE_STR: &str = "biketime.csv";
 
 fn main() {
     /*
@@ -91,7 +92,7 @@ fn main() {
 }
 
 fn addentry(current_date: DateTime<Utc>, time: u32) {
-
+    let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
     /*
     craft the entry string
      */
@@ -112,11 +113,11 @@ fn addentry(current_date: DateTime<Utc>, time: u32) {
         .write(true)
         .create(true)
         .append(true)
-        .open(Path::new(&DPATH_STR))
+        .open(fpath.clone())
     {
         Ok(mut file) => match file.write_all(line.as_ref()) {
             Ok(()) => {
-                println!("'{}' written to '{:?}'.", line.trim(), &DPATH_STR);
+                println!("'{}' written to '{:?}'.", line.trim(), fpath);
             }
             Err(e) => {
                 println!("{e}");
@@ -131,7 +132,8 @@ fn addentry(current_date: DateTime<Utc>, time: u32) {
 }
 
 fn showentries() {
-    match read_to_string(Path::new(&DPATH_STR)) {
+    let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
+    match read_to_string(Path::new(&fpath) ) {
         Ok(str) => {
             let mut index = 1;
             for l in str.lines() {
@@ -147,14 +149,14 @@ fn showentries() {
 }
 
 fn removeentry(linenumber: u32) {
-
+    let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
     /*
     - craft the new contents of the file
 
     - any line gets passed to the new content except the line to remove
      */
     let mut strbuf: String = "".to_string();
-    match read_to_string(Path::new(&DPATH_STR)) {
+    match read_to_string(Path::new(&fpath)) {
         Ok(str) => {
             let fi = str.lines();
             if fi.count() < linenumber as usize {
@@ -168,7 +170,7 @@ fn removeentry(linenumber: u32) {
                     strbuf.push_str(&li);
                 }
                 else {
-                    println!("removing '{l}' from '{DPATH_STR}'.");
+                    println!("removing '{l}' from '{}'.", fpath);
                 }
                 index += 1;
             }
@@ -179,7 +181,7 @@ fn removeentry(linenumber: u32) {
         }
     }
 
-    match OpenOptions::new().write(true).open(Path::new(&DPATH_STR)) {
+    match OpenOptions::new().write(true).open(Path::new(&fpath)) {
         Ok(mut file) => {
             /*
             rewrite file
@@ -200,22 +202,24 @@ fn removeentry(linenumber: u32) {
 }
 
 fn printstats(options: String) {
+    let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
+
     let mut dates: Vec<DateTime<Utc>> = Vec::new();
     let mut times: Vec<u32> = Vec::new();
 
     let mut file_content = String::new();
-    match read_to_string(Path::new(&DPATH_STR)) {
+    match read_to_string(Path::new(&fpath)) {
         Ok(cstring) => {
             file_content.push_str(&cstring);
         }
         Err(_) => {
-            println!("couldn't open {DPATH_STR}.");
+            println!("couldn't open {}.", fpath);
             exit(0);
         }
     }
 
     if file_content.len() < 1 {
-        println!("no data found in {DPATH_STR}.");
+        println!("no data found in {}.", fpath);
         exit(0);
     }
     for line in file_content.lines() {
