@@ -24,9 +24,6 @@ struct Args {
     removeline: Option<u32>,
 }
 
-#[derive(Parser, Debug)]
-struct Args2 {}
-
 fn main() {
     match Args::parse().time {
         Some(t) => {
