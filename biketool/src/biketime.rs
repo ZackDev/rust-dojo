@@ -31,14 +31,14 @@ fn main() {
                 println!("parameter time must be > 0.");
                 exit(0);
             }
-            write(Utc::now(), t);
+            addentry(Utc::now(), t);
         }
         None => {}
     }
 
     match Args::parse().showlines {
         true => {
-            showlines();
+            showentries();
         },
         false => {
             
@@ -51,13 +51,13 @@ fn main() {
                 println!("parameter removeline must be > 0.");
                 exit(0);
             }
-            removeline(r);
+            removeentry(r);
         }
         None => {}
     };
 }
 
-fn write(current_date: DateTime<Utc>, time: u32) {
+fn addentry(current_date: DateTime<Utc>, time: u32) {
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
 
     let mut line = String::new();
@@ -92,7 +92,7 @@ fn write(current_date: DateTime<Utc>, time: u32) {
     }
 }
 
-fn showlines() {
+fn showentries() {
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
     match read_to_string(dfile) {
         Ok(str) => {
@@ -102,11 +102,14 @@ fn showlines() {
                 index += 1;
             }
         }
-        Err(_) => todo!(),
+        Err(e) => {
+            println!("{e}");
+            exit(0);
+        }
     }
 }
 
-fn removeline(linenumber: u32) {
+fn removeentry(linenumber: u32) {
     let dfile: &Path = Path::new("/home/zack/biketime.csv");
     let mut strbuf: String = "".to_string();
     match read_to_string(dfile) {
@@ -120,7 +123,10 @@ fn removeline(linenumber: u32) {
                 index += 1;
             }
         }
-        Err(_) => todo!(),
+        Err(e) => {
+            println!("{e}");
+            exit(0);
+        }
     }
 
     match OpenOptions::new().write(true).open(dfile) {
@@ -129,8 +135,11 @@ fn removeline(linenumber: u32) {
             rewrite file
              */
             match file.write(strbuf.as_bytes()) {
-                Ok(_) => todo!(),
-                Err(_) => todo!(),
+                Ok(_) => println!("file rewritten."),
+                Err(e) => {
+                    println!("{e}");
+                    exit(0);
+                }
             }
         },
         Err(_) => {}
