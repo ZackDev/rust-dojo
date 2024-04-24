@@ -13,7 +13,7 @@ static FILE_STR: &str = "biketime.csv";
 fn addtime(time: &str) -> String {
     let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
 
-    let mut time_u32 :u32;
+    let time_u32 :u32;
 
     match time.parse() {
         Ok(v) => {
@@ -34,7 +34,7 @@ fn addtime(time: &str) -> String {
     line.push_str("-");
     line.push_str(&current_date.day().to_string());
     line.push_str(",");
-    line.push_str(&time.to_string());
+    line.push_str(&time_u32.to_string());
     line.push_str("\n");
 
     /*

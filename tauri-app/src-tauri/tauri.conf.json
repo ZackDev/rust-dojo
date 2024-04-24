@@ -5,8 +5,8 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "tauri-app",
-    "version": "0.0.0"
+    "productName": "biketime UI",
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -30,7 +30,7 @@
     },
     "windows": [
       {
-        "title": "tauri-app",
+        "title": "biketime UI",
         "width": 800,
         "height": 600
       }
@@ -41,7 +41,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "dev.zack.dojo",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
