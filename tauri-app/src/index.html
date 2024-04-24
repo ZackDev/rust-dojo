@@ -15,6 +15,28 @@
 
   <body>
     <div class="container">
+      <div class="column" id="stats-form" style="margin:50px">
+        <div class="row" style="justify-content:flex-end;">
+          <label for="current-date-cb">current date</label>
+          <input id="current-date-cb" type="checkbox" />
+        </div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="first-run-cb">first run</label>
+          <input id="first-run-cb" type="checkbox" />
+        </div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="last-run-cb">last run</label>
+          <input id="last-run-cb" type="checkbox" />
+        </div>
+        <!-- TODO -->
+        <div class="row" style="justify-content:flex-end;">total time<input id="total-time-cb" type="checkbox" /></div>
+        <div class="row" style="justify-content:flex-end;">average time<input id="average-time-cb" type="checkbox" /></div>
+        <div class="row" style="justify-content:flex-end;">min & max time<input id="min-max-time-cb" type="checkbox" /></div>
+        <div class="row" style="justify-content:flex-end;">number of rides<input id="num-rides-cb" type="checkbox" /></div>
+        <div class="row" style="justify-content:flex-end;">frequency<input id="frequency-cb" type="checkbox" /></div>
+        <div class="row" style="justify-content:flex-end;">duration<input id="duration-cb" type="checkbox" /></div>
+      </div>
+
       <form class="row" id="times-form">
         <input id="times-input" placeholder="Enter time in minutes..." />
         <button type="submit">Add Time</button>
