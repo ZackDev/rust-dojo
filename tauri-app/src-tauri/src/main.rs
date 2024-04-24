@@ -10,8 +10,20 @@ static FILE_STR: &str = "biketime.csv";
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn addtime(time_str: &str) -> String {
+fn addtime(time: &str) -> String {
     let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
+
+    let mut time_u32 :u32;
+
+    match time.parse() {
+        Ok(v) => {
+            time_u32 = v;
+        },
+        Err(e) => {
+            return format!("{e}");
+        }
+        
+    }
 
     let current_date: DateTime<Utc> = Utc::now();
 
@@ -22,7 +34,7 @@ fn addtime(time_str: &str) -> String {
     line.push_str("-");
     line.push_str(&current_date.day().to_string());
     line.push_str(",");
-    line.push_str(&time_str.to_string());
+    line.push_str(&time.to_string());
     line.push_str("\n");
 
     /*

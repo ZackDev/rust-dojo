@@ -4,7 +4,7 @@ let timesInputEl;
 let timesMsgEl;
 
 async function addtime() {
-  timesMsgEl.textContent = await invoke("addtime", { time_str: timesInputEl.value });
+  timesMsgEl.textContent = await invoke("addtime", { time: timesInputEl.value });
 }
 
 window.addEventListener("DOMContentLoaded", () => {
