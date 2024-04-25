@@ -16,6 +16,8 @@ let nCb;
 let fCb;
 let dCb;
 
+let cbs = [cCb, OneCb, lCb, tCb, aCb, xCb, nCb, fCb, dCb];
+
 async function addtime() {
   timesMsgEl.textContent = await invoke("addtime", { time: timesInputEl.value });
 }
@@ -33,11 +35,15 @@ window.addEventListener("DOMContentLoaded", () => {
   dCb = document.querySelector("duration-cb");
   
   /* TODO call 'stats' backend when ANY of the checkboxes changes and pass every checked stats */
-  
+  cbs.forEach(cb => {
+    cb.addEventListener("onchange", (e) => {
+      e.preventDefault();
+      // TODO build the stats string and pass it to the backend
+    })
+  })
+
   timesInputEl = document.querySelector("#times-input");
   timesMsgEl = document.querySelector("#times-container");
-  
-
 
   document.querySelector("#times-form").addEventListener("submit", (e) => {
     e.preventDefault();
