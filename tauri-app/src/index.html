@@ -4,18 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
+    <title>biketime UI</title>
     <script type="module" src="/main.js" defer></script>
-    <style>
-      .logo.vanilla:hover {
-        filter: drop-shadow(0 0 2em #ffe21c);
-      }
-    </style>
   </head>
 
   <body>
     <div class="container">
-      <div class="column" id="stats-form" style="margin:50px">
+      <div class="column" id="stats-controls" style="margin:50px">
         <div class="row" style="justify-content:flex-end;">
           <label for="current-date-cb">current date</label>
           <input id="current-date-cb" type="checkbox" />
@@ -29,12 +24,30 @@
           <input id="last-run-cb" type="checkbox" />
         </div>
         <!-- TODO -->
-        <div class="row" style="justify-content:flex-end;">total time<input id="total-time-cb" type="checkbox" /></div>
-        <div class="row" style="justify-content:flex-end;">average time<input id="average-time-cb" type="checkbox" /></div>
-        <div class="row" style="justify-content:flex-end;">min & max time<input id="min-max-time-cb" type="checkbox" /></div>
-        <div class="row" style="justify-content:flex-end;">number of rides<input id="num-rides-cb" type="checkbox" /></div>
-        <div class="row" style="justify-content:flex-end;">frequency<input id="frequency-cb" type="checkbox" /></div>
-        <div class="row" style="justify-content:flex-end;">duration<input id="duration-cb" type="checkbox" /></div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="total-time-cb">total time</label>
+          <input id="total-time-cb" type="checkbox" />
+        </div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="average-time-cb">average time</label>
+          <input id="average-time-cb" type="checkbox" />
+        </div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="min-max-time-cb">min & max time</label>
+          <input id="min-max-time-cb" type="checkbox" />
+        </div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="num-rides-cb">number of rides</label>
+          <input id="num-rides-cb" type="checkbox" />
+        </div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="frequency-cb">frequency</label>
+          <input id="frequency-cb" type="checkbox" />
+        </div>
+        <div class="row" style="justify-content:flex-end;">
+          <label for="duration-cb">duration</label>
+          <input id="duration-cb" type="checkbox" />
+        </div>
       </div>
 
       <form class="row" id="times-form">
