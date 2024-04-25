@@ -22,15 +22,15 @@ async function addtime() {
 
 window.addEventListener("DOMContentLoaded", () => {
   /* TODO add checkbox references */
-  cCb = document.querySelector();
-  OneCb = document.querySelector();
-  lCb = document.querySelector();
-  tCb = document.querySelector();
-  aCb = document.querySelector();
-  xCb = document.querySelector();
-  nC = document.querySelector();
-  fCb = document.querySelector();
-  dCb = document.querySelector();
+  cCb = document.querySelector("current-date-cb");
+  OneCb = document.querySelector("first-run-cb");
+  lCb = document.querySelector("last-run-cb");
+  tCb = document.querySelector("total-time-cb");
+  aCb = document.querySelector("average-time-cb");
+  xCb = document.querySelector("min-max-time-cb");
+  nC = document.querySelector("num-rides-cb");
+  fCb = document.querySelector("frequency-cb");
+  dCb = document.querySelector("duration-cb");
   
   /* TODO call 'stats' backend when ANY of the checkboxes changes and pass every checked stats */
   
