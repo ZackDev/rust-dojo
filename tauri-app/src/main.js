@@ -9,6 +9,10 @@ async function addtime() {
   timesMsgEl.textContent = await invoke("addtime", { time: timesInputEl.value });
 }
 
+async function getstats(statsStr) {
+  timesMsgEl.textContent = await invoke("getstats", { options: statsStr});
+}
+
 function getStatsBoxes() {
   let boxes = document.querySelectorAll("input[stats]");
   return boxes;
@@ -30,12 +34,12 @@ window.addEventListener("DOMContentLoaded", () => {
   /* TODO call 'stats' backend when ANY of the checkboxes changes and pass every checked stats */
   statsBoxes.forEach((sb) => {
     sb.addEventListener("click", (e) => {
-      let statsStr = "";
+      let statsOptStr = "";
       let checkedStatsBoxes = getCheckedStatsBoxes();
       checkedStatsBoxes.forEach((b) => {
-        statsStr += b.value;
+        statsOptStr += b.value;
       });
-      timesMsgEl.textContent = statsStr;
+      timesMsgEl.textContent = getstats(statsOptStr);
     });
   });
 

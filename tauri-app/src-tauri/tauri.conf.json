@@ -32,7 +32,8 @@
       {
         "title": "biketime UI",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "maximized": true
       }
     ],
     "security": {
