@@ -3,14 +3,14 @@ const { invoke } = window.__TAURI__.tauri;
 let statsBoxes;
 
 let timesInputEl;
-let timesMsgEl;
+let msgEl;
 
 async function addtime() {
-  timesMsgEl.textContent = await invoke("addtime", { time: timesInputEl.value });
+  msgEl.textContent = await invoke("addtime", { time: timesInputEl.value });
 }
 
 async function getstats(statsStr) {
-  timesMsgEl.textContent = await invoke("getstats", { options: statsStr});
+  msgEl.textContent = await invoke("getstats", { options: statsStr});
 }
 
 function getStatsBoxes() {
@@ -25,7 +25,7 @@ function getCheckedStatsBoxes() {
 
 window.addEventListener("DOMContentLoaded", () => {
   timesInputEl = document.querySelector("#times-input");
-  timesMsgEl = document.querySelector("#times-container");
+  msgEl = document.querySelector("#message-container");
 
   /* TODO add checkbox references */
   
@@ -36,10 +36,10 @@ window.addEventListener("DOMContentLoaded", () => {
     sb.addEventListener("click", (e) => {
       let statsOptStr = "";
       let checkedStatsBoxes = getCheckedStatsBoxes();
-      checkedStatsBoxes.forEach((b) => {
-        statsOptStr += b.value;
+      checkedStatsBoxes.forEach((cb) => {
+        statsOptStr += cb.value;
       });
-      timesMsgEl.textContent = getstats(statsOptStr);
+      msgEl.textContent = getstats(statsOptStr);
     });
   });
 
