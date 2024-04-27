@@ -13,13 +13,11 @@ async function getstats(statsStr) {
 }
 
 function getStatsBoxes() {
-  let boxes = document.querySelectorAll("input[stats]");
-  return boxes;
+  return document.querySelectorAll("input[stats]");
 }
 
-function getCheckedStatsBoxes() {
-  let boxes = document.querySelectorAll("input[stats]:checked");
-  return boxes;
+function getCheckedStatsBoxes() { 
+  return document.querySelectorAll("input[stats]:checked");
 }
 
 window.addEventListener("DOMContentLoaded", () => {

@@ -240,7 +240,7 @@ fn getstats(options: &str) -> String {
     }
     if options.contains('n') {
         stats_str += format!(
-            "last run:\t{}-{}-{}",
+            "last run:\t{}-{}-{}\n",
             dates[dates.len() - 1].year(),
             dates[dates.len() - 1].month(),
             dates[dates.len() - 1].day()
