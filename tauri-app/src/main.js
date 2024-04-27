@@ -1,7 +1,6 @@
 const { invoke } = window.__TAURI__.tauri;
 
 let statsBoxes;
-
 let timesInputEl;
 let msgEl;
 
@@ -25,13 +24,9 @@ function getCheckedStatsBoxes() {
 
 window.addEventListener("DOMContentLoaded", () => {
   timesInputEl = document.querySelector("#times-input");
-  msgEl = document.querySelector("#message-container");
-
-  /* TODO add checkbox references */
-  
+  msgEl = document.querySelector("#message-container"); 
   statsBoxes = getStatsBoxes();
 
-  /* TODO call 'stats' backend when ANY of the checkboxes changes and pass every checked stats */
   statsBoxes.forEach((sb) => {
     sb.addEventListener("click", (e) => {
       let statsOptStr = "";
