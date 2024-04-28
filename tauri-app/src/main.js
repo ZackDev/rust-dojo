@@ -46,17 +46,20 @@ window.addEventListener("DOMContentLoaded", () => {
     let st = document.createElement("div");
     st.id = s[1] + "-stats";
     st.classList.add("stats-display");
+    st.style.width = "auto";
 
     let la = document.createElement("label");
     la.textContent = s[0];
     la.setAttribute("for", s[1] + "-cb");
-    la.style = "min-width:150px;";
+    la.style.minWidth = "250px";
     
     let cb = document.createElement("input");
     cb.id = s[1] + "-cb";
     cb.type = "checkbox";
     cb.setAttribute("stats", "stats");
     cb.value = s[2];
+    cb.style.width = "20px";
+    cb.style.height = "20px";
 
     cb.addEventListener("click", (e) => {
       if (cb.checked) {
