@@ -42,6 +42,11 @@ window.addEventListener("DOMContentLoaded", () => {
   stats.forEach((s) => {
     let co = document.createElement("div");
     co.classList.add("row", "stats-row");
+    /* TODO */
+    /*
+    co.style.borderWidth = "0 0 20px 0";
+    co.style.borderBottom = "dashed";
+    */
 
     let st = document.createElement("div");
     st.id = s[1] + "-stats";
@@ -53,6 +58,7 @@ window.addEventListener("DOMContentLoaded", () => {
     la.textContent = s[0];
     la.setAttribute("for", s[1] + "-cb");
     la.style.minWidth = "250px";
+    la.style.textAlign = "end";
     
     let cb = document.createElement("input");
     cb.id = s[1] + "-cb";
