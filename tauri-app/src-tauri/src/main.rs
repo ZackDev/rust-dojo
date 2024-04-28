@@ -64,7 +64,7 @@ fn addtime(time: &str) -> String {
 }
 
 #[tauri::command]
-fn getstats(options: &str) -> String {
+fn getstats(stat: char) -> String {
     let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
 
     let mut dates: Vec<DateTime<Utc>> = Vec::new();
@@ -105,11 +105,11 @@ fn getstats(options: &str) -> String {
         /*
         the value time is needed for these options
          */
-        if options.contains('o')
-            || options.contains('a')
-            || options.contains('x')
-            || options.contains('r')
-            || options.contains('d')
+        if stat == 'o'
+            || stat == 'a'
+            || stat == 'x'
+            || stat == 'r'
+            || stat == 'd'
         {
             /* yay, turbofish */
             match data[1].trim().parse::<u32>() {
@@ -122,10 +122,10 @@ fn getstats(options: &str) -> String {
         }
 
         /* these options require the date value */
-        if options.contains('1')
-            || options.contains('n')
-            || options.contains('f')
-            || options.contains('d')
+        if stat == '1'
+            || stat == 'n'
+            || stat == 'f'
+            || stat == 'd'
         {
             let date_str: String;
             match data[0].trim().parse::<String>() {
@@ -177,7 +177,7 @@ fn getstats(options: &str) -> String {
 
     let mut min_time: u32 = u32::MAX;
     let mut max_time: u32 = u32::MIN;
-    if options.contains('x') {
+    if stat == 'x' {
         for i in 0..times.len() {
             /*
             iterate over Vec times and determine max and min cycling times
@@ -191,62 +191,60 @@ fn getstats(options: &str) -> String {
     }
 
     let mut sum_time: u32 = 0;
-    if options.contains('o') || options.contains('a') {
+    if stat == 'o' || stat == 'a' {
         sum_time = times.iter().sum();
     }
 
     let mut num_rides: u32 = 0;
-    if options.contains('r') || options.contains('a') {
+    if stat == 'r' || stat == 'a' {
         num_rides = times.len() as u32;
     }
 
     let mut average: f32 = 0.0;
-    if options.contains('a') {
+    if stat == 'a' {
         average = sum_time as f32 / num_rides as f32;
     }
     
     let current_date = Utc::now();
 
     let mut freq_str: String = String::new();
-    if options.contains('f') {
+    if stat == 'f' {
         freq_str = craft_frequency_str(&mut dates);
     }
 
     let mut dur_str: String = String::new();
-    if options.contains('d') {
+    if stat == 'd' {
         dur_str = craft_duration_str(dates.clone(), times.clone());
     }
 
-    /*
-    concatenate stats string
-     */
-
-    let mut stats_str = "".to_owned();
-    if options.contains('c') {
-        stats_str += format!(
+    if stat == 'c' {
+        let s = format!(
             "current date:\t{}-{}-{}\n",
             current_date.year(),
             current_date.month(),
             current_date.day()
-            ).as_ref();
-    }
-    if options.contains('1') {
-        stats_str += format!(
+            );
+        return s;
+        }
+    if stat == '1' {
+        let s = format!(
             "first run:\t{}-{}-{}\n",
             dates[0].year(),
             dates[0].month(),
             dates[0].day()
-            ).as_ref();
+            );
+        return s;
     }
-    if options.contains('n') {
-        stats_str += format!(
+    if stat == 'n' {
+        let s = format!(
             "last run:\t{}-{}-{}\n",
             dates[dates.len() - 1].year(),
             dates[dates.len() - 1].month(),
             dates[dates.len() - 1].day()
-            ).as_ref();
+            );
+        return s;
     }
-    if options.contains('o') {
+    if stat == 'o' {
         let mut m_multiple_str:String = "minute".to_string();
         let h_str:String = "hours".to_string();
         let d_str:String = "days".to_string();
@@ -258,25 +256,32 @@ fn getstats(options: &str) -> String {
         if minutes > 1 {
             m_multiple_str += "s";
         }
-        stats_str += format!("total time:\t{minutes} {m_multiple_str} or {hours:.2} {h_str} or {days:.2} {d_str}\n").as_ref();
+        let s = format!("total time:\t{minutes} {m_multiple_str} or {hours:.2} {h_str} or {days:.2} {d_str}\n");
+        return s;
     }
-    if options.contains('a') {
-        stats_str += format!("average time:\t{:.1}\n", average).as_ref();
+    if stat == 'a' {
+        let s = format!("average time:\t{:.1}\n", average);
+        return s;
     }
-    if options.contains( 'x') {
-        stats_str += format!("min time:\t{min_time}\n").as_ref();
-        stats_str += format!("max time:\t{max_time}\n").as_ref();
+    if stat == 'x' {
+        let s = format!("min time:\t{min_time}\nmax time:\t{max_time}\n");
+        return s;
     }
-    if options.contains('r') {
-        stats_str += format!("num rides:\t{num_rides}\n").as_ref();
+    if stat == 'r' {
+        let s = format!("num rides:\t{num_rides}\n");
+        return s;
     }
-    if options.contains('f') {
-        stats_str += format!("frequency:\n{}\n", freq_str).as_ref();
+    if stat == 'f' {
+        let s = format!("frequency:\n{}\n", freq_str);
+        return s;
     }
-    if options.contains('d') {
-        stats_str += format!("duration:\n{}\n", dur_str).as_ref();
+    if stat == 'd' {
+        let s = format!("duration:\n{}\n", dur_str);
+        return s;
     }
-    return stats_str;
+    else {
+        return "".to_string();
+    }
 }
 
 fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {

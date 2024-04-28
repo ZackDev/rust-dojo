@@ -10,45 +10,7 @@
 
   <body>
     <div class="container">
-      <div class="row" id="stats-controls" style="margin:50px; justify-content: center; gap: 25px;">
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="current-date-cb">current date</label>
-          <input id="current-date-cb" type="checkbox" stats value="c"/>
-        </div>
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="first-run-cb">first run</label>
-          <input id="first-run-cb" type="checkbox" stats value="1"/>
-        </div>
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="last-run-cb">last run</label>
-          <input id="last-run-cb" type="checkbox" stats value="n"/>
-        </div>
-        <!-- TODO -->
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="total-time-cb">total time</label>
-          <input id="total-time-cb" type="checkbox" stats value="o"/>
-        </div>
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="average-time-cb">average time</label>
-          <input id="average-time-cb" type="checkbox" stats value="a"/>
-        </div>
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="min-max-time-cb">min & max time</label>
-          <input id="min-max-time-cb" type="checkbox" stats value="x"/>
-        </div>
-        <div class="row" style="justify-content:flex-end; align-items: center;"">
-          <label for="num-rides-cb">number of rides</label>
-          <input id="num-rides-cb" type="checkbox" stats value="r"/>
-        </div>
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="frequency-cb">frequency</label>
-          <input id="frequency-cb" type="checkbox" stats value="f"/>
-        </div>
-        <div class="row" style="justify-content:flex-end; align-items: center;">
-          <label for="duration-cb">duration</label>
-          <input id="duration-cb" type="checkbox" stats value="d"/>
-        </div>
-      </div>
+      <div class="column" id="stats-controls" style="margin:50px; justify-content: center; gap: 25px;"></div>
 
       <form class="row" id="times-form">
         <input id="times-input" placeholder="Enter time in minutes..." />
