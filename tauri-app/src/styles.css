@@ -38,8 +38,7 @@
 }
 
 .stats-display {
-  white-space: pre-line;
-  line-break: anywhere;
+  overflow: scroll;
 }
 
 a {

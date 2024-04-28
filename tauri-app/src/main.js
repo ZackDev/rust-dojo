@@ -47,6 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
     st.id = s[1] + "-stats";
     st.classList.add("stats-display");
     st.style.width = "auto";
+    st.style.fontSize = "20px";
 
     let la = document.createElement("label");
     la.textContent = s[0];
