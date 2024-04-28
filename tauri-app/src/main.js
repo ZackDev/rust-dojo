@@ -84,5 +84,13 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#times-form").addEventListener("submit", (e) => {
     e.preventDefault();
     addtime();
+    document.querySelectorAll("input[stats]:checked").forEach((c) => {
+      getstats(c.value).then(
+        (s) => {
+          
+        },
+        (f) => {}
+      );
+    });
   });
 });
