@@ -5,8 +5,9 @@ let stats = [
   ["current date","current-date", "c"],
   ["first run", "first-run", "1"],
   ["last run", "last-run", "n"],
-  ["total time", "total-time", "t"],
+  ["total time", "total-time", "o"],
   ["average time", "average-time", "a"],
+  ["min and max time", "min-max-time", "x"],
   ["number of rides", "num-rides", "r"],
   ["duration", "duration", "d"],
   ["frequency", "frequency", "f"]
@@ -44,6 +45,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     let st = document.createElement("div");
     st.id = s[1] + "-stats";
+    st.classList.add("stats-display");
 
     let la = document.createElement("label");
     la.textContent = s[0];
@@ -58,7 +60,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
     cb.addEventListener("click", (e) => {
       if (cb.checked) {
-        st.innerText = getstats(cb.value);
+        getstats(cb.value).then(
+          (s) => {
+            st.innerText = s;
+          },
+          (f) => {
+
+          }
+        );
       }
       else {
         st.textContent = "";
@@ -69,20 +78,6 @@ window.addEventListener("DOMContentLoaded", () => {
     statsControls.append(co);
   });
 
-  /*
-  statsBoxes = getStatsBoxes();
-
-  statsBoxes.forEach((sb) => {
-    sb.addEventListener("click", (e) => {
-      let statsOptStr = "";
-      let checkedStatsBoxes = getCheckedStatsBoxes();
-      checkedStatsBoxes.forEach((cb) => {
-        statsOptStr += cb.value;
-      });
-      msgEl.textContent = getstats(statsOptStr);
-    });
-  });
-  */
   document.querySelector("#times-form").addEventListener("submit", (e) => {
     e.preventDefault();
     addtime();

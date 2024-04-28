@@ -219,7 +219,7 @@ fn getstats(stat: char) -> String {
 
     if stat == 'c' {
         let s = format!(
-            "current date:\t{}-{}-{}\n",
+            "{}-{}-{}",
             current_date.year(),
             current_date.month(),
             current_date.day()
@@ -228,7 +228,7 @@ fn getstats(stat: char) -> String {
         }
     if stat == '1' {
         let s = format!(
-            "first run:\t{}-{}-{}\n",
+            "{}-{}-{}",
             dates[0].year(),
             dates[0].month(),
             dates[0].day()
@@ -237,7 +237,7 @@ fn getstats(stat: char) -> String {
     }
     if stat == 'n' {
         let s = format!(
-            "last run:\t{}-{}-{}\n",
+            "{}-{}-{}",
             dates[dates.len() - 1].year(),
             dates[dates.len() - 1].month(),
             dates[dates.len() - 1].day()
@@ -256,27 +256,27 @@ fn getstats(stat: char) -> String {
         if minutes > 1 {
             m_multiple_str += "s";
         }
-        let s = format!("total time:\t{minutes} {m_multiple_str} or {hours:.2} {h_str} or {days:.2} {d_str}\n");
+        let s = format!("{minutes} {m_multiple_str} or {hours:.2} {h_str} or {days:.2} {d_str}");
         return s;
     }
     if stat == 'a' {
-        let s = format!("average time:\t{:.1}\n", average);
+        let s = format!("{:.1}", average);
         return s;
     }
     if stat == 'x' {
-        let s = format!("min time:\t{min_time}\nmax time:\t{max_time}\n");
+        let s = format!("min:\t{min_time}\tmax:\t{max_time}");
         return s;
     }
     if stat == 'r' {
-        let s = format!("num rides:\t{num_rides}\n");
+        let s = format!("{num_rides}");
         return s;
     }
     if stat == 'f' {
-        let s = format!("frequency:\n{}\n", freq_str);
+        let s = format!("{}", freq_str);
         return s;
     }
     if stat == 'd' {
-        let s = format!("duration:\n{}\n", dur_str);
+        let s = format!("{}", dur_str);
         return s;
     }
     else {

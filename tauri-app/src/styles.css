@@ -1,17 +1,14 @@
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 
-  color: #0f0f0f;
-  background-color: #f6f6f6;
+  color: #353535;
+  background-color: #c0c0c0;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
 }
 
 .container {
@@ -28,11 +25,21 @@
   justify-content: center;
 }
 
-.stats-row {
-  justify-content:flex-end;
-  align-items: center;
+#stats-controls {
   margin: 0 50px 0 0;
+  justify-content: center;
+}
+
+.stats-row {
+  justify-content: flex-end;
+  align-items: baseline;
+  margin: 10px 0 10px 0;
   gap: 20px;
+}
+
+.stats-display {
+  white-space: pre-line;
+  line-break: anywhere;
 }
 
 a {
