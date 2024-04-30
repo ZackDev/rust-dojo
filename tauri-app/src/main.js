@@ -72,7 +72,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (cb.checked) {
         getstats(cb.value).then(
           (v) => {
-            setstats(s[1], v);
+            setstat(s[1], v);
           },
           (f) => {
 
@@ -97,7 +97,7 @@ window.addEventListener("DOMContentLoaded", () => {
         (v) => {
           for (let st in stats) {
             if (c.value == stats[st][2]) {
-              setstats(stats[st][1], v);
+              setstat(stats[st][1], v);
               break;
             }
           }
