@@ -22,12 +22,12 @@ async function addtime() {
 }
 
 async function getstats(statsChr) {
-  let s = await invoke("getstats", { stat: statsChr});
+  let s = await invoke("getstats", { stat: statsChr });
   return s;
 }
 
-function setstats(forElement, statsStr) {
-  let e = document.querySelector("#" + forElement + "-stats");
+function setstat(forElementIDStr, statsStr) {
+  let e = document.querySelector("#" + forElementIDStr + "-stats");
   e.innerText = statsStr;
 }
 
