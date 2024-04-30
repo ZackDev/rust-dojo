@@ -1,6 +1,6 @@
 const { invoke } = window.__TAURI__.tauri;
 
-/* name, identifier, stat */
+/* name, identifier, stat short */
 let stats = [
   ["current date","current-date", "c"],
   ["first run", "first-run", "1"],
