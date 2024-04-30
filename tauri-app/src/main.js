@@ -26,6 +26,11 @@ async function getstats(statsChr) {
   return s;
 }
 
+function setstats(forElement, statsStr) {
+  let e = document.querySelector("#" + forElement + "-stats");
+  e.innerText = statsStr;
+}
+
 function getStatsBoxes() {
   return document.querySelectorAll("input[stats]");
 }
@@ -42,11 +47,6 @@ window.addEventListener("DOMContentLoaded", () => {
   stats.forEach((s) => {
     let co = document.createElement("div");
     co.classList.add("row", "stats-row");
-    /* TODO */
-    /*
-    co.style.borderWidth = "0 0 20px 0";
-    co.style.borderBottom = "dashed";
-    */
 
     let st = document.createElement("div");
     st.id = s[1] + "-stats";
@@ -71,8 +71,8 @@ window.addEventListener("DOMContentLoaded", () => {
     cb.addEventListener("click", (e) => {
       if (cb.checked) {
         getstats(cb.value).then(
-          (s) => {
-            st.innerText = s;
+          (v) => {
+            setstats(s[1], v);
           },
           (f) => {
 
@@ -91,10 +91,16 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#times-form").addEventListener("submit", (e) => {
     e.preventDefault();
     addtime();
-    document.querySelectorAll("input[stats]:checked").forEach((c) => {
+    let cbs = document.querySelectorAll("input[stats]:checked");
+    cbs.forEach((c) => {
       getstats(c.value).then(
-        (s) => {
-          
+        (v) => {
+          for (let st in stats) {
+            if (c.value == stats[st][2]) {
+              setstats(stats[st][1], v);
+              break;
+            }
+          }
         },
         (f) => {}
       );
