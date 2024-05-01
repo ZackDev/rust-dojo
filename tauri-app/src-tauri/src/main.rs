@@ -6,10 +6,16 @@ use std::{cmp::{max, min}, fs::{read_to_string, OpenOptions}, io::Write, path::P
 use chrono::{DateTime, Datelike, Duration, TimeDelta, TimeZone, Utc};
 use homedir::get_my_home;
 use regex::Regex;
-
+use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
 static FILE_STR: &str = "biketime.csv";
+
+#[derive(Serialize, Deserialize, Debug)]
+struct FreqStruct {
+    dates: Vec<DateTime<Utc>>,
+    frequency: Vec<usize>
+} 
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -288,20 +294,19 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     /*
     determine cycling trips per day from first run to current date
      */
-    let mut f_str: String = String::new();
+    let mut f_struct = FreqStruct { dates: Vec::new(), frequency: Vec::new()};
+    let mut f_vec: Vec<usize> = Vec::new();
     let mut d: DateTime<Utc> = dates[0];
     let c: DateTime<Utc> = Utc::now();
     let n: Duration = TimeDelta::try_days(1).unwrap();
-    let s: Vec<char> = ['_', '.', ':', '|'].to_vec();
     while d <= c {
-        let mut f = dates.iter().filter(|&date| *date == d).count();
-        if f > 2 {
-            f = 3; 
-        }
-        f_str.push(s[f]);
+        let f = dates.iter().filter(|&date| *date == d).count();
+        f_struct.dates.push(d);
+        f_struct.frequency.push(f);
         d += n;
     }
-    return f_str;
+    let ser = serde_json::to_string(&f_struct).unwrap();
+    return format!("{{\n\t\"dates\": {dates:#?},\n\t\"frequency\": {f_vec:#?}\n}}");
 }
 
 fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> String {

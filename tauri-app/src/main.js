@@ -26,9 +26,17 @@ async function getstats(statsChr) {
   return s;
 }
 
-function setstat(forElementIDStr, statsStr) {
+function setstat(forElementIDStr, statsStr, stat) {
   let e = document.querySelector("#" + forElementIDStr + "-stats");
-  e.innerText = statsStr;
+  let value = statsStr;
+  if (stat == "f") {
+    let json = JSON.parse(statsStr);
+    value = json.frequency;
+  }
+  if (stat == "d") {
+    value = statsStr.duration;
+  }
+  e.innerText = value;
 }
 
 function getStatsBoxes() {
@@ -72,7 +80,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (cb.checked) {
         getstats(cb.value).then(
           (v) => {
-            setstat(s[1], v);
+            setstat(s[1], v, cb.value);
           },
           (f) => {
 
