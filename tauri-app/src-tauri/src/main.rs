@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{cmp::{max, min}, fs::{read_to_string, OpenOptions}, io::Write, path::Path};
+use std::{cmp::{max, min}, collections::HashMap, fs::{read_to_string, OpenOptions}, io::Write, path::Path};
 
 use chrono::{DateTime, Datelike, Duration, TimeDelta, TimeZone, Utc};
 use homedir::get_my_home;
@@ -13,7 +13,7 @@ static FILE_STR: &str = "biketime.csv";
 
 #[derive(Serialize, Deserialize, Debug)]
 struct FreqStruct {
-    dates: Vec<DateTime<Utc>>,
+    dates: Vec<String>,
     frequency: Vec<usize>
 } 
 
@@ -295,18 +295,23 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     determine cycling trips per day from first run to current date
      */
     let mut f_struct = FreqStruct { dates: Vec::new(), frequency: Vec::new()};
-    let mut f_vec: Vec<usize> = Vec::new();
+    let mut h_map: HashMap<String, String> = HashMap::new();
     let mut d: DateTime<Utc> = dates[0];
     let c: DateTime<Utc> = Utc::now();
     let n: Duration = TimeDelta::try_days(1).unwrap();
     while d <= c {
         let f = dates.iter().filter(|&date| *date == d).count();
-        f_struct.dates.push(d);
+        let d_str = format!("{}-{}-{}", d.year(), d.month(), d.day());
+        f_struct.dates.push(d_str);
         f_struct.frequency.push(f);
         d += n;
     }
-    let ser = serde_json::to_string(&f_struct).unwrap();
-    return format!("{{\n\t\"dates\": {dates:#?},\n\t\"frequency\": {f_vec:#?}\n}}");
+    let ds = serde_json::to_string(&f_struct.dates).unwrap();
+    let fs = serde_json::to_string(&f_struct.frequency).unwrap();
+    h_map.insert("dates".to_string(), ds);
+    h_map.insert("frequency".to_string(), fs);
+    let ser = serde_json::to_string(&h_map).unwrap();
+    return ser;
 }
 
 fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> String {

@@ -31,12 +31,31 @@ function setstat(forElementIDStr, statsStr, stat) {
   let value = statsStr;
   if (stat == "f") {
     let json = JSON.parse(statsStr);
-    value = json.frequency;
+    new Chart(e, {
+      type: 'line',
+      data: {
+        labels: JSON.stringify(json.dates),
+        datasets: [{
+          label: 'frequency',
+          data: JSON.stringify(json.frequency),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
   if (stat == "d") {
     value = statsStr.duration;
   }
-  e.innerText = value;
+  else {
+    e.innerText = value;
+  }
 }
 
 function getStatsBoxes() {
@@ -53,14 +72,21 @@ window.addEventListener("DOMContentLoaded", () => {
   msgEl = document.querySelector("#message-container");
   
   stats.forEach((s) => {
+    let st;
+    if (s[2] == "f" || s[2] == "d") {
+      st = document.createElement("canvas");
+      st.id = s[1] + "-stats";
+    } else {
+      st = document.createElement("div");
+      st.id = s[1] + "-stats";
+      st.classList.add("stats-display");
+      st.style.width = "auto";
+      st.style.fontSize = "20px";
+    }
     let co = document.createElement("div");
     co.classList.add("row", "stats-row");
 
-    let st = document.createElement("div");
-    st.id = s[1] + "-stats";
-    st.classList.add("stats-display");
-    st.style.width = "auto";
-    st.style.fontSize = "20px";
+
 
     let la = document.createElement("label");
     la.textContent = s[0];
@@ -94,6 +120,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     co.append(st, la, cb);
     statsControls.append(co);
+
   });
 
   document.querySelector("#times-form").addEventListener("submit", (e) => {
