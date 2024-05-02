@@ -5,7 +5,7 @@
   font-weight: 400;
 
   color: #353535;
-  background-color: #c0c0c0;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,6 +23,8 @@
 .row {
   display: flex;
   justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #stats-controls {
@@ -87,10 +89,6 @@ button:active {
 input,
 button {
   outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
 }
 
 @media (prefers-color-scheme: dark) {
