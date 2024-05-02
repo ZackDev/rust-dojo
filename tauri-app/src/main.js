@@ -14,6 +14,9 @@ let stats = [
 ];
 
 let statsControls;
+let durChart;
+let freqChart;
+
 let timesInputEl;
 let msgEl;
 
@@ -30,10 +33,13 @@ function setstat(forElementIDStr, statsStr, stat) {
   let e = document.querySelector("#" + forElementIDStr + "-stats");
   let value = statsStr;
   if (stat == "f") {
+    if (freqChart != undefined || freqChart != null) {
+      freqChart.destroy();
+    }
     let json = JSON.parse(statsStr);;
     e.width = "auto";
     e.style.height = "400px";
-    new Chart(e, {
+    freqChart = new Chart(e, {
       type: 'bar',
       data: {
         labels: json.dates,
@@ -48,7 +54,7 @@ function setstat(forElementIDStr, statsStr, stat) {
           y: {
             beginAtZero: true
           }
-        }
+        },
       }
     });
   }
@@ -118,18 +124,14 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#times-form").addEventListener("submit", (e) => {
     e.preventDefault();
     addtime();
-    let cbs = document.querySelectorAll("input[stats]:checked");
-    cbs.forEach((c) => {
-      getstats(c.value).then(
+    stats.forEach((s) => {
+      getstats(s[2]).then(
         (v) => {
-          for (let st in stats) {
-            if (c.value == stats[st][2]) {
-              setstat(stats[st][1], v);
-              break;
-            }
-          }
+          setstat(s[1], v, s[2]);
         },
-        (f) => {}
+        (f) => {
+  
+        }
       );
     });
   });
