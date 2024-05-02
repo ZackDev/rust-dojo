@@ -30,14 +30,16 @@ function setstat(forElementIDStr, statsStr, stat) {
   let e = document.querySelector("#" + forElementIDStr + "-stats");
   let value = statsStr;
   if (stat == "f") {
-    let json = JSON.parse(statsStr);
+    let json = JSON.parse(statsStr);;
+    e.width = "auto";
+    e.style.height = "400px";
     new Chart(e, {
-      type: 'line',
+      type: 'bar',
       data: {
-        labels: JSON.stringify(json.dates),
+        labels: json.dates,
         datasets: [{
           label: 'frequency',
-          data: JSON.stringify(json.frequency),
+          data: json.frequency,
           borderWidth: 1
         }]
       },

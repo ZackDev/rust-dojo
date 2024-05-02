@@ -14,7 +14,7 @@ static FILE_STR: &str = "biketime.csv";
 #[derive(Serialize, Deserialize, Debug)]
 struct FreqStruct {
     dates: Vec<String>,
-    frequency: Vec<usize>
+    frequency: Vec<String>
 } 
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -295,7 +295,7 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     determine cycling trips per day from first run to current date
      */
     let mut f_struct = FreqStruct { dates: Vec::new(), frequency: Vec::new()};
-    let mut h_map: HashMap<String, String> = HashMap::new();
+    let mut h_map: HashMap<String, Vec<String>> = HashMap::new();
     let mut d: DateTime<Utc> = dates[0];
     let c: DateTime<Utc> = Utc::now();
     let n: Duration = TimeDelta::try_days(1).unwrap();
@@ -303,13 +303,11 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
         let f = dates.iter().filter(|&date| *date == d).count();
         let d_str = format!("{}-{}-{}", d.year(), d.month(), d.day());
         f_struct.dates.push(d_str);
-        f_struct.frequency.push(f);
+        f_struct.frequency.push(f.to_string());
         d += n;
     }
-    let ds = serde_json::to_string(&f_struct.dates).unwrap();
-    let fs = serde_json::to_string(&f_struct.frequency).unwrap();
-    h_map.insert("dates".to_string(), ds);
-    h_map.insert("frequency".to_string(), fs);
+    h_map.insert("dates".to_string(), f_struct.dates);
+    h_map.insert("frequency".to_string(), f_struct.frequency);
     let ser = serde_json::to_string(&h_map).unwrap();
     return ser;
 }
