@@ -348,12 +348,14 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
     
     - NOTE: consumes norm_dates and norm_times
     */
-    let mut acc_times: Vec<u32> = Vec::new();
+    let mut acc_times: Vec<String> = Vec::new();
+    let mut arr_dates: Vec<String> = Vec::new();
     let mut acc_time: u32;
     selected_date = norm_dates[0];
 
     while selected_date <= current_date {
         acc_time = 0;
+        arr_dates.push(format!("{}-{}-{}", selected_date.year(), selected_date.month(), selected_date.day()));
         while norm_dates.contains(&selected_date) {
             let i = norm_dates
                 .iter()
@@ -364,30 +366,15 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
             norm_times.remove(i);
         }
         selected_date += n;
-        acc_times.push(acc_time);
+        acc_times.push(acc_time.to_string());
     }
 
-    let mut a_times_clone = acc_times.clone();
-    a_times_clone.sort();
-    let max_time = a_times_clone[a_times_clone.len() - 1];
-    let upper: u32 = max_time * 2 / 3;
-    let lower: u32 = max_time / 3;
-    let mut d_str: String = String::new();
+    let mut h_map: HashMap<String, Vec<String>> = HashMap::new();
+    h_map.insert("dates".to_string(), arr_dates);
+    h_map.insert("duration".to_string(), acc_times); 
 
-    for t in acc_times {
-        if t == 0 {
-            d_str.push('_');
-        } else if t < lower && t > 0 {
-            d_str.push('.');
-        } else if t < upper && t >= lower {
-            d_str.push(':');
-        } else if t < max_time && t >= upper {
-            d_str.push('|');
-        } else if t == max_time {
-            d_str.push('!');
-        }
-    }
-    return d_str;
+    let ser = serde_json::to_string(&h_map).unwrap();
+    return ser;
 }
 
 fn main() {

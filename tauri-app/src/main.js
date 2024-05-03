@@ -32,6 +32,32 @@ async function getstats(statsChr) {
 function setstat(forElementIDStr, statsStr, stat) {
   let e = document.querySelector("#" + forElementIDStr + "-stats");
   let value = statsStr;
+  if (stat == "d") {
+    if (durChart != undefined || durChart != null) {
+      durChart.destroy();
+    }
+    let json = JSON.parse(statsStr);;
+    e.width = "auto";
+    e.style.height = "400px";
+    durChart = new Chart(e, {
+      type: 'bar',
+      data: {
+        labels: json.dates,
+        datasets: [{
+          label: 'duration',
+          data: json.duration,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+      }
+    });
+  }
   if (stat == "f") {
     if (freqChart != undefined || freqChart != null) {
       freqChart.destroy();
@@ -57,9 +83,6 @@ function setstat(forElementIDStr, statsStr, stat) {
         },
       }
     });
-  }
-  if (stat == "d") {
-    value = statsStr.duration;
   }
   else {
     e.innerText = value;
