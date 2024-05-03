@@ -12,22 +12,18 @@
   <body>
     <div class="container">
       <div id="header"><h1>keep track of your rides. has stats too.</h1></div>
-      <form class="row" id="times-form">
+      <form class="row" id="times-form" style="margin:10px 0 10px 0;">
         <input id="times-input" placeholder="time in minutes..." />
         <button type="submit">Add Time</button>
       </form>
-      <div class="row" id="stats-container"></div>
+      <div class="row" id="stats-container" style="margin:10px 0 10px 0;"></div>
 
-      <div style="height:250px;">
+      <div style="height:250px;margin:10px 0 10px 0;">
         <canvas id="duration-stats"></canvas>
       </div>
-      <div style="height:250px;">
+      <div style="height:250px;margin:10px 0 10px 0;">
         <canvas id="frequency-stats"></canvas>
       </div>
-      
-      <p>
-        <div id="message-container"></div>
-      </p>
     </div>
   </body>
 </html>

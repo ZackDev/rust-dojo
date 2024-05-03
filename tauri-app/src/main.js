@@ -16,12 +16,10 @@ let stats = [
 let statsControls;
 let durChart;
 let freqChart;
-
 let timesInputEl;
-let msgEl;
 
-async function addtime() {
-  msgEl.textContent = await invoke("addtime", { time: timesInputEl.value });
+async function addtime(v) {
+  await invoke("addtime", { time: v });
 }
 
 async function getstats(statsChr) {
@@ -100,7 +98,6 @@ function getCheckedStatsBoxes() {
 window.addEventListener("DOMContentLoaded", () => {
   statsControls = document.querySelector("#stats-container");
   timesInputEl = document.querySelector("#times-input");
-  msgEl = document.querySelector("#message-container");
   
   stats.forEach((s) => {
     let st;
@@ -146,16 +143,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.querySelector("#times-form").addEventListener("submit", (e) => {
     e.preventDefault();
-    addtime();
-    stats.forEach((s) => {
-      getstats(s[2]).then(
-        (v) => {
-          setstat(s[1], v, s[2]);
-        },
-        (f) => {
-  
-        }
-      );
-    });
+    let v = timesInputEl.value;
+    let t = parseInt(v);
+    if (t != NaN && t > 0) {
+      addtime(v);
+      stats.forEach((s) => {
+        getstats(s[2]).then(
+          (v) => {
+            setstat(s[1], v, s[2]);
+          },
+          (f) => {
+    
+          }
+        );
+      });
+    }
   });
 });
