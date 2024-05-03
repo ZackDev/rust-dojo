@@ -70,11 +70,16 @@ function setstat(forElementIDStr, statsStr, stat) {
         datasets: [{
           label: 'frequency',
           data: json.frequency,
-          borderWidth: 1
+          borderWidth: 1,
         }]
       },
       options: {
         scales: {
+          x: {
+            grid: {
+              display: false
+            }
+          },
           y: {
             beginAtZero: true
           }
