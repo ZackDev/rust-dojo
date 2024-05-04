@@ -1,7 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{cmp::{max, min}, collections::HashMap, fs::{read_to_string, OpenOptions}, io::Write, path::Path};
+use std::{
+    cmp::{max, min},
+    collections::HashMap,
+    fs::{read_to_string, OpenOptions},
+    io::Write,
+    path::Path,
+    process::exit,
+};
 
 use chrono::{DateTime, Datelike, Duration, TimeDelta, TimeZone, Utc};
 use homedir::get_my_home;
@@ -14,24 +21,23 @@ static FILE_STR: &str = "biketime.csv";
 #[derive(Serialize, Deserialize, Debug)]
 struct FreqStruct {
     dates: Vec<String>,
-    frequency: Vec<String>
-} 
+    frequency: Vec<String>,
+}
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn addtime(time: &str) -> String {
     let fpath = get_my_home().unwrap().unwrap().display().to_string() + "/" + FILE_STR;
 
-    let time_u32 :u32;
+    let time_u32: u32;
 
     match time.parse() {
         Ok(v) => {
             time_u32 = v;
-        },
+        }
         Err(e) => {
             return format!("{e}");
         }
-        
     }
 
     let current_date: DateTime<Utc> = Utc::now();
@@ -82,12 +88,23 @@ fn getstats(stat: char) -> String {
             file_content.push_str(&cstring);
         }
         Err(_) => {
-            format!("couldn't open {}.", fpath);
+            match OpenOptions::new()
+                .write(true)
+                .create(true)
+                .append(true)
+                .open(fpath.clone())
+            {
+                Ok(_) => {
+                },
+                Err(e) => {
+
+                }
+            }
         }
     }
 
     if file_content.len() < 1 {
-        format!("no data found in {}.", fpath);
+        return format!("no data");
     }
     for line in file_content.lines() {
         /*
@@ -111,34 +128,24 @@ fn getstats(stat: char) -> String {
         /*
         the value time is needed for these options
          */
-        if stat == 'o'
-            || stat == 'a'
-            || stat == 'x'
-            || stat == 'r'
-            || stat == 'd'
-        {
+        if stat == 'o' || stat == 'a' || stat == 'x' || stat == 'r' || stat == 'd' {
             /* yay, turbofish */
             match data[1].trim().parse::<u32>() {
                 Ok(time) => {
                     times.push(time);
                 }
-                Err(_) => continue
+                Err(_) => continue,
             }
-            
         }
 
         /* these options require the date value */
-        if stat == '1'
-            || stat == 'n'
-            || stat == 'f'
-            || stat == 'd'
-        {
+        if stat == '1' || stat == 'n' || stat == 'f' || stat == 'd' {
             let date_str: String;
             match data[0].trim().parse::<String>() {
                 Ok(d_str) => {
                     date_str = d_str;
                 }
-                Err(_) => continue
+                Err(_) => continue,
             }
 
             let date_split: Vec<&str> = date_str.split("-").collect();
@@ -148,7 +155,7 @@ fn getstats(stat: char) -> String {
                 Ok(y) => {
                     year = y;
                 }
-                Err(_) => continue
+                Err(_) => continue,
             }
 
             let month: u32;
@@ -156,7 +163,7 @@ fn getstats(stat: char) -> String {
                 Ok(m) => {
                     month = m;
                 }
-                Err(_) => continue
+                Err(_) => continue,
             }
 
             let day: u32;
@@ -164,19 +171,15 @@ fn getstats(stat: char) -> String {
                 Ok(d) => {
                     day = d;
                 }
-                Err(_) => continue
+                Err(_) => continue,
             }
 
             match Utc.with_ymd_and_hms(year, month, day, 0, 0, 0) {
                 chrono::LocalResult::Single(date) => {
                     dates.push(date);
-                },
-                chrono::LocalResult::None => {
-                    continue
-                },
-                chrono::LocalResult::Ambiguous(_, _) => {
-                    continue
-                },
+                }
+                chrono::LocalResult::None => continue,
+                chrono::LocalResult::Ambiguous(_, _) => continue,
             };
         }
     }
@@ -210,7 +213,7 @@ fn getstats(stat: char) -> String {
     if stat == 'a' {
         average = sum_time as f32 / num_rides as f32;
     }
-    
+
     let current_date = Utc::now();
 
     let mut freq_str: String = String::new();
@@ -229,16 +232,16 @@ fn getstats(stat: char) -> String {
             current_date.year(),
             current_date.month(),
             current_date.day()
-            );
+        );
         return s;
-        }
+    }
     if stat == '1' {
         let s = format!(
             "{}-{}-{}",
             dates[0].year(),
             dates[0].month(),
             dates[0].day()
-            );
+        );
         return s;
     }
     if stat == 'n' {
@@ -247,18 +250,18 @@ fn getstats(stat: char) -> String {
             dates[dates.len() - 1].year(),
             dates[dates.len() - 1].month(),
             dates[dates.len() - 1].day()
-            );
+        );
         return s;
     }
     if stat == 'o' {
-        let mut m_multiple_str:String = "minute".to_string();
-        let h_str:String = "hours".to_string();
-        let d_str:String = "days".to_string();
-        
+        let mut m_multiple_str: String = "minute".to_string();
+        let h_str: String = "hours".to_string();
+        let d_str: String = "days".to_string();
+
         let minutes = sum_time;
         let hours = sum_time as f32 / 60.0;
         let days = sum_time as f32 / 1440.0;
-        
+
         if minutes > 1 {
             m_multiple_str += "s";
         }
@@ -284,8 +287,7 @@ fn getstats(stat: char) -> String {
     if stat == 'd' {
         let s = format!("{}", dur_str);
         return s;
-    }
-    else {
+    } else {
         return "".to_string();
     }
 }
@@ -294,7 +296,10 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
     /*
     determine cycling trips per day from first run to current date
      */
-    let mut f_struct = FreqStruct { dates: Vec::new(), frequency: Vec::new()};
+    let mut f_struct = FreqStruct {
+        dates: Vec::new(),
+        frequency: Vec::new(),
+    };
     let mut h_map: HashMap<String, Vec<String>> = HashMap::new();
     let mut d: DateTime<Utc> = dates[0];
     let c: DateTime<Utc> = Utc::now();
@@ -319,7 +324,7 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
 
     /*
     normalize times and dates vectors, fill the gaps, expand to current date
-    
+
     NOTE: consumes dates and times
     */
     let mut norm_dates: Vec<DateTime<Utc>> = Vec::new();
@@ -343,9 +348,9 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
         selected_date += n;
     }
 
-    /* 
+    /*
     - accumulate times by given day in vector acc_times
-    
+
     - NOTE: consumes norm_dates and norm_times
     */
     let mut acc_times: Vec<String> = Vec::new();
@@ -355,7 +360,12 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
 
     while selected_date <= current_date {
         acc_time = 0;
-        arr_dates.push(format!("{}-{}-{}", selected_date.year(), selected_date.month(), selected_date.day()));
+        arr_dates.push(format!(
+            "{}-{}-{}",
+            selected_date.year(),
+            selected_date.month(),
+            selected_date.day()
+        ));
         while norm_dates.contains(&selected_date) {
             let i = norm_dates
                 .iter()
@@ -371,7 +381,7 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
 
     let mut h_map: HashMap<String, Vec<String>> = HashMap::new();
     h_map.insert("dates".to_string(), arr_dates);
-    h_map.insert("duration".to_string(), acc_times); 
+    h_map.insert("duration".to_string(), acc_times);
 
     let ser = serde_json::to_string(&h_map).unwrap();
     return ser;

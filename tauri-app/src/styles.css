@@ -11,6 +11,11 @@
   text-rendering: optimizeLegibility;
 }
 
+.chart {
+  height: 250px;
+  width: auto;
+}
+
 .container {
   margin: 0;
   padding-top: 10vh;
@@ -27,16 +32,16 @@
   flex-wrap: wrap;
 }
 
-#stats-controls {
+#stats-container {
   margin: 0 50px 0 0;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 40px;
 }
 
 .stats-row {
   justify-content: flex-end;
   align-items: baseline;
-  margin: 10px 0 10px 0;
-  gap: 20px;
+  gap: 10px;
 }
 
 /*

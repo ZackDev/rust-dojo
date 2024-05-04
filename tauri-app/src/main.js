@@ -48,6 +48,18 @@ function setstat(forElementIDStr, statsStr, stat) {
         }]
       },
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'minutes per day',
+            font: {
+              size: 20
+            }
+          },
+          legend: {
+            display: false,
+          }
+        },
         scales: {
           y: {
             beginAtZero: true
@@ -74,6 +86,18 @@ function setstat(forElementIDStr, statsStr, stat) {
         }]
       },
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'rides per day',
+            font: {
+              size: 20
+            }
+          },
+          legend: {
+            display: false,
+          }
+        },
         scales: {
           x: {
             grid: {
@@ -81,7 +105,10 @@ function setstat(forElementIDStr, statsStr, stat) {
             }
           },
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
           }
         },
       }
@@ -120,17 +147,14 @@ window.addEventListener("DOMContentLoaded", () => {
       st = document.createElement("div");
       st.id = s[1] + "-stats";
       st.classList.add("stats-display");
-      st.style.width = "auto";
-      st.style.fontSize = "20px";
       
       let co = document.createElement("div");
       co.classList.add("row", "stats-row");
   
       let la = document.createElement("label");
-      la.textContent = s[0];
+      la.style.fontSize = "20px";
+      la.textContent = s[0] + ":";
       la.setAttribute("for", s[1] + "-cb");
-      la.style.minWidth = "250px";
-      la.style.textAlign = "end";
       
       getstats(s[2]).then(
         (v) => {
