@@ -7,7 +7,6 @@ use std::{
     fs::{read_to_string, OpenOptions},
     io::Write,
     path::Path,
-    process::exit,
 };
 
 use chrono::{DateTime, Datelike, Duration, TimeDelta, TimeZone, Utc};
@@ -96,7 +95,7 @@ fn getstats(stat: char) -> String {
             {
                 Ok(_) => {
                 },
-                Err(e) => {
+                Err(_) => {
 
                 }
             }
