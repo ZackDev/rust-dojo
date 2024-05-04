@@ -1,5 +1,28 @@
 const { invoke } = window.__TAURI__.tauri;
 
+const fontType = 'monospace';
+
+
+const titlePlugin = {
+  display: true,
+  font: {
+    family: fontType,
+    size: 20,
+  }
+}
+
+const tooltipPlugin = {
+  titleFont: {
+    family: fontType
+  },
+  bodyFont: {
+    family: fontType
+  },
+  footerFont: {
+    family: fontType
+  },
+}
+
 /* name, identifier, stat short */
 let stats = [
   ["current date","current-date", "c"],
@@ -50,12 +73,11 @@ function setstat(forElementIDStr, statsStr, stat) {
       options: {
         plugins: {
           title: {
-            display: true,
             text: 'minutes per day',
-            font: {
-              size: 20
-            }
+            display: true,
+            font: titlePlugin.font,
           },
+          tooltip: tooltipPlugin,
           legend: {
             display: false,
           }
@@ -88,12 +110,11 @@ function setstat(forElementIDStr, statsStr, stat) {
       options: {
         plugins: {
           title: {
-            display: true,
             text: 'rides per day',
-            font: {
-              size: 20
-            }
+            display: true,
+            font: titlePlugin.font,
           },
+          tooltip: tooltipPlugin,
           legend: {
             display: false,
           }
