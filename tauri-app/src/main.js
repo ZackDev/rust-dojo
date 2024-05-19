@@ -1,5 +1,18 @@
 const { invoke } = window.__TAURI__.tauri;
 
+/* name, identifier, flag, style */
+const stats = [
+  ["current date", "current-date", "c", "text"],
+  ["first run", "first-run", "1", "text"],
+  ["last run", "last-run", "n", "text"],
+  ["total time", "total-time", "o", "text"],
+  ["average time", "average-time", "a", "text"],
+  ["min and max time", "min-max-time", "x", "text"],
+  ["number of rides", "num-rides", "r", "text"],
+  ["minutes per day", "duration", "d", "chart"],
+  ["rides per day", "frequency", "f", "chart"]
+];
+
 class StatsObj {
   constructor(name, id, flag, uistyle) {
     this.name = name;
@@ -33,19 +46,6 @@ const chartTooltipCfg = {
     family: fontType
   },
 }
-
-/* name, identifier, flag, style */
-const stats = [
-  ["current date", "current-date", "c", "text"],
-  ["first run", "first-run", "1", "text"],
-  ["last run", "last-run", "n", "text"],
-  ["total time", "total-time", "o", "text"],
-  ["average time", "average-time", "a", "text"],
-  ["min and max time", "min-max-time", "x", "text"],
-  ["number of rides", "num-rides", "r", "text"],
-  ["minutes per day", "duration", "d", "chart"],
-  ["rides per day", "frequency", "f", "chart"]
-];
 
 const chartsMap = new Map();
 
