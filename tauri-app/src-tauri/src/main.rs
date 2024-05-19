@@ -272,7 +272,7 @@ fn getstats(stat: char) -> String {
         return s;
     }
     if stat == 'x' {
-        let s = format!("min:\t{min_time}\tmax:\t{max_time}");
+        let s = format!("{min_time} / {max_time}");
         return s;
     }
     if stat == 'r' {
