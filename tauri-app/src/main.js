@@ -110,6 +110,17 @@ function setstat(so) {
   }
 }
 
+function refreshStats(statsOb) {
+  getstats(statsOb).then(
+    (_) => {
+      setstat(statsOb);
+    },
+    (f) => {
+
+    }
+  );
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   simpleStatsContainer = document.querySelector("#stats-container");
   chartsContainer = document.querySelector("#charts-container");
@@ -117,9 +128,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   stats.forEach((s) => {
     let so = new StatsObj(s[0], s[1], s[2], s[3]);
-    let st;
     if (so.uistyle == "text") {
-      st = document.createElement("div");
+      let st = document.createElement("div");
       st.id = so.id + "-stats";
       st.classList.add("stats-display");
 
@@ -131,20 +141,11 @@ window.addEventListener("DOMContentLoaded", () => {
       la.textContent = so.name + ":";
       la.setAttribute("for", so.id + "-cb");
 
-      getstats(so).then(
-        (_) => {
-          setstat(so);
-        },
-        (f) => {
-
-        }
-      );
-
       co.append(la, st);
       simpleStatsContainer.append(co);
     }
     else if (so.uistyle == "chart") {
-      st = document.createElement("div");
+      let st = document.createElement("div");
       st.class = "chart";
 
       let cv = document.createElement("canvas");
@@ -152,17 +153,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
       st.append(cv);
       chartsContainer.append(st);
-
-      getstats(so).then(
-        (_) => {
-          setstat(so);
-        },
-        (f) => {
-
-        }
-      );
-
     }
+    refreshStats(so);
   });
 
   document.querySelector("#times-form").addEventListener("submit", (e) => {
@@ -172,15 +164,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (t != NaN && t > 0) {
       addtime(v);
       stats.forEach((s) => {
-        let so = new StatsObj(s[0], s[1], s[2], s[3]);
-        getstats(so).then(
-          (_) => {
-            setstat(so);
-          },
-          (f) => {
-
-          }
-        );
+        refreshStats(new StatsObj(s[0], s[1], s[2], s[3]));
       });
     }
   });
