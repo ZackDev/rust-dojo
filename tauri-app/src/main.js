@@ -49,9 +49,9 @@ let stats = [
 
 let chartsMap = new Map();
 
+let timesInputEl;
 let simpleStatsContainer;
 let chartsContainer;
-let timesInputEl;
 
 async function addtime(v) {
   await invoke("addtime", { time: v });
@@ -64,7 +64,10 @@ async function getstats(so) {
 
 function setstat(so) {
   let e = document.querySelector("#" + so.id + "-stats");
-  if (so.uistyle == "chart") {
+  if (so.uistyle == "text"){
+    e.innerText = so.value;
+  }
+  else if (so.uistyle == "chart") {
     e.width = "auto";
     e.style.height = "200px";
     let json = JSON.parse(so.value);
@@ -105,9 +108,6 @@ function setstat(so) {
     let chart = new Chart(e, cfgObj);
     chartsMap.set(so.id, chart);
   }
-  else if (so.uistyle == "text"){
-    e.innerText = so.value;
-  }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -118,26 +118,7 @@ window.addEventListener("DOMContentLoaded", () => {
   stats.forEach((s) => {
     let so = new StatsObj(s[0], s[1], s[2], s[3]);
     let st;
-    if (so.uistyle == "chart") {
-      st = document.createElement("div");
-      st.class = "chart";
-
-      let cv = document.createElement("canvas");
-      cv.id = so.id + "-stats";
-
-      st.append(cv);
-      chartsContainer.append(st);
-
-      getstats(so).then(
-        (_) => {
-          setstat(so);
-        },
-        (f) => {
-
-        }
-      );
-
-    } else if (so.uistyle == "text") {
+    if (so.uistyle == "text") {
       st = document.createElement("div");
       st.id = so.id + "-stats";
       st.classList.add("stats-display");
@@ -161,6 +142,26 @@ window.addEventListener("DOMContentLoaded", () => {
 
       co.append(la, st);
       simpleStatsContainer.append(co);
+    }
+    else if (so.uistyle == "chart") {
+      st = document.createElement("div");
+      st.class = "chart";
+
+      let cv = document.createElement("canvas");
+      cv.id = so.id + "-stats";
+
+      st.append(cv);
+      chartsContainer.append(st);
+
+      getstats(so).then(
+        (_) => {
+          setstat(so);
+        },
+        (f) => {
+
+        }
+      );
+
     }
   });
 
