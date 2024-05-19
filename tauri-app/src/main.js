@@ -36,13 +36,13 @@ const tooltipPlugin = {
 
 /* name, identifier, flag, style */
 let stats = [
-  ["current date", "current-date", "c", "div"],
-  ["first run", "first-run", "1", "div"],
-  ["last run", "last-run", "n", "div"],
-  ["total time", "total-time", "o", "div"],
-  ["average time", "average-time", "a", "div"],
-  ["min and max time", "min-max-time", "x", "div"],
-  ["number of rides", "num-rides", "r", "div"],
+  ["current date", "current-date", "c", "text"],
+  ["first run", "first-run", "1", "text"],
+  ["last run", "last-run", "n", "text"],
+  ["total time", "total-time", "o", "text"],
+  ["average time", "average-time", "a", "text"],
+  ["min and max time", "min-max-time", "x", "text"],
+  ["number of rides", "num-rides", "r", "text"],
   ["duration", "duration", "d", "chart"],
   ["frequency", "frequency", "f", "chart"]
 ];
@@ -152,7 +152,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-    } else if (so.uistyle == "div") {
+    } else if (so.uistyle == "text") {
       st = document.createElement("div");
       st.id = so.id + "-stats";
       st.classList.add("stats-display");
