@@ -1,7 +1,17 @@
 const { invoke } = window.__TAURI__.tauri;
 
-const fontType = 'monospace';
+class statsObj {
+  constructor(name, id, flag) {
+    this.name = name;
+    this.id = id;
+    this.flag = flag;
+  }
+  setValue(value) {
+    this.value = value;
+  }
+}
 
+const fontType = 'monospace';
 
 const titlePlugin = {
   display: true,
@@ -45,19 +55,19 @@ async function addtime(v) {
   await invoke("addtime", { time: v });
 }
 
-async function getstats(statsChr) {
-  let s = await invoke("getstats", { stat: statsChr });
-  return s;
+async function getstats(so) {
+  let s = await invoke("getstats", { stat: so.flag });
+  so.setValue(s);
 }
 
-function setstat(forElementIDStr, statsStr, stat) {
-  let e = document.querySelector("#" + forElementIDStr + "-stats");
-  let value = statsStr;
-  if (stat == "d") {
+function setstat(so) {
+  let e = document.querySelector("#" + so.id + "-stats");
+  let value = so.value;
+  if (so.flag == "d") {
     if (durChart != undefined || durChart != null) {
       durChart.destroy();
     }
-    let json = JSON.parse(statsStr);;
+    let json = JSON.parse(so.value);
     e.width = "auto";
     e.style.height = "400px";
     durChart = new Chart(e, {
@@ -90,11 +100,11 @@ function setstat(forElementIDStr, statsStr, stat) {
       }
     });
   }
-  if (stat == "f") {
+  if (so.flag == "f") {
     if (freqChart != undefined || freqChart != null) {
       freqChart.destroy();
     }
-    let json = JSON.parse(statsStr);;
+    let json = JSON.parse(so.value);
     e.width = "auto";
     e.style.height = "400px";
     freqChart = new Chart(e, {
@@ -153,11 +163,12 @@ window.addEventListener("DOMContentLoaded", () => {
   timesInputEl = document.querySelector("#times-input");
   
   stats.forEach((s) => {
+    let so = new statsObj(s[0], s[1], s[2]);
     let st;
-    if (s[2] == "f" || s[2] == "d") {
-      getstats(s[2]).then(
-        (v) => {
-          setstat(s[1], v, s[2]);
+    if (so.flag == "f" || so.flag == "d") {
+      getstats(so).then(
+        (_) => {
+          setstat(so);
         },
         (f) => {
   
@@ -166,7 +177,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     } else {
       st = document.createElement("div");
-      st.id = s[1] + "-stats";
+      st.id = so.id + "-stats";
       st.classList.add("stats-display");
       
       let co = document.createElement("div");
@@ -174,12 +185,12 @@ window.addEventListener("DOMContentLoaded", () => {
   
       let la = document.createElement("label");
       la.style.fontSize = "20px";
-      la.textContent = s[0] + ":";
-      la.setAttribute("for", s[1] + "-cb");
+      la.textContent = so.name + ":";
+      la.setAttribute("for", so.id + "-cb");
       
-      getstats(s[2]).then(
-        (v) => {
-          setstat(s[1], v, s[2]);
+      getstats(so).then(
+        (_) => {
+          setstat(so);
         },
         (f) => {
   
@@ -198,9 +209,10 @@ window.addEventListener("DOMContentLoaded", () => {
     if (t != NaN && t > 0) {
       addtime(v);
       stats.forEach((s) => {
-        getstats(s[2]).then(
-          (v) => {
-            setstat(s[1], v, s[2]);
+        let so = new statsObj(s[0], s[1], s[2]);
+        getstats(so).then(
+          (_) => {
+            setstat(so);
           },
           (f) => {
     
