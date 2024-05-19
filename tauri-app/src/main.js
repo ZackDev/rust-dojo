@@ -47,6 +47,8 @@ let stats = [
   ["frequency", "frequency", "f", "chart"]
 ];
 
+let chartsMap = new Map();
+
 let simpleStatsContainer;
 let chartsContainer;
 let timesInputEl;
@@ -63,11 +65,6 @@ async function getstats(so) {
 function setstat(so) {
   let e = document.querySelector("#" + so.id + "-stats");
   if (so.uistyle == "chart") {
-    if (e != undefined || e != null) {
-      if (e.destroy != undefined) {
-        e.destroy();
-      }
-    }
     e.width = "auto";
     e.style.height = "200px";
     let json = JSON.parse(so.value);
@@ -114,7 +111,14 @@ function setstat(so) {
       ];
       cfgObj.options.plugins.title.text = 'rides per day';
     }
-    new Chart(e, cfgObj);
+    if (chartsMap.has(so.id)) {
+      chartsMap.get(so.id).destroy();
+      chartsMap.delete(so.id);
+    }
+    let chart = new Chart(e, cfgObj);
+    if (!chartsMap.has(so.id)) {
+      chartsMap.set(so.id, chart);
+    }
   }
   else {
     e.innerText = so.value;
@@ -182,7 +186,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (t != NaN && t > 0) {
       addtime(v);
       stats.forEach((s) => {
-        let so = new StatsObj(s[0], s[1], s[2]);
+        let so = new StatsObj(s[0], s[1], s[2], s[3]);
         getstats(so).then(
           (_) => {
             setstat(so);
