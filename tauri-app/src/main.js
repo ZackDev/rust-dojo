@@ -103,7 +103,6 @@ function setstat(so) {
         }
       ];
       cfgObj.options.plugins.title.text = 'minutes per day';
-      new Chart(e, cfgObj);
     }
     else if (so.flag == "f") {
       cfgObj.data.datasets = [
@@ -114,8 +113,8 @@ function setstat(so) {
         }
       ];
       cfgObj.options.plugins.title.text = 'rides per day';
-      new Chart(e, cfgObj);
     }
+    new Chart(e, cfgObj);
   }
   else {
     e.innerText = so.value;
