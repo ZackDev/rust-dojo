@@ -14,7 +14,7 @@ class StatsObj {
 
 const fontType = 'monospace';
 
-const titlePlugin = {
+const chartTitleCfg = {
   display: true,
   font: {
     family: fontType,
@@ -22,7 +22,7 @@ const titlePlugin = {
   }
 }
 
-const tooltipPlugin = {
+const chartTooltipCfg = {
   titleFont: {
     family: fontType
   },
@@ -81,10 +81,11 @@ function setstat(so) {
       options: {
         plugins: {
           title: {
+            text: so.name,
             display: true,
-            font: titlePlugin.font,
+            font: chartTitleCfg.font,
           },
-          tooltip: tooltipPlugin,
+          tooltip: chartTooltipCfg,
           legend: {
             display: false,
           }
@@ -96,8 +97,6 @@ function setstat(so) {
         },
       }
     };
-    
-    cfgObj.options.plugins.title.text = so.name;
 
     if (chartsMap.has(so.id)) {
       chartsMap.get(so.id).destroy();
