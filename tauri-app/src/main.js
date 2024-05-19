@@ -1,6 +1,6 @@
 const { invoke } = window.__TAURI__.tauri;
 
-class statsObj {
+class StatsObj {
   constructor(name, id, flag) {
     this.name = name;
     this.id = id;
@@ -163,7 +163,7 @@ window.addEventListener("DOMContentLoaded", () => {
   timesInputEl = document.querySelector("#times-input");
   
   stats.forEach((s) => {
-    let so = new statsObj(s[0], s[1], s[2]);
+    let so = new StatsObj(s[0], s[1], s[2]);
     let st;
     if (so.flag == "f" || so.flag == "d") {
       getstats(so).then(
@@ -209,7 +209,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (t != NaN && t > 0) {
       addtime(v);
       stats.forEach((s) => {
-        let so = new statsObj(s[0], s[1], s[2]);
+        let so = new StatsObj(s[0], s[1], s[2]);
         getstats(so).then(
           (_) => {
             setstat(so);
