@@ -35,7 +35,7 @@ const chartTooltipCfg = {
 }
 
 /* name, identifier, flag, style */
-let stats = [
+const stats = [
   ["current date", "current-date", "c", "text"],
   ["first run", "first-run", "1", "text"],
   ["last run", "last-run", "n", "text"],
@@ -47,7 +47,7 @@ let stats = [
   ["rides per day", "frequency", "f", "chart"]
 ];
 
-let chartsMap = new Map();
+const chartsMap = new Map();
 
 let timesInputEl;
 let simpleStatsContainer;
@@ -122,9 +122,9 @@ function refreshStats(statsOb) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  timesInputEl = document.querySelector("#times-input");
   simpleStatsContainer = document.querySelector("#stats-container");
   chartsContainer = document.querySelector("#charts-container");
-  timesInputEl = document.querySelector("#times-input");
 
   stats.forEach((s) => {
     let so = new StatsObj(s[0], s[1], s[2], s[3]);
