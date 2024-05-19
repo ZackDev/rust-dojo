@@ -35,7 +35,7 @@ const tooltipPlugin = {
 
 /* name, identifier, stat short */
 let stats = [
-  ["current date","current-date", "c"],
+  ["current date", "current-date", "c"],
   ["first run", "first-run", "1"],
   ["last run", "last-run", "n"],
   ["total time", "total-time", "o"],
@@ -61,28 +61,19 @@ async function getstats(so) {
 }
 
 function setstat(so) {
-  let e = document.querySelector("#" + so.id + "-stats");
-  if (so.flag == "d") {
-    if (durChart != undefined || durChart != null) {
-      durChart.destroy();
-    }
-    let json = JSON.parse(so.value);
+  if (so.flag == "d" || so.flag == "f") {
+    let e = document.querySelector("#" + so.id + "-stats");
     e.width = "auto";
     e.style.height = "400px";
-    durChart = new Chart(e, {
+    let json = JSON.parse(so.value);
+    let cfgObj = {
       type: 'bar',
       data: {
         labels: json.dates,
-        datasets: [{
-          label: 'duration',
-          data: json.duration,
-          borderWidth: 1
-        }]
       },
       options: {
         plugins: {
           title: {
-            text: 'minutes per day',
             display: true,
             font: titlePlugin.font,
           },
@@ -97,54 +88,38 @@ function setstat(so) {
           }
         },
       }
-    });
-  }
-  if (so.flag == "f") {
-    if (freqChart != undefined || freqChart != null) {
-      freqChart.destroy();
+    };
+    if (so.flag == "d") {
+      if (durChart != undefined || durChart != null) {
+        durChart.destroy();
+      }
+      cfgObj.data.datasets = [
+        {
+          label: 'duration',
+          data: json.duration,
+          borderWidth: 1
+        }
+      ];
+      cfgObj.options.plugins.title.text = 'minutes per day';
+      durChart = new Chart(e, cfgObj);
     }
-    let json = JSON.parse(so.value);
-    e.width = "auto";
-    e.style.height = "400px";
-    freqChart = new Chart(e, {
-      type: 'bar',
-      data: {
-        labels: json.dates,
-        datasets: [{
+    else if (so.flag == "f") {
+      if (freqChart != undefined || freqChart != null) {
+        freqChart.destroy();
+      }
+      cfgObj.data.datasets = [
+        {
           label: 'frequency',
           data: json.frequency,
-          borderWidth: 1,
-        }]
-      },
-      options: {
-        plugins: {
-          title: {
-            text: 'rides per day',
-            display: true,
-            font: titlePlugin.font,
-          },
-          tooltip: tooltipPlugin,
-          legend: {
-            display: false,
-          }
-        },
-        scales: {
-          x: {
-            grid: {
-              display: false
-            }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1
-            }
-          }
-        },
-      }
-    });
+          borderWidth: 1
+        }
+      ];
+      cfgObj.options.plugins.title.text = 'rides per day';
+      freqChart = new Chart(e, cfgObj);
+    }
   }
   else {
+    let e = document.querySelector("#" + so.id + "-stats");
     e.innerText = so.value;
   }
 }
@@ -152,7 +127,7 @@ function setstat(so) {
 window.addEventListener("DOMContentLoaded", () => {
   statsControls = document.querySelector("#stats-container");
   timesInputEl = document.querySelector("#times-input");
-  
+
   stats.forEach((s) => {
     let so = new StatsObj(s[0], s[1], s[2]);
     let st;
@@ -162,7 +137,7 @@ window.addEventListener("DOMContentLoaded", () => {
           setstat(so);
         },
         (f) => {
-  
+
         }
       );
 
@@ -170,24 +145,24 @@ window.addEventListener("DOMContentLoaded", () => {
       st = document.createElement("div");
       st.id = so.id + "-stats";
       st.classList.add("stats-display");
-      
+
       let co = document.createElement("div");
       co.classList.add("row", "stats-row");
-  
+
       let la = document.createElement("label");
       la.style.fontSize = "20px";
       la.textContent = so.name + ":";
       la.setAttribute("for", so.id + "-cb");
-      
+
       getstats(so).then(
         (_) => {
           setstat(so);
         },
         (f) => {
-  
+
         }
       );
-  
+
       co.append(la, st);
       statsControls.append(co);
     }
@@ -206,7 +181,7 @@ window.addEventListener("DOMContentLoaded", () => {
             setstat(so);
           },
           (f) => {
-    
+
           }
         );
       });
