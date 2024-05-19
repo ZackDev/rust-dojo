@@ -145,7 +145,7 @@ function setstat(so) {
     });
   }
   else {
-    e.innerText = value;
+    e.innerText = so.value;
   }
 }
 
