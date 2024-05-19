@@ -120,7 +120,7 @@ function setstat(so) {
       chartsMap.set(so.id, chart);
     }
   }
-  else {
+  else if (so.uistyle == "text"){
     e.innerText = so.value;
   }
 }
