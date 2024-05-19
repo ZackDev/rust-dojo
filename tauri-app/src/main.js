@@ -116,9 +116,8 @@ function setstat(so) {
       chartsMap.delete(so.id);
     }
     let chart = new Chart(e, cfgObj);
-    if (!chartsMap.has(so.id)) {
-      chartsMap.set(so.id, chart);
-    }
+    chartsMap.set(so.id, chart);
+
   }
   else if (so.uistyle == "text"){
     e.innerText = so.value;
