@@ -1,10 +1,11 @@
 const { invoke } = window.__TAURI__.tauri;
 
 class StatsObj {
-  constructor(name, id, flag) {
+  constructor(name, id, flag, uistyle) {
     this.name = name;
     this.id = id;
     this.flag = flag;
+    this.uistyle = uistyle;
   }
   setValue(value) {
     this.value = value;
@@ -33,22 +34,21 @@ const tooltipPlugin = {
   },
 }
 
-/* name, identifier, stat short */
+/* name, identifier, flag, style */
 let stats = [
-  ["current date", "current-date", "c"],
-  ["first run", "first-run", "1"],
-  ["last run", "last-run", "n"],
-  ["total time", "total-time", "o"],
-  ["average time", "average-time", "a"],
-  ["min and max time", "min-max-time", "x"],
-  ["number of rides", "num-rides", "r"],
-  ["duration", "duration", "d"],
-  ["frequency", "frequency", "f"]
+  ["current date", "current-date", "c", "div"],
+  ["first run", "first-run", "1", "div"],
+  ["last run", "last-run", "n", "div"],
+  ["total time", "total-time", "o", "div"],
+  ["average time", "average-time", "a", "div"],
+  ["min and max time", "min-max-time", "x", "div"],
+  ["number of rides", "num-rides", "r", "div"],
+  ["duration", "duration", "d", "chart"],
+  ["frequency", "frequency", "f", "chart"]
 ];
 
-let statsControls;
-let durChart;
-let freqChart;
+let simpleStatsContainer;
+let chartsContainer;
 let timesInputEl;
 
 async function addtime(v) {
@@ -61,10 +61,15 @@ async function getstats(so) {
 }
 
 function setstat(so) {
-  if (so.flag == "d" || so.flag == "f") {
-    let e = document.querySelector("#" + so.id + "-stats");
+  let e = document.querySelector("#" + so.id + "-stats");
+  if (so.uistyle == "chart") {
+    if (e != undefined || e != null) {
+      if (e.destroy != undefined) {
+        e.destroy();
+      }
+    }
     e.width = "auto";
-    e.style.height = "400px";
+    e.style.height = "200px";
     let json = JSON.parse(so.value);
     let cfgObj = {
       type: 'bar',
@@ -90,9 +95,6 @@ function setstat(so) {
       }
     };
     if (so.flag == "d") {
-      if (durChart != undefined || durChart != null) {
-        durChart.destroy();
-      }
       cfgObj.data.datasets = [
         {
           label: 'duration',
@@ -101,12 +103,9 @@ function setstat(so) {
         }
       ];
       cfgObj.options.plugins.title.text = 'minutes per day';
-      durChart = new Chart(e, cfgObj);
+      new Chart(e, cfgObj);
     }
     else if (so.flag == "f") {
-      if (freqChart != undefined || freqChart != null) {
-        freqChart.destroy();
-      }
       cfgObj.data.datasets = [
         {
           label: 'frequency',
@@ -115,23 +114,32 @@ function setstat(so) {
         }
       ];
       cfgObj.options.plugins.title.text = 'rides per day';
-      freqChart = new Chart(e, cfgObj);
+      new Chart(e, cfgObj);
     }
   }
   else {
-    let e = document.querySelector("#" + so.id + "-stats");
     e.innerText = so.value;
   }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  statsControls = document.querySelector("#stats-container");
+  simpleStatsContainer = document.querySelector("#stats-container");
+  chartsContainer = document.querySelector("#charts-container");
   timesInputEl = document.querySelector("#times-input");
 
   stats.forEach((s) => {
-    let so = new StatsObj(s[0], s[1], s[2]);
+    let so = new StatsObj(s[0], s[1], s[2], s[3]);
     let st;
-    if (so.flag == "f" || so.flag == "d") {
+    if (so.uistyle == "chart") {
+      st = document.createElement("div");
+      st.class = "chart";
+
+      let cv = document.createElement("canvas");
+      cv.id = so.id + "-stats";
+
+      st.append(cv);
+      chartsContainer.append(st);
+
       getstats(so).then(
         (_) => {
           setstat(so);
@@ -141,7 +149,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-    } else {
+    } else if (so.uistyle == "div") {
       st = document.createElement("div");
       st.id = so.id + "-stats";
       st.classList.add("stats-display");
@@ -164,7 +172,7 @@ window.addEventListener("DOMContentLoaded", () => {
       );
 
       co.append(la, st);
-      statsControls.append(co);
+      simpleStatsContainer.append(co);
     }
   });
 
