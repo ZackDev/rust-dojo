@@ -43,8 +43,8 @@ let stats = [
   ["average time", "average-time", "a", "text"],
   ["min and max time", "min-max-time", "x", "text"],
   ["number of rides", "num-rides", "r", "text"],
-  ["duration", "duration", "d", "chart"],
-  ["frequency", "frequency", "f", "chart"]
+  ["minutes per day", "duration", "d", "chart"],
+  ["rides per day", "frequency", "f", "chart"]
 ];
 
 let chartsMap = new Map();
@@ -71,7 +71,12 @@ function setstat(so) {
     let cfgObj = {
       type: 'bar',
       data: {
-        labels: json.dates,
+        labels: json.labels,
+        datasets: [{
+          label: so.name,
+          data: json.data,
+          borderWidth: 1,
+        }]
       },
       options: {
         plugins: {
@@ -91,33 +96,15 @@ function setstat(so) {
         },
       }
     };
-    if (so.flag == "d") {
-      cfgObj.data.datasets = [
-        {
-          label: 'duration',
-          data: json.duration,
-          borderWidth: 1
-        }
-      ];
-      cfgObj.options.plugins.title.text = 'minutes per day';
-    }
-    else if (so.flag == "f") {
-      cfgObj.data.datasets = [
-        {
-          label: 'frequency',
-          data: json.frequency,
-          borderWidth: 1
-        }
-      ];
-      cfgObj.options.plugins.title.text = 'rides per day';
-    }
+    
+    cfgObj.options.plugins.title.text = so.name;
+
     if (chartsMap.has(so.id)) {
       chartsMap.get(so.id).destroy();
       chartsMap.delete(so.id);
     }
     let chart = new Chart(e, cfgObj);
     chartsMap.set(so.id, chart);
-
   }
   else if (so.uistyle == "text"){
     e.innerText = so.value;

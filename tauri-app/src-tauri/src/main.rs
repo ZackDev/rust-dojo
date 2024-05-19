@@ -310,8 +310,8 @@ fn craft_frequency_str(dates: &mut Vec<DateTime<Utc>>) -> String {
         f_struct.frequency.push(f.to_string());
         d += n;
     }
-    h_map.insert("dates".to_string(), f_struct.dates);
-    h_map.insert("frequency".to_string(), f_struct.frequency);
+    h_map.insert("labels".to_string(), f_struct.dates);
+    h_map.insert("data".to_string(), f_struct.frequency);
     let ser = serde_json::to_string(&h_map).unwrap();
     return ser;
 }
@@ -379,8 +379,8 @@ fn craft_duration_str(mut dates: Vec<DateTime<Utc>>, mut times: Vec<u32>) -> Str
     }
 
     let mut h_map: HashMap<String, Vec<String>> = HashMap::new();
-    h_map.insert("dates".to_string(), arr_dates);
-    h_map.insert("duration".to_string(), acc_times);
+    h_map.insert("labels".to_string(), arr_dates);
+    h_map.insert("data".to_string(), acc_times);
 
     let ser = serde_json::to_string(&h_map).unwrap();
     return ser;
