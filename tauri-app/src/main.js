@@ -62,7 +62,6 @@ async function getstats(so) {
 
 function setstat(so) {
   let e = document.querySelector("#" + so.id + "-stats");
-  let value = so.value;
   if (so.flag == "d") {
     if (durChart != undefined || durChart != null) {
       durChart.destroy();
