@@ -149,14 +149,6 @@ function setstat(so) {
   }
 }
 
-function getStatsBoxes() {
-  return document.querySelectorAll("input[stats]");
-}
-
-function getCheckedStatsBoxes() { 
-  return document.querySelectorAll("input[stats]:checked");
-}
-
 window.addEventListener("DOMContentLoaded", () => {
   statsControls = document.querySelector("#stats-container");
   timesInputEl = document.querySelector("#times-input");
